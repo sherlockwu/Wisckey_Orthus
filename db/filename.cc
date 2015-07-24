@@ -29,6 +29,11 @@ std::string LogFileName(const std::string& name, uint64_t number) {
   return MakeFileName(name, number, "log");
 }
 
+//ll: vlog file name
+std::string vLogFileName(const std::string& dbname) {
+  return dbname + "/vlog"; 
+}
+
 std::string TableFileName(const std::string& name, uint64_t number) {
   assert(number > 0);
   return MakeFileName(name, number, "ldb");

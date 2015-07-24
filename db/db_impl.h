@@ -143,6 +143,12 @@ class DBImpl : public DB {
   WritableFile* logfile_;
   uint64_t logfile_number_;
   log::Writer* log_;
+
+  //ll: add vlog file structures
+  WritableFile* vlogfile_;
+  uint64_t vlogfile_number_;
+  log::Writer* vlog_;
+
   uint32_t seed_;                // For sampling.
 
   // Queue of writers.

@@ -1361,6 +1361,7 @@ Status DBImpl::MakeRoomForWrite(bool force) {
   return s;
 }
 
+//ll: this is useful for my debugging or collect statistics 
 bool DBImpl::GetProperty(const Slice& property, std::string* value) {
   value->clear();
 
@@ -1457,6 +1458,8 @@ Status DB::Delete(const WriteOptions& opt, const Slice& key) {
 
 DB::~DB() { }
 
+//ll: when open a new DB, need to create the vlog file;
+//fixme; open an existing DB, modify Recover() to handle vlog 
 Status DB::Open(const Options& options, const std::string& dbname,
                 DB** dbptr) {
   *dbptr = NULL;
@@ -1465,12 +1468,11 @@ Status DB::Open(const Options& options, const std::string& dbname,
   impl->mutex_.Lock();
   VersionEdit edit;
 
-  //ll: fixme; need to handle existing vlog file when start 
   Status s = impl->Recover(&edit); // Handles create_if_missing, error_if_exists
-
   if (s.ok()) {
     uint64_t new_log_number = impl->versions_->NewFileNumber();
     WritableFile* lfile;
+    WritableFile* vlfile;
     s = options.env->NewWritableFile(LogFileName(dbname, new_log_number),
                                      &lfile);
     if (s.ok()) {
@@ -1478,12 +1480,20 @@ Status DB::Open(const Options& options, const std::string& dbname,
       impl->logfile_ = lfile;
       impl->logfile_number_ = new_log_number;
       impl->log_ = new log::Writer(lfile);
+    }
+
+    //ll: init vlog file; similar to log file 
+    s = options.env->NewWritableFile(vLogFileName(dbname), &vlfile);
+    if (s.ok()) {
+      impl->vlogfile_ = vlfile;
+      impl->vlog_ = new log::Writer(vlfile);
       s = impl->versions_->LogAndApply(&edit, &impl->mutex_);
     }
     if (s.ok()) {
-      impl->DeleteObsoleteFiles();
+      impl->DeleteObsoleteFiles();    
       impl->MaybeScheduleCompaction();
     }
+
   }
   impl->mutex_.Unlock();
   if (s.ok()) {

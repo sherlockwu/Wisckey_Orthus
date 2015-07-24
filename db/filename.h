@@ -32,6 +32,11 @@ enum FileType {
 // "dbname".
 extern std::string LogFileName(const std::string& dbname, uint64_t number);
 
+// Return the name of the vlog file 
+// in the db named by "dbname".  The result will be prefixed with
+// "dbname".
+extern std::string vLogFileName(const std::string& dbname);
+
 // Return the name of the sstable with the specified number
 // in the db named by "dbname".  The result will be prefixed with
 // "dbname".
