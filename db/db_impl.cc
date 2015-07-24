@@ -1467,6 +1467,7 @@ Status DB::Open(const Options& options, const std::string& dbname,
 
   //ll: fixme; need to handle existing vlog file when start 
   Status s = impl->Recover(&edit); // Handles create_if_missing, error_if_exists
+
   if (s.ok()) {
     uint64_t new_log_number = impl->versions_->NewFileNumber();
     WritableFile* lfile;
