@@ -130,6 +130,9 @@ DBImpl::DBImpl(const Options& raw_options, const std::string& dbname)
       logfile_(NULL),
       logfile_number_(0),
       log_(NULL),
+      //ll: code; init vlog 
+      vlogfile_(NULL),
+      vlog_(NULL),
       seed_(0),
       tmp_batch_(new WriteBatch),
       bg_compaction_scheduled_(false),
@@ -164,6 +167,11 @@ DBImpl::~DBImpl() {
   delete tmp_batch_;
   delete log_;
   delete logfile_;
+
+  //ll: code; 
+  delete vlog_; 
+  delete vlogfile_;
+
   delete table_cache_;
 
   if (owns_info_log_) {
@@ -1164,17 +1172,21 @@ Status DBImpl::Delete(const WriteOptions& options, const Slice& key) {
   return DB::Delete(options, key);
 }
 
+//ll: Put()/Delete()-> Write(); key/value are in my_batch 
 Status DBImpl::Write(const WriteOptions& options, WriteBatch* my_batch) {
   Writer w(&mutex_);
   w.batch = my_batch;
   w.sync = options.sync;
   w.done = false;
 
+  //ll: mutex and conditional variable to use together; learn later 
   MutexLock l(&mutex_);
   writers_.push_back(&w);
+  //ll: only allow the front writer to enter; singler writer 
   while (!w.done && &w != writers_.front()) {
     w.cv.Wait();
   }
+  //ll: when wake up, the writer's job may be done already, due to BuildBatchGroup() ! 
   if (w.done) {
     return w.status;
   }
@@ -1183,9 +1195,16 @@ Status DBImpl::Write(const WriteOptions& options, WriteBatch* my_batch) {
   Status status = MakeRoomForWrite(my_batch == NULL);
   uint64_t last_sequence = versions_->LastSequence();
   Writer* last_writer = &w;
+
+  //ll: handle put() and delete() 
   if (status.ok() && my_batch != NULL) {  // NULL batch is for compactions
+
+    //ll: try to merge several writers together; each writer is a separate thread; 
+    //updates is the combined writebatch; last_write is the last combined writer 
     WriteBatch* updates = BuildBatchGroup(&last_writer);
+    //ll: set a sequence number for this combined batch 
     WriteBatchInternal::SetSequence(updates, last_sequence + 1);
+    //ll: sequence number is the number of Put(), not combined batches 
     last_sequence += WriteBatchInternal::Count(updates);
 
     // Add to log and apply to memtable.  We can release the lock
@@ -1194,6 +1213,10 @@ Status DBImpl::Write(const WriteOptions& options, WriteBatch* my_batch) {
     // into mem_.
     {
       mutex_.Unlock();
+
+      //ll: code; write values to vlog, construct kUpdates (key, addre, size)
+      //status = vlog_->AddRecord(WriteBatchInternal::Contents(vUpdates), kUpdates);
+      
       status = log_->AddRecord(WriteBatchInternal::Contents(updates));
       bool sync_error = false;
       if (status.ok() && options.sync) {
@@ -1214,10 +1237,11 @@ Status DBImpl::Write(const WriteOptions& options, WriteBatch* my_batch) {
       }
     }
     if (updates == tmp_batch_) tmp_batch_->Clear();
-
+    //ll: update last_sequence number 
     versions_->SetLastSequence(last_sequence);
   }
 
+  //ll: due to combined batch, need to mark individual writer done 
   while (true) {
     Writer* ready = writers_.front();
     writers_.pop_front();
@@ -1230,6 +1254,7 @@ Status DBImpl::Write(const WriteOptions& options, WriteBatch* my_batch) {
   }
 
   // Notify new head of write queue
+  //ll: this writer is done, wake up the next front writer 
   if (!writers_.empty()) {
     writers_.front()->cv.Signal();
   }
@@ -1239,6 +1264,8 @@ Status DBImpl::Write(const WriteOptions& options, WriteBatch* my_batch) {
 
 // REQUIRES: Writer list must be non-empty
 // REQUIRES: First writer must have a non-NULL batch
+//ll: to improve performance, try to merge several writers together to be
+//a large batch. 
 WriteBatch* DBImpl::BuildBatchGroup(Writer** last_writer) {
   assert(!writers_.empty());
   Writer* first = writers_.front();
@@ -1279,6 +1306,7 @@ WriteBatch* DBImpl::BuildBatchGroup(Writer** last_writer) {
         assert(WriteBatchInternal::Count(result) == 0);
         WriteBatchInternal::Append(result, first->batch);
       }
+      //ll: combine the writebatch 
       WriteBatchInternal::Append(result, w->batch);
     }
     *last_writer = w;
@@ -1482,11 +1510,11 @@ Status DB::Open(const Options& options, const std::string& dbname,
       impl->log_ = new log::Writer(lfile);
     }
 
-    //ll: init vlog file; similar to log file 
+    //ll: code; init vlog file, similar to log file 
     s = options.env->NewWritableFile(vLogFileName(dbname), &vlfile);
     if (s.ok()) {
       impl->vlogfile_ = vlfile;
-      impl->vlog_ = new log::Writer(vlfile);
+      impl->vlog_ = new vlog::Writer(vlfile);
       s = impl->versions_->LogAndApply(&edit, &impl->mutex_);
     }
     if (s.ok()) {

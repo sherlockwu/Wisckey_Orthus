@@ -9,6 +9,7 @@
 #include <set>
 #include "db/dbformat.h"
 #include "db/log_writer.h"
+#include "db/vlog_writer.h"
 #include "db/snapshot.h"
 #include "leveldb/db.h"
 #include "leveldb/env.h"
@@ -144,10 +145,9 @@ class DBImpl : public DB {
   uint64_t logfile_number_;
   log::Writer* log_;
 
-  //ll: add vlog file structures
+  //ll: code; add vlog file structures
   WritableFile* vlogfile_;
-  uint64_t vlogfile_number_;
-  log::Writer* vlog_;
+  vlog::Writer* vlog_;
 
   uint32_t seed_;                // For sampling.
 
