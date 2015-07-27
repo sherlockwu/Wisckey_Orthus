@@ -8,13 +8,20 @@
 #include "leveldb/env.h"
 #include "util/coding.h"
 #include "util/crc32c.h"
+#include "db/dbformat.h"
 
 namespace leveldb {
+
+// WriteBatch header has an 8-byte sequence number followed by a 4-byte count.
+// copy from write_batch.cc 
+static const size_t kHeader = 12;
+
 namespace vlog {
 
 Writer::Writer(WritableFile* dest)
     : dest_(dest),
-      block_offset_(0) {
+      block_offset_(0),
+      cur_offset_(0){
   for (int i = 0; i <= kMaxRecordType; i++) {
     char t = static_cast<char>(i);
     type_crc_[i] = crc32c::Value(&t, 1);
@@ -24,9 +31,80 @@ Writer::Writer(WritableFile* dest)
 Writer::~Writer() {
 }
 
-Status Writer::AddRecord(const Slice& slice) {
-  const char* ptr = slice.data();
-  size_t left = slice.size();
+//ll: given the key/value slice, write values to vlog, generate 
+//new (key, addr/size) for keys in LSM, kUpdates 
+Status Writer::AddRecord(const Slice& slice, WriteBatch* kUpdates) {
+
+  Slice input(slice); 
+  if (input.size() < kHeader) {
+    return Status::Corruption("malformed WriteBatch (too small)");
+  }
+
+  int count = DecodeFixed32(input.data() + 8);
+  input.remove_prefix(kHeader);
+
+  Slice key, value, new_value; 
+  std::string values; 
+  uint64_t vaddr;
+  uint32_t vsize; 
+
+  int found = 0;
+  while (!input.empty()) {
+    found++;
+    char tag = input[0];
+    input.remove_prefix(1);
+    switch (tag) {
+      case kTypeValue:
+        if (GetLengthPrefixedSlice(&input, &key) &&
+            GetLengthPrefixedSlice(&input, &value)) {
+
+	  //handler->Put(key, value);
+
+	  //later, can pack two together as one uint64_t 
+	  std::string addr_size; 
+	  vaddr = cur_offset_; 
+	  vsize = static_cast<uint32_t>(value.size());
+
+	  //addr_size string contains addr and size of value in vlog 
+	  PutFixed64(&addr_size, vaddr);
+	  PutFixed32(&addr_size, vsize);
+	  new_value = Slice(addr_size);
+	  //new (key, addr_size) for a new writebatch; key/new_value copied 
+	  kUpdates->Put(key, new_value); 
+
+	  //copy value to a new string; fixme 
+	  values.append(value.data(), value.size()); 
+	  cur_offset_ += value.size();
+	  
+        } else {
+          return Status::Corruption("bad WriteBatch Put");
+        }
+        break;
+      case kTypeDeletion:
+        if (GetLengthPrefixedSlice(&input, &key)) {
+	  //          handler->Delete(key);
+	  //ll: fixme; handle later; 
+	  //kUpdates->Delete(key, new_value); 
+
+        } else {
+          return Status::Corruption("bad WriteBatch Delete");
+        }
+        break;
+      default:
+        return Status::Corruption("unknown WriteBatch tag");
+    }
+  }
+
+  if (found != count) {
+    return Status::Corruption("WriteBatch has wrong count");
+  } 
+  
+  //write value_slice to vlog file 
+  Slice value_slice(values); 
+  const char* ptr = value_slice.data();
+  size_t left = value_slice.size();
+
+  //  fprintf(stdout, "value_slice size: %zu\n", left);
 
   // Fragment the record if necessary and emit it.  Note that if slice
   // is empty, we still want to iterate once to emit a single
@@ -65,10 +143,14 @@ Status Writer::AddRecord(const Slice& slice) {
     }
 
     s = EmitPhysicalRecord(type, ptr, fragment_length);
+
+    //    fprintf(stdout, "emitphysicalrecord size: %zu\n", fragment_length); 
+
     ptr += fragment_length;
     left -= fragment_length;
     begin = false;
   } while (s.ok() && left > 0);
+
   return s;
 }
 

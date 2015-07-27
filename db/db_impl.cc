@@ -1212,12 +1212,13 @@ Status DBImpl::Write(const WriteOptions& options, WriteBatch* my_batch) {
     // and protects against concurrent loggers and concurrent writes
     // into mem_.
     {
-      mutex_.Unlock();
+      mutex_.Unlock();     
 
       //ll: code; write values to vlog, construct kUpdates (key, addre, size)
-      //status = vlog_->AddRecord(WriteBatchInternal::Contents(vUpdates), kUpdates);
+      WriteBatch kUpdates; 
+      status = vlog_->AddRecord(WriteBatchInternal::Contents(updates), &kUpdates);
       
-      status = log_->AddRecord(WriteBatchInternal::Contents(updates));
+      status = log_->AddRecord(WriteBatchInternal::Contents(&kUpdates));
       bool sync_error = false;
       if (status.ok() && options.sync) {
         status = logfile_->Sync();
@@ -1225,8 +1226,9 @@ Status DBImpl::Write(const WriteOptions& options, WriteBatch* my_batch) {
           sync_error = true;
         }
       }
-      if (status.ok()) {
-        status = WriteBatchInternal::InsertInto(updates, mem_);
+      if (status.ok()) {      
+	//ll: code; write new key/values to memtable 
+        status = WriteBatchInternal::InsertInto(&kUpdates, mem_);
       }
       mutex_.Lock();
       if (sync_error) {

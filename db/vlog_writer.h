@@ -10,6 +10,8 @@
 #include "leveldb/slice.h"
 #include "leveldb/status.h"
 
+#include "leveldb/write_batch.h"
+
 namespace leveldb {
 
 class WritableFile;
@@ -24,11 +26,13 @@ class Writer {
   explicit Writer(WritableFile* dest);
   ~Writer();
 
-  Status AddRecord(const Slice& slice);
+  Status AddRecord(const Slice& slice, WriteBatch* batch);
 
  private:
   WritableFile* dest_;
   int block_offset_;       // Current offset in block
+
+  uint64_t cur_offset_; //Current offset in the vlog file 
 
   // crc32c values for all supported record types.  These are
   // pre-computed to reduce the overhead of computing the crc of the

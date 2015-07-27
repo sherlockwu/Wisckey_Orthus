@@ -195,7 +195,7 @@ class PosixWritableFile : public WritableFile {
     }
     
     //ll: add my output
-    //    fprintf(stdout, "fwrite: file: %s, size: %zu \n", filename_.c_str(), data.size()); 
+    //fprintf(stdout, "fwrite: file: %s, size: %zu \n", filename_.c_str(), data.size()); 
 
     return Status::OK();
   }
