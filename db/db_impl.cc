@@ -150,12 +150,20 @@ DBImpl::DBImpl(const Options& raw_options, const std::string& dbname)
 
 DBImpl::~DBImpl() {
   // Wait for background work to finish
+
+  //ll: output 
+  fprintf(stdout, "~DBImpl(): begin \n");
+
   mutex_.Lock();
   shutting_down_.Release_Store(this);  // Any non-NULL value is ok
   while (bg_compaction_scheduled_) {
     bg_cv_.Wait();
   }
   mutex_.Unlock();
+
+  //ll: output 
+  fprintf(stdout, "~DBImpl(): compacition is done ! \n");
+
 
   if (db_lock_ != NULL) {
     env_->UnlockFile(db_lock_);
@@ -168,9 +176,18 @@ DBImpl::~DBImpl() {
   delete log_;
   delete logfile_;
 
+  //ll: output 
+  fprintf(stdout, "~DBImpl(): end of delete log \n");
+
   //ll: code; 
   delete vlog_; 
+
+  fprintf(stdout, "~DBImpl(): end of delete vlog_ \n");
+
   delete vlogfile_;
+
+  //ll: output 
+  fprintf(stdout, "~DBImpl(): end of delete vlogfile_ \n");
 
   delete table_cache_;
 
@@ -180,6 +197,10 @@ DBImpl::~DBImpl() {
   if (owns_cache_) {
     delete options_.block_cache;
   }
+
+  //ll: output 
+  fprintf(stdout, "~DBImpl(): end \n");
+
 }
 
 Status DBImpl::NewDB() {

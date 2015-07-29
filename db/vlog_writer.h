@@ -30,9 +30,8 @@ class Writer {
 
  private:
   WritableFile* dest_;
-  int block_offset_;       // Current offset in block
 
-  uint64_t cur_offset_; //Current offset in the vlog file 
+  int block_offset_;       // Current offset in block
 
   // crc32c values for all supported record types.  These are
   // pre-computed to reduce the overhead of computing the crc of the
@@ -40,6 +39,9 @@ class Writer {
   uint32_t type_crc_[kMaxRecordType + 1];
 
   Status EmitPhysicalRecord(RecordType type, const char* ptr, size_t length);
+
+  //current offset in the vlog file 
+  uint64_t cur_offset_;     
 
   // No copying allowed
   Writer(const Writer&);

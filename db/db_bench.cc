@@ -609,6 +609,9 @@ class Benchmark {
       delete arg[i].thread;
     }
     delete[] arg;
+
+    //ll: my output 
+    fprintf(stdout, "end of RunBenchMark() \n");
   }
 
   void Crc32c(ThreadState* thread) {
@@ -988,5 +991,9 @@ int main(int argc, char** argv) {
 
   leveldb::Benchmark benchmark;
   benchmark.Run();
+
+  //ll: output 
+  fprintf(stdout, "end of main() ! \n");
+
   return 0;
 }

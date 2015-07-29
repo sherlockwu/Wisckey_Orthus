@@ -183,8 +183,16 @@ class PosixWritableFile : public WritableFile {
 
   ~PosixWritableFile() {
     if (file_ != NULL) {
+
+      //ll: output
+      //      fprintf(stdout, "~PosixWritableFile(): before close \n");
+
       // Ignoring any potential errors
       fclose(file_);
+
+      //ll: output
+      //      fprintf(stdout, "~PosixWritableFile(): after close \n");
+
     }
   }
 
