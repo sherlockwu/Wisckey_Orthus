@@ -59,6 +59,17 @@ class Env {
   virtual Status NewRandomAccessFile(const std::string& fname,
                                      RandomAccessFile** result) = 0;
 
+  //ll: code; my class for vlog file read 
+  // Create a brand new random access read-only file with the
+  // specified name.  On success, stores a pointer to the new file in
+  // *result and returns OK.  On failure stores NULL in *result and
+  // returns non-OK.  If the file does not exist, returns a non-OK
+  // status.
+  //
+  // The returned file may be concurrently accessed by multiple threads.
+  virtual Status NewReadAccessFile(const std::string& fname,
+                                     RandomAccessFile** result) = 0;
+
   // Create an object that writes to a new file with the specified
   // name.  Deletes any existing file with the same name and creates a
   // new file.  On success, stores a pointer to the new file in
@@ -214,6 +225,9 @@ class WritableFile {
   WritableFile() { }
   virtual ~WritableFile();
 
+  //ll: code; seek to an offset 
+  virtual Status SeekToOffset(uint64_t n) = 0;
+
   virtual Status Append(const Slice& data) = 0;
   virtual Status Close() = 0;
   virtual Status Flush() = 0;
@@ -286,6 +300,12 @@ class EnvWrapper : public Env {
   Status NewRandomAccessFile(const std::string& f, RandomAccessFile** r) {
     return target_->NewRandomAccessFile(f, r);
   }
+
+  //ll: code; add posix file read 
+  Status NewReadAccessFile(const std::string& f, RandomAccessFile** r) {
+    return target_->NewReadAccessFile(f, r);
+  }
+
   Status NewWritableFile(const std::string& f, WritableFile** r) {
     return target_->NewWritableFile(f, r);
   }

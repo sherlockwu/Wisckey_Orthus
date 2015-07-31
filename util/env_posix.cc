@@ -183,7 +183,6 @@ class PosixWritableFile : public WritableFile {
 
   ~PosixWritableFile() {
     if (file_ != NULL) {
-
       //ll: output
       //      fprintf(stdout, "~PosixWritableFile(): before close \n");
 
@@ -192,8 +191,15 @@ class PosixWritableFile : public WritableFile {
 
       //ll: output
       //      fprintf(stdout, "~PosixWritableFile(): after close \n");
-
     }
+  }
+
+  //ll: code; seek to an offset 
+  virtual Status SeekToOffset(uint64_t n) {
+    if (fseek(file_, n, SEEK_SET)) {
+      return IOError(filename_, errno);
+    }
+    return Status::OK();
   }
 
   virtual Status Append(const Slice& data) {
@@ -204,7 +210,6 @@ class PosixWritableFile : public WritableFile {
     
     //ll: add my output
     //fprintf(stdout, "fwrite: file: %s, size: %zu \n", filename_.c_str(), data.size()); 
-
     return Status::OK();
   }
 
@@ -351,10 +356,32 @@ class PosixEnv : public Env {
     return s;
   }
 
+  //ll: code; vlog file read; use read() for reads 
+  virtual Status NewReadAccessFile(const std::string& fname,
+                                     RandomAccessFile** result) {
+    *result = NULL;
+    Status s;
+    int fd = open(fname.c_str(), O_RDONLY);
+    if (fd < 0) {
+      s = IOError(fname, errno);
+    } else { 
+      *result = new PosixRandomAccessFile(fname, fd);
+    }
+    return s;
+  }
+
   virtual Status NewWritableFile(const std::string& fname,
                                  WritableFile** result) {
     Status s;
-    FILE* f = fopen(fname.c_str(), "w");
+    FILE* f; 
+
+    //ll: code; for existing vlog file, need special care 
+    if (fname.find("vlog") != std::string::npos && FileExists(fname)){
+      f = fopen(fname.c_str(), "r+");
+    } else {
+      f = fopen(fname.c_str(), "w");
+    }
+
     if (f == NULL) {
       *result = NULL;
       s = IOError(fname, errno);
