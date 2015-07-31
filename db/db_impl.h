@@ -146,8 +146,9 @@ class DBImpl : public DB {
   log::Writer* log_;
 
   //ll: code; add vlog file structures
-  WritableFile* vlogfile_;
+  WritableFile* vlog_write_;
   vlog::Writer* vlog_;
+  RandomAccessFile* vlog_read_;
 
   uint32_t seed_;                // For sampling.
 

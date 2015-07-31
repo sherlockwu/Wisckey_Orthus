@@ -26,6 +26,9 @@ class Writer {
   explicit Writer(WritableFile* dest);
   ~Writer();
 
+  //set cur_offset_ to be offset 
+  void SetOffset(uint64_t offset);
+  
   Status AddRecord(const Slice& slice, WriteBatch* batch);
 
  private:

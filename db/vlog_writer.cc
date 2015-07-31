@@ -5,6 +5,9 @@
 #include "db/vlog_writer.h"
 
 #include <stdint.h>
+//ll: for sleep
+#include <unistd.h>
+
 #include "leveldb/env.h"
 #include "util/coding.h"
 #include "util/crc32c.h"
@@ -29,6 +32,10 @@ Writer::Writer(WritableFile* dest)
 }
 
 Writer::~Writer() {
+}
+
+void Writer::SetOffset(uint64_t offset) {
+  cur_offset_ = offset; 
 }
 
 //given the key/value slice, write values to vlog, generate 
@@ -64,6 +71,10 @@ Status Writer::AddRecord(const Slice& slice, WriteBatch* kUpdates) {
 	  std::string addr_size; 
 	  vaddr = offset; 
 	  vsize = static_cast<uint32_t>(value.size());
+
+//          fprintf(stdout, "vaddr: %llu, vsize: %lu \n", 
+//		    (unsigned long long)vaddr, (unsigned long)vsize);
+//          sleep(5); 
 
 	  //addr_size string contains addr and size of value in vlog 
 	  PutFixed64(&addr_size, vaddr);
@@ -106,13 +117,16 @@ Status Writer::AddRecord(const Slice& slice, WriteBatch* kUpdates) {
   Slice value_slice(values); 
   Status s;
 
-  //  fprintf(stdout, "value_slice size: %zu\n", value_slice.size());
+//ll: my output 
+//  fprintf(stdout, "vlog file cur_offset_: %llu \n", (unsigned long long)cur_offset_);
+//  sleep(5); 
+
   s = dest_->Append(value_slice);
   if (s.ok()) {
     s = dest_->Flush();
   }
 
-  cur_offset_ += offset;
+  cur_offset_ += value_slice.size();
   return s;
 }
 

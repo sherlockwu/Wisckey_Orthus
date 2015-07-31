@@ -10,12 +10,18 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <vector>
+//ll: for sleep 
+#include <unistd.h>
+
 #include "db/builder.h"
 #include "db/db_iter.h"
 #include "db/dbformat.h"
 #include "db/filename.h"
 #include "db/log_reader.h"
 #include "db/log_writer.h"
+//ll: code; 
+#include "db/vlog_writer.h"
+
 #include "db/memtable.h"
 #include "db/table_cache.h"
 #include "db/version_set.h"
@@ -131,8 +137,9 @@ DBImpl::DBImpl(const Options& raw_options, const std::string& dbname)
       logfile_number_(0),
       log_(NULL),
       //ll: code; init vlog 
-      vlogfile_(NULL),
+      vlog_write_(NULL),
       vlog_(NULL),
+      vlog_read_(NULL),
       seed_(0),
       tmp_batch_(new WriteBatch),
       bg_compaction_scheduled_(false),
@@ -184,10 +191,11 @@ DBImpl::~DBImpl() {
 
   fprintf(stdout, "~DBImpl(): end of delete vlog_ \n");
 
-  delete vlogfile_;
+  delete vlog_write_;
+  delete vlog_read_;
 
   //ll: output 
-  fprintf(stdout, "~DBImpl(): end of delete vlogfile_ \n");
+  fprintf(stdout, "~DBImpl(): end of delete vlog_read_ and vlog_write_ \n");
 
   delete table_cache_;
 
@@ -1143,6 +1151,35 @@ Status DBImpl::Get(const ReadOptions& options,
       s = current->Get(options, lkey, value, &stats);
       have_stat_update = true;
     }
+
+    //ll: code; value contains (addr,size)
+    //if found the key, then read its value in vlog file 
+    if (s.ok()){
+      uint64_t vaddr;
+      uint32_t vsize;
+      Slice lsm_value(*value);
+      vaddr = DecodeFixed64(lsm_value.data());
+      vsize = DecodeFixed32(lsm_value.data() + 8);
+
+      //    sleep(3); 
+
+      //    fprintf(stdout, "Get(): vaddr: %llu, vsize: %lu \n",
+      //	    (unsigned long long)vaddr, (unsigned long)vsize); 
+
+      //ll: code; read the real value from vlog file 
+      size_t n = static_cast<size_t>(vsize);
+      char* buf = new char[n];
+      Slice real_value;
+      s = vlog_read_->Read(vaddr, n, &real_value, buf); 
+      if (s.ok()) {
+	value->assign(real_value.data(), real_value.size());
+	delete[] buf;
+	//      fprintf(stdout, "Get(): value size read: %u \n", (unsigned)value->size()); 
+      }
+    } else {
+      //    fprintf(stdout, "this key is not found \n"); 
+    }
+    //lock move to here after reading from vlog file 
     mutex_.Lock();
   }
 
@@ -1523,7 +1560,6 @@ Status DB::Open(const Options& options, const std::string& dbname,
   if (s.ok()) {
     uint64_t new_log_number = impl->versions_->NewFileNumber();
     WritableFile* lfile;
-    WritableFile* vlfile;
     s = options.env->NewWritableFile(LogFileName(dbname, new_log_number),
                                      &lfile);
     if (s.ok()) {
@@ -1533,13 +1569,33 @@ Status DB::Open(const Options& options, const std::string& dbname,
       impl->log_ = new log::Writer(lfile);
     }
 
-    //ll: code; init vlog file, similar to log file 
-    s = options.env->NewWritableFile(vLogFileName(dbname), &vlfile);
+    //ll: code; init vlog read and write files, similar to log file 
+    WritableFile* wfile;
+    uint64_t wfile_size;
+
+    s = options.env->NewWritableFile(vLogFileName(dbname), &wfile);
     if (s.ok()) {
-      impl->vlogfile_ = vlfile;
-      impl->vlog_ = new vlog::Writer(vlfile);
+      impl->vlog_write_ = wfile;
+      impl->vlog_ = new vlog::Writer(wfile);
+
+      //seek to the end of the vlog file for appending 
+      s = options.env->GetFileSize(vLogFileName(dbname), &wfile_size);
+      fprintf(stdout, "vlog file size: %llu MB \n", 
+	      (unsigned long long)wfile_size/(1024*1024));
+
+      if(s.ok()) {
+	wfile->SeekToOffset(wfile_size);
+	impl->vlog_->SetOffset(wfile_size);
+      }
+    }
+
+    RandomAccessFile* rfile;
+    s = options.env->NewReadAccessFile(vLogFileName(dbname), &rfile);
+    if (s.ok()) {
+      impl->vlog_read_ = rfile;
       s = impl->versions_->LogAndApply(&edit, &impl->mutex_);
     }
+
     if (s.ok()) {
       impl->DeleteObsoleteFiles();    
       impl->MaybeScheduleCompaction();
