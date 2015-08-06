@@ -64,6 +64,9 @@ static const char* FLAGS_benchmarks =
 // Number of key/values to place in database
 static int FLAGS_num = 1000000;
 
+//ll: code; input current db's key/value numbers
+static int FLAGS_db_num = 1000000;
+
 // Number of read operations to do.  If negative, do FLAGS_num reads.
 static int FLAGS_reads = -1;
 
@@ -611,7 +614,7 @@ class Benchmark {
     delete[] arg;
 
     //ll: my output 
-    fprintf(stdout, "end of RunBenchMark() \n");
+    //    fprintf(stdout, "end of RunBenchMark() \n");
   }
 
   void Crc32c(ThreadState* thread) {
@@ -789,8 +792,12 @@ class Benchmark {
     int found = 0;
     for (int i = 0; i < reads_; i++) {
       char key[100];
-      const int k = thread->rand.Next() % FLAGS_num;
+
+      //ll: code; change this to db size 
+      const int k = thread->rand.Next() % FLAGS_db_num;
+      //const int k = thread->rand.Next() % FLAGS_num;
       snprintf(key, sizeof(key), "%016d", k);
+
       if (db_->Get(options, key, &value).ok()) {
         found++;
       }
@@ -960,6 +967,9 @@ int main(int argc, char** argv) {
       FLAGS_use_existing_db = n;
     } else if (sscanf(argv[i], "--num=%d%c", &n, &junk) == 1) {
       FLAGS_num = n;
+      //ll: code; add db_num 
+    } else if (sscanf(argv[i], "--db_num=%d%c", &n, &junk) == 1) {
+      FLAGS_db_num = n;
     } else if (sscanf(argv[i], "--reads=%d%c", &n, &junk) == 1) {
       FLAGS_reads = n;
     } else if (sscanf(argv[i], "--threads=%d%c", &n, &junk) == 1) {
@@ -991,9 +1001,6 @@ int main(int argc, char** argv) {
 
   leveldb::Benchmark benchmark;
   benchmark.Run();
-
-  //ll: output 
-  fprintf(stdout, "end of main() ! \n");
 
   return 0;
 }
