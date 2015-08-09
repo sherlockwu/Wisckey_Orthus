@@ -153,13 +153,15 @@ DBImpl::DBImpl(const Options& raw_options, const std::string& dbname)
 
   versions_ = new VersionSet(dbname_, &options_, table_cache_,
                              &internal_comparator_);
+
+  //ll: code; init read buffer
+  buf_ = new char[150*1024]; 
 }
 
 DBImpl::~DBImpl() {
   // Wait for background work to finish
 
-  //ll: output 
-  fprintf(stdout, "~DBImpl(): begin \n");
+  //  fprintf(stdout, "~DBImpl(): begin \n");
 
   mutex_.Lock();
   shutting_down_.Release_Store(this);  // Any non-NULL value is ok
@@ -169,8 +171,7 @@ DBImpl::~DBImpl() {
   mutex_.Unlock();
 
   //ll: output 
-  fprintf(stdout, "~DBImpl(): compacition is done ! \n");
-
+  //  fprintf(stdout, "~DBImpl(): compacition is done ! \n");
 
   if (db_lock_ != NULL) {
     env_->UnlockFile(db_lock_);
@@ -183,19 +184,13 @@ DBImpl::~DBImpl() {
   delete log_;
   delete logfile_;
 
-  //ll: output 
-  fprintf(stdout, "~DBImpl(): end of delete log \n");
-
   //ll: code; 
   delete vlog_; 
-
-  fprintf(stdout, "~DBImpl(): end of delete vlog_ \n");
-
+  //  fprintf(stdout, "~DBImpl(): end of delete vlog_ \n");
   delete vlog_write_;
   delete vlog_read_;
-
-  //ll: output 
-  fprintf(stdout, "~DBImpl(): end of delete vlog_read_ and vlog_write_ \n");
+  //  fprintf(stdout, "~DBImpl(): end of delete vlog_read_ and vlog_write_ \n");
+  delete buf_; 
 
   delete table_cache_;
 
@@ -206,9 +201,7 @@ DBImpl::~DBImpl() {
     delete options_.block_cache;
   }
 
-  //ll: output 
-  fprintf(stdout, "~DBImpl(): end \n");
-
+  //  fprintf(stdout, "~DBImpl(): end \n");
 }
 
 Status DBImpl::NewDB() {
@@ -587,6 +580,11 @@ void DBImpl::CompactRange(const Slice* begin, const Slice* end) {
   for (int level = 0; level < max_level_with_files; level++) {
     TEST_CompactRange(level, begin, end);
   }
+}
+
+//ll: code; return db's internal read buffer for range query usage 
+char* DBImpl::Buffer() {
+  return buf_;
 }
 
 void DBImpl::TEST_CompactRange(int level, const Slice* begin,const Slice* end) {
@@ -1116,6 +1114,12 @@ int64_t DBImpl::TEST_MaxNextLevelOverlappingBytes() {
   return versions_->MaxNextLevelOverlappingBytes();
 }
 
+//ll: code; vlog file read 
+Status DBImpl::VlogRead(uint64_t offset, size_t n, Slice* result, char* scratch) {
+  return vlog_read_->Read(offset, n, result, scratch);
+}
+
+
 Status DBImpl::Get(const ReadOptions& options,
                    const Slice& key,
                    std::string* value) {
@@ -1162,7 +1166,6 @@ Status DBImpl::Get(const ReadOptions& options,
       vsize = DecodeFixed32(lsm_value.data() + 8);
 
       //    sleep(3); 
-
       //    fprintf(stdout, "Get(): vaddr: %llu, vsize: %lu \n",
       //	    (unsigned long long)vaddr, (unsigned long)vsize); 
 
@@ -1170,7 +1173,7 @@ Status DBImpl::Get(const ReadOptions& options,
       size_t n = static_cast<size_t>(vsize);
       char* buf = new char[n];
       Slice real_value;
-      s = vlog_read_->Read(vaddr, n, &real_value, buf); 
+      s = VlogRead(vaddr, n, &real_value, buf); 
       if (s.ok()) {
 	value->assign(real_value.data(), real_value.size());
 	delete[] buf;
@@ -1192,10 +1195,13 @@ Status DBImpl::Get(const ReadOptions& options,
   return s;
 }
 
+//ll: entry function for iterator of db 
 Iterator* DBImpl::NewIterator(const ReadOptions& options) {
   SequenceNumber latest_snapshot;
   uint32_t seed;
+  //ll: merge three interators together 
   Iterator* iter = NewInternalIterator(options, &latest_snapshot, &seed);
+  //ll: finally, DBItertator process results returned from merge iterators 
   return NewDBIterator(
       this, user_comparator(), iter,
       (options.snapshot != NULL
