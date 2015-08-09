@@ -113,11 +113,15 @@ class MergingIterator : public Iterator {
 
   virtual Slice key() const {
     assert(Valid());
+    //ll: output
+    //    fprintf(stdout, "merger key() \n");
     return current_->key();
   }
 
   virtual Slice value() const {
     assert(Valid());
+    //ll: output
+    //    fprintf(stdout, "merger value() \n");
     return current_->value();
   }
 

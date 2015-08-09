@@ -62,6 +62,10 @@ Status Table::Open(const Options& options,
     if (options.paranoid_checks) {
       opt.verify_checksums = true;
     }
+
+    //ll: output
+    //    fprintf(stdout, "read index block \n");
+
     s = ReadBlock(file, opt, footer.index_handle(), &contents);
     if (s.ok()) {
       index_block = new Block(contents);
@@ -88,6 +92,7 @@ Status Table::Open(const Options& options,
   return s;
 }
 
+//ll: read bloomfilter block 
 void Table::ReadMeta(const Footer& footer) {
   if (rep_->options.filter_policy == NULL) {
     return;  // Do not need any metadata
@@ -186,6 +191,10 @@ Iterator* Table::BlockReader(void* arg,
       if (cache_handle != NULL) {
         block = reinterpret_cast<Block*>(block_cache->Value(cache_handle));
       } else {
+
+	//ll: output
+	//	fprintf(stdout, "read data block \n");
+
         s = ReadBlock(table->rep_->file, options, handle, &contents);
         if (s.ok()) {
           block = new Block(contents);
@@ -196,6 +205,10 @@ Iterator* Table::BlockReader(void* arg,
         }
       }
     } else {
+
+      //ll: output
+      //      fprintf(stdout, "read data block \n");
+
       s = ReadBlock(table->rep_->file, options, handle, &contents);
       if (s.ok()) {
         block = new Block(contents);

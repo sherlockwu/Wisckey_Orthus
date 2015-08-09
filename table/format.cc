@@ -76,6 +76,10 @@ Status ReadBlock(RandomAccessFile* file,
   size_t n = static_cast<size_t>(handle.size());
   char* buf = new char[n + kBlockTrailerSize];
   Slice contents;
+
+  //ll: output
+  //  fprintf(stdout, "read size: %zu \n", n);
+
   Status s = file->Read(handle.offset(), n + kBlockTrailerSize, &contents, buf);
   if (!s.ok()) {
     delete[] buf;

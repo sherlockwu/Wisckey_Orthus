@@ -14,6 +14,8 @@
 #include "util/mutexlock.h"
 #include "util/random.h"
 
+#include <unistd.h>
+
 namespace leveldb {
 
 #if 0
@@ -65,11 +67,39 @@ class DBIter: public Iterator {
   virtual bool Valid() const { return valid_; }
   virtual Slice key() const {
     assert(valid_);
+    //ll: output
+    //    fprintf(stdout, "\ndbiter key() \n");
     return (direction_ == kForward) ? ExtractUserKey(iter_->key()) : saved_key_;
   }
   virtual Slice value() const {
     assert(valid_);
-    return (direction_ == kForward) ? iter_->value() : saved_value_;
+
+    //ll: code; get the lsm value, read from vlog, construct a new value 
+    Status s; 
+    uint64_t vaddr;
+    uint32_t vsize;
+    //this is lsm value return ! 
+    Slice lsm_value = (direction_ == kForward) ? iter_->value() : saved_value_;
+
+    vaddr = DecodeFixed64(lsm_value.data());
+    vsize = DecodeFixed32(lsm_value.data() + 8);
+
+    //    sleep(1); 
+    //    fprintf(stdout, "db_iter::value(): vaddr: %llu, vsize: %lu \n",
+    //	    (unsigned long long)vaddr, (unsigned long)vsize); 
+
+    //read the real value from vlog file 
+    size_t n = static_cast<size_t>(vsize);
+    Slice real_value;
+
+    //now, just use a shared buffer for scan; assume one thread ! 
+    char* buf = db_->Buffer(); 
+    s = db_->VlogRead(vaddr, n, &real_value, buf); 
+    if (!s.ok()) {
+      fprintf(stdout, "db_iter::value(): failed ! \n");
+    }
+
+    return real_value; 
   }
   virtual Status status() const {
     if (status_.ok()) {
