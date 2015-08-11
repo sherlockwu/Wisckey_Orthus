@@ -54,7 +54,7 @@ Status Writer::AddRecord(const Slice& slice, WriteBatch* kUpdates) {
   uint64_t offset; 
   std::string values; 
   uint64_t vaddr;
-  uint32_t vsize; 
+  uint32_t ksize, vsize; 
   int found = 0;
 
   offset = cur_offset_; 
@@ -67,26 +67,30 @@ Status Writer::AddRecord(const Slice& slice, WriteBatch* kUpdates) {
         if (GetLengthPrefixedSlice(&input, &key) &&
             GetLengthPrefixedSlice(&input, &value)) {
 
-	  //later, can pack two together as one uint64_t 
-	  std::string addr_size; 
-	  vaddr = offset; 
+	  //vlog format: (ksize, vsize, key, value)
+	  ksize = static_cast<uint32_t>(key.size());
 	  vsize = static_cast<uint32_t>(value.size());
-
-//          fprintf(stdout, "vaddr: %llu, vsize: %lu \n", 
-//		    (unsigned long long)vaddr, (unsigned long)vsize);
-//          sleep(5); 
-
+	  PutFixed32(&values, ksize);
+	  PutFixed32(&values, vsize);
+	  values.append(key.data(), key.size());
+	  values.append(value.data(), value.size());
+	  
 	  //addr_size string contains addr and size of value in vlog 
+	  std::string addr_size; 
+	  vaddr = offset + 8 + key.size(); 
 	  PutFixed64(&addr_size, vaddr);
 	  PutFixed32(&addr_size, vsize);
 	  new_value = Slice(addr_size);
+
 	  //new (key, addr_size) for a new writebatch; key/new_value copied 
 	  kUpdates->Put(key, new_value); 
-
-	  //copy value to a new string 
-	  values.append(value.data(), value.size()); 
-	  offset += value.size();
-	  
+	  offset += 8 + ksize + vsize;
+	  /*
+          fprintf(stdout, "ksize: %lu, key: %.16s, vsize: %lu, vaddr: %llu, offset: %llu \n", 
+		  (unsigned long)ksize, key.data(), (unsigned long)vsize, 
+		  (unsigned long long)vaddr, (unsigned long long)offset);  
+          sleep(5); 
+	  */
         } else {
           return Status::Corruption("bad WriteBatch Put");
         }
