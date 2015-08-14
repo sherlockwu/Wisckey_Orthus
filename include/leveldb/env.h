@@ -136,6 +136,11 @@ class Env {
       void (*function)(void* arg),
       void* arg) = 0;
 
+  //ll: code; similar for garbage collection thread
+  virtual void GCSchedule(
+      void (*function)(void* arg),
+      void* arg) = 0;
+
   // Start a new thread, invoking "function(arg)" within the new thread.
   // When "function(arg)" returns, the thread will be destroyed.
   virtual void StartThread(void (*function)(void* arg), void* arg) = 0;
@@ -328,6 +333,10 @@ class EnvWrapper : public Env {
   Status UnlockFile(FileLock* l) { return target_->UnlockFile(l); }
   void Schedule(void (*f)(void*), void* a) {
     return target_->Schedule(f, a);
+  }
+  //ll: code; similar for garbage collection
+  void GCSchedule(void (*f)(void*), void* a) {
+    return target_->GCSchedule(f, a);
   }
   void StartThread(void (*f)(void*), void* a) {
     return target_->StartThread(f, a);

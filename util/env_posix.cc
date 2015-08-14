@@ -489,6 +489,8 @@ class PosixEnv : public Env {
   }
 
   virtual void Schedule(void (*function)(void*), void* arg);
+  //ll: code; for garbage collection
+  virtual void GCSchedule(void (*function)(void*), void* arg);
 
   virtual void StartThread(void (*function)(void* arg), void* arg);
 
@@ -559,15 +561,33 @@ class PosixEnv : public Env {
   typedef std::deque<BGItem> BGQueue;
   BGQueue queue_;
 
+  //ll: code; for garbage collection, use similar thread architecture 
+  // GCThread() is the body of the background gc thread 
+  void GCThread();
+  static void* GCThreadWrapper(void* arg) {
+    reinterpret_cast<PosixEnv*>(arg)->GCThread();
+    return NULL;
+  }
+  pthread_mutex_t gc_mu_;
+  pthread_cond_t gcsignal_;
+  pthread_t gcthread_;
+  bool started_gcthread_;
+  BGQueue gc_queue_;
+
   PosixLockTable locks_;
   MmapLimiter mmap_limit_;
 };
 
-PosixEnv::PosixEnv() : started_bgthread_(false) {
+  //ll: code; also init gc related structures
+  PosixEnv::PosixEnv() : started_bgthread_(false), started_gcthread_(false) {
+  PthreadCall("mutex_init", pthread_mutex_init(&gc_mu_, NULL));
+  PthreadCall("cvar_init", pthread_cond_init(&gcsignal_, NULL));
+
   PthreadCall("mutex_init", pthread_mutex_init(&mu_, NULL));
   PthreadCall("cvar_init", pthread_cond_init(&bgsignal_, NULL));
 }
 
+//ll: add a task for the thread 
 void PosixEnv::Schedule(void (*function)(void*), void* arg) {
   PthreadCall("lock", pthread_mutex_lock(&mu_));
 
@@ -593,6 +613,7 @@ void PosixEnv::Schedule(void (*function)(void*), void* arg) {
   PthreadCall("unlock", pthread_mutex_unlock(&mu_));
 }
 
+//ll: get tasks from the queue to execute
 void PosixEnv::BGThread() {
   while (true) {
     // Wait until there is an item that is ready to run
@@ -606,6 +627,50 @@ void PosixEnv::BGThread() {
     queue_.pop_front();
 
     PthreadCall("unlock", pthread_mutex_unlock(&mu_));
+    (*function)(arg);
+  }
+}
+
+//ll: code; add a gc task for the thread 
+void PosixEnv::GCSchedule(void (*function)(void*), void* arg) {
+  PthreadCall("lock", pthread_mutex_lock(&gc_mu_));
+
+  // Start background thread if necessary
+  if (!started_gcthread_) {
+    started_gcthread_ = true;
+    PthreadCall(
+        "create thread",
+        pthread_create(&gcthread_, NULL,  &PosixEnv::GCThreadWrapper, this));
+  }
+
+  // If the queue is currently empty, the background thread may currently be
+  // waiting.
+  if (gc_queue_.empty()) {
+    PthreadCall("signal", pthread_cond_signal(&gcsignal_));
+  }
+
+  // Add to priority queue
+  gc_queue_.push_back(BGItem());
+  gc_queue_.back().function = function;
+  gc_queue_.back().arg = arg;
+
+  PthreadCall("unlock", pthread_mutex_unlock(&gc_mu_));
+}
+
+//ll: code: get a gc tasks from the queue to execute
+void PosixEnv::GCThread() {
+  while (true) {
+    // Wait until there is an item that is ready to run
+    PthreadCall("lock", pthread_mutex_lock(&gc_mu_));
+    while (gc_queue_.empty()) {
+      PthreadCall("wait", pthread_cond_wait(&gcsignal_, &gc_mu_));
+    }
+
+    void (*function)(void*) = gc_queue_.front().function;
+    void* arg = gc_queue_.front().arg;
+    gc_queue_.pop_front();
+
+    PthreadCall("unlock", pthread_mutex_unlock(&gc_mu_));
     (*function)(arg);
   }
 }
