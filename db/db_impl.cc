@@ -1114,9 +1114,67 @@ int64_t DBImpl::TEST_MaxNextLevelOverlappingBytes() {
   return versions_->MaxNextLevelOverlappingBytes();
 }
 
+  /*
+//ll: code; garbage collection entry function 
+void DBImpl::MaybeScheduleGC() {
+  mutex_.AssertHeld();
+  if (bg_gc_scheduled_) {
+    // Already scheduled
+  } else if (shutting_down_.Acquire_Load()) {
+    // DB is being deleted; no more background compactions
+  } else if (!bg_gc_error_.ok()) {
+    // Already got an error; no more changes
+  } else if (vlog_free_space >= MIN_VLOG) {
+    // No work to be done
+  } else {
+    bg_gc_scheduled_ = true;
+    env_->Schedule(&DBImpl::BGWork, this);
+  }
+}
+
+void DBImpl::BGWork(void* db) {
+  reinterpret_cast<DBImpl*>(db)->BackgroundCall();
+}
+
+void DBImpl::BackgroundCall() {
+  MutexLock l(&mutex_);
+  assert(bg_compaction_scheduled_);
+  if (shutting_down_.Acquire_Load()) {
+    // No more background work when shutting down.
+  } else if (!bg_error_.ok()) {
+    // No more background work after a background error.
+  } else {
+    BackgroundCompaction();
+  }
+
+  bg_compaction_scheduled_ = false;
+
+  // Previous compaction may have produced too many files in a level,
+  // so reschedule another compaction if needed.
+  MaybeScheduleCompaction();
+  bg_cv_.SignalAll();
+}
+*/
+
 //ll: code; vlog file read 
-Status DBImpl::VlogRead(uint64_t offset, size_t n, Slice* result, char* scratch) {
+Status DBImpl::ReadVlog(uint64_t offset, size_t n, Slice* result, char* scratch) {
   return vlog_read_->Read(offset, n, result, scratch);
+}
+
+//ll: code; read vlog sb from file to memory
+void DBImpl::ReadVlogSB() {
+  Status s; 
+  Slice result; 
+  char* scratch = new char[sizeof(SuperBlock)];
+
+  s = vlog_read_->Read(0, sizeof(SuperBlock), &result, scratch);
+  if (s.ok()){
+    //init sb by reading from vlog file 
+    vlog_->SetVlogSB(scratch);
+    delete scratch; 
+  } else {
+    fprintf(stdout, "ReadVlogSb(): read sb failed ! \n");
+  }
 }
 
 
@@ -1165,19 +1223,20 @@ Status DBImpl::Get(const ReadOptions& options,
       vaddr = DecodeFixed64(lsm_value.data());
       vsize = DecodeFixed32(lsm_value.data() + 8);
 
-      //    sleep(3); 
-      //    fprintf(stdout, "Get(): vaddr: %llu, vsize: %lu \n",
-      //	    (unsigned long long)vaddr, (unsigned long)vsize); 
-
-      //ll: code; read the real value from vlog file 
+      /*
+      sleep(3); 
+      fprintf(stdout, "Get(): key: %.16s, vaddr: %llu, vsize: %lu \n",
+	      key.data(), (unsigned long long)vaddr, (unsigned long)vsize); 
+      */
+      //read the real value from vlog file 
       size_t n = static_cast<size_t>(vsize);
       char* buf = new char[n];
       Slice real_value;
-      s = VlogRead(vaddr, n, &real_value, buf); 
+      s = ReadVlog(vaddr, n, &real_value, buf); 
       if (s.ok()) {
 	value->assign(real_value.data(), real_value.size());
 	delete[] buf;
-	//      fprintf(stdout, "Get(): value size read: %u \n", (unsigned)value->size()); 
+	//	fprintf(stdout, "Get(): value read size: %u\n", (unsigned)value->size()); 
       }
     } else {
       //    fprintf(stdout, "this key is not found \n"); 
@@ -1281,6 +1340,10 @@ Status DBImpl::Write(const WriteOptions& options, WriteBatch* my_batch) {
       //ll: code; write values to vlog, construct kUpdates (key, addre, size)
       WriteBatch kUpdates; 
       status = vlog_->AddRecord(WriteBatchInternal::Contents(updates), &kUpdates);
+
+      //garbage collection steps
+      //      if (vlog_->NeedBG())
+      //MaybeScheduleGC(); 
       
       status = log_->AddRecord(WriteBatchInternal::Contents(&kUpdates));
       bool sync_error = false;
@@ -1578,7 +1641,6 @@ Status DB::Open(const Options& options, const std::string& dbname,
     //ll: code; init vlog read and write files, similar to log file 
     WritableFile* wfile;
     uint64_t wfile_size;
-
     s = options.env->NewWritableFile(vLogFileName(dbname), &wfile);
     if (s.ok()) {
       impl->vlog_write_ = wfile;
@@ -1586,19 +1648,30 @@ Status DB::Open(const Options& options, const std::string& dbname,
 
       //seek to the end of the vlog file for appending 
       s = options.env->GetFileSize(vLogFileName(dbname), &wfile_size);
-      fprintf(stdout, "vlog file size: %llu MB \n", 
-	      (unsigned long long)wfile_size/(1024*1024));
-
-      if(s.ok()) {
-	wfile->SeekToOffset(wfile_size);
-	impl->vlog_->SetOffset(wfile_size);
-      }
     }
 
     RandomAccessFile* rfile;
     s = options.env->NewReadAccessFile(vLogFileName(dbname), &rfile);
     if (s.ok()) {
       impl->vlog_read_ = rfile;
+
+      if(wfile_size > 0) {
+	//if vlog file exists, read and init the superblock 
+	impl->ReadVlogSB();
+      } else {
+	//for a new vlog file, init and write the superblock
+	impl->vlog_->WriteVlogSB(true); 
+      }
+
+      wfile->SeekToOffset(impl->vlog_->GetTail());
+      //  impl->vlog_->SetOffset(impl->vlog_->GetTail());
+      
+      fprintf(stdout, "vlog size: %llu MB, ", 
+	      (unsigned long long)wfile_size/(1024*1024));
+      fprintf(stdout, "head: %llu, tail: %llu \n",
+	      (unsigned long long)impl->vlog_->GetHead(),
+	      (unsigned long long)impl->vlog_->GetTail());
+
       s = impl->versions_->LogAndApply(&edit, &impl->mutex_);
     }
 
@@ -1614,6 +1687,7 @@ Status DB::Open(const Options& options, const std::string& dbname,
   } else {
     delete impl;
   }
+
   return s;
 }
 

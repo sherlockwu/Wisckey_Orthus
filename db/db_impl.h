@@ -44,7 +44,7 @@ class DBImpl : public DB {
   virtual void CompactRange(const Slice* begin, const Slice* end);
 
   //ll: code; return its internal read buffer for range query
-  Status VlogRead(uint64_t offset, size_t n, Slice* result, char* scratch); 
+  Status ReadVlog(uint64_t offset, size_t n, Slice* result, char* scratch); 
 
   //ll: code; return its internal read buffer for range query
   char* Buffer(); 
@@ -124,6 +124,9 @@ class DBImpl : public DB {
   Status FinishCompactionOutputFile(CompactionState* compact, Iterator* input);
   Status InstallCompactionResults(CompactionState* compact)
       EXCLUSIVE_LOCKS_REQUIRED(mutex_);
+
+  //ll: code; my added functions
+  void ReadVlogSB(); 
 
   // Constant after construction
   Env* const env_;

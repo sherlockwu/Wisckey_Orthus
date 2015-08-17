@@ -12,6 +12,8 @@
 
 #include "leveldb/write_batch.h"
 
+#include "db/dbformat.h"
+
 namespace leveldb {
 
 class WritableFile;
@@ -26,13 +28,19 @@ class Writer {
   explicit Writer(WritableFile* dest);
   ~Writer();
 
-  //set cur_offset_ to be offset 
-  void SetOffset(uint64_t offset);
-  
   Status AddRecord(const Slice& slice, WriteBatch* batch);
+
+  void SetVlogSB(const char* scratch); // set sb with buffer reading from vlog 
+  void WriteVlogSB(bool isnew); // write an initial sb to vlog file 
+  uint64_t GetHead();
+  uint64_t GetTail();
+  void SetTail(uint64_t tail); 
+ 
+  bool NeedGC(); 
 
  private:
   WritableFile* dest_;
+  SuperBlock sb_; 
 
   int block_offset_;       // Current offset in block
 
@@ -42,9 +50,6 @@ class Writer {
   uint32_t type_crc_[kMaxRecordType + 1];
 
   Status EmitPhysicalRecord(RecordType type, const char* ptr, size_t length);
-
-  //current offset in the vlog file 
-  uint64_t cur_offset_;     
 
   // No copying allowed
   Writer(const Writer&);
