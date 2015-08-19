@@ -84,17 +84,19 @@ class DBIter: public Iterator {
     vaddr = DecodeFixed64(lsm_value.data());
     vsize = DecodeFixed32(lsm_value.data() + 8);
 
-    //    sleep(1); 
-    //    fprintf(stdout, "db_iter::value(): vaddr: %llu, vsize: %lu \n",
-    //	    (unsigned long long)vaddr, (unsigned long)vsize); 
-
+    /*
+    sleep(3); 
+    fprintf(stdout, "db_iter::value(): vaddr: %llu, vsize: %lu \n",
+    	    (unsigned long long)vaddr, (unsigned long)vsize); 
+    */
+    
     //read the real value from vlog file 
     size_t n = static_cast<size_t>(vsize);
     Slice real_value;
 
     //now, just use a shared buffer for scan; assume one thread ! 
     char* buf = db_->Buffer(); 
-    s = db_->VlogRead(vaddr, n, &real_value, buf); 
+    s = db_->ReadVlog(vaddr, n, &real_value, buf); 
     if (!s.ok()) {
       fprintf(stdout, "db_iter::value(): failed ! \n");
     }

@@ -140,6 +140,8 @@ DBImpl::DBImpl(const Options& raw_options, const std::string& dbname)
       vlog_write_(NULL),
       vlog_(NULL),
       vlog_read_(NULL),
+      bg_gc_cv_(&mutex_),
+      bg_gc_scheduled_(false),
       seed_(0),
       tmp_batch_(new WriteBatch),
       bg_compaction_scheduled_(false),
@@ -167,6 +169,13 @@ DBImpl::~DBImpl() {
   shutting_down_.Release_Store(this);  // Any non-NULL value is ok
   while (bg_compaction_scheduled_) {
     bg_cv_.Wait();
+  }
+  mutex_.Unlock();
+
+  //ll: code; wait gc finish
+  mutex_.Lock();
+  while (bg_gc_scheduled_) {
+    bg_gc_cv_.Wait();
   }
   mutex_.Unlock();
 
@@ -1113,8 +1122,7 @@ int64_t DBImpl::TEST_MaxNextLevelOverlappingBytes() {
   MutexLock l(&mutex_);
   return versions_->MaxNextLevelOverlappingBytes();
 }
-
-  /*
+  
 //ll: code; garbage collection entry function 
 void DBImpl::MaybeScheduleGC() {
   mutex_.AssertHeld();
@@ -1124,37 +1132,134 @@ void DBImpl::MaybeScheduleGC() {
     // DB is being deleted; no more background compactions
   } else if (!bg_gc_error_.ok()) {
     // Already got an error; no more changes
-  } else if (vlog_free_space >= MIN_VLOG) {
+  } else if (!vlog_->NeedGC()) {
     // No work to be done
   } else {
     bg_gc_scheduled_ = true;
-    env_->Schedule(&DBImpl::BGWork, this);
+    env_->GCSchedule(&DBImpl::GCWork, this);
   }
 }
 
-void DBImpl::BGWork(void* db) {
-  reinterpret_cast<DBImpl*>(db)->BackgroundCall();
+void DBImpl::GCWork(void* db) {
+  reinterpret_cast<DBImpl*>(db)->GCCall();
 }
 
-void DBImpl::BackgroundCall() {
+void DBImpl::GCCall() {
   MutexLock l(&mutex_);
-  assert(bg_compaction_scheduled_);
+  assert(bg_gc_scheduled_);
+
   if (shutting_down_.Acquire_Load()) {
     // No more background work when shutting down.
-  } else if (!bg_error_.ok()) {
+  } else if (!bg_gc_error_.ok()) {
     // No more background work after a background error.
   } else {
-    BackgroundCompaction();
+    BackgroundGC();
   }
 
-  bg_compaction_scheduled_ = false;
+  bg_gc_scheduled_ = false;
 
-  // Previous compaction may have produced too many files in a level,
-  // so reschedule another compaction if needed.
-  MaybeScheduleCompaction();
-  bg_cv_.SignalAll();
+  // Previous gc may not produce enough free space,
+  // so reschedule another gc if needed.
+  MaybeScheduleGC();
+
+  //fixme; later, in makeroomforwrite(), foreground write will wait(), 
+  //and this will wake them up after gc frees spaces 
+  //  bg_gc_cv_.SignalAll();
 }
-*/
+
+//garbage collection thread main function
+void DBImpl::BackgroundGC() {
+  mutex_.AssertHeld();
+
+  Status status;
+  status = DoGCWork();
+
+  if (status.ok()) {
+    // Done
+  } else if (shutting_down_.Acquire_Load()) {
+    // Ignore compaction errors found during shutting down
+  } else {
+    Log(options_.info_log,
+        "GC error: %s", status.ToString().c_str());
+  }
+}
+
+//do the real garbage collection work 
+Status DBImpl::DoGCWork() {
+  Status s; 
+  uint32_t target = 1024*1024; 
+  uint32_t total_reads = 0, total_writes = 0; 
+  uint64_t read_offset = vlog_->GetTail(); 
+  size_t read_size, header_size = 8;
+  char *kv_buf = new char[200*1024]; //maximal kv pair size 
+  WriteBatch wb; 
+
+  mutex_.Unlock(); 
+
+  //fixme; need to handle rewind cases ! 
+  while(total_writes < target) {     
+    //read one kv pair 
+    uint32_t ksize, vsize;
+    Slice read_data; 
+
+    //read (ksize, vsize) header 
+    read_size = header_size; 
+    s = ReadVlog(read_offset, read_size, &read_data, kv_buf); 
+    read_offset += read_size;
+    if (s.ok()) {
+      ksize = DecodeFixed32(read_data.data());
+      vsize = DecodeFixed32(read_data.data() + 4);
+
+      //read (key, value) data 
+      read_size = ksize + vsize; 
+      s = ReadVlog(read_offset, read_size, &read_data, kv_buf + header_size); 
+      read_offset += read_size;
+      total_reads += (header_size + ksize + vsize); 
+    }
+    if (s.ok()) {
+      ReadOptions opts;
+      opts.internal = true; 
+      Slice key(read_data.data(), ksize);
+      Slice value(read_data.data() + ksize, vsize);
+      std::string lsm_value; 
+
+      //read (key, vaddr/vsize) from lsm 
+      s = Get(opts, key, &lsm_value);  
+      if (s.ok()) {
+	uint64_t vaddr;
+	vaddr = DecodeFixed64(lsm_value.c_str());
+	if (vaddr == read_offset + ksize) {
+	  //valid kv, write it back to vlog file in a batch fashion
+	  wb.Put(key, value);
+	  total_writes += (header_size + ksize + vsize); 
+	}
+      }
+    }
+  }
+
+  if (WriteBatchInternal::Count(&wb)) {
+    //write this batch to vlog file 
+    s = Write(WriteOptions(), &wb);
+    Log(options_.info_log, "gc: writebatch size: %zu\n", 
+	WriteBatchInternal::ByteSize(&wb));
+  }
+
+  delete[] kv_buf;
+
+  mutex_.Lock();
+
+  if (s.ok()) {
+    //update vlog file for space; now, not punch hole, just overwrite 
+    vlog_->SetTail(read_offset); 
+
+    //output gc statistics 
+    Log(options_.info_log, "gc: total_reads: %lu, total writes: %lu\n", 
+	(unsigned long)total_reads, (unsigned long)total_writes);
+  }
+  
+  return s; 
+}
+
 
 //ll: code; vlog file read 
 Status DBImpl::ReadVlog(uint64_t offset, size_t n, Slice* result, char* scratch) {
@@ -1215,19 +1320,21 @@ Status DBImpl::Get(const ReadOptions& options,
     }
 
     //ll: code; value contains (addr,size)
-    //if found the key, then read its value in vlog file 
-    if (s.ok()){
+    //if found the key, and not internal, then read its value in vlog file 
+    if (s.ok() && !options.internal) {
+      //internal is true for garbage collection lookup 
+
       uint64_t vaddr;
       uint32_t vsize;
       Slice lsm_value(*value);
       vaddr = DecodeFixed64(lsm_value.data());
       vsize = DecodeFixed32(lsm_value.data() + 8);
-
       /*
       sleep(3); 
       fprintf(stdout, "Get(): key: %.16s, vaddr: %llu, vsize: %lu \n",
 	      key.data(), (unsigned long long)vaddr, (unsigned long)vsize); 
       */
+
       //read the real value from vlog file 
       size_t n = static_cast<size_t>(vsize);
       char* buf = new char[n];
@@ -1238,9 +1345,8 @@ Status DBImpl::Get(const ReadOptions& options,
 	delete[] buf;
 	//	fprintf(stdout, "Get(): value read size: %u\n", (unsigned)value->size()); 
       }
-    } else {
-      //    fprintf(stdout, "this key is not found \n"); 
     }
+
     //lock move to here after reading from vlog file 
     mutex_.Lock();
   }
@@ -1316,6 +1422,11 @@ Status DBImpl::Write(const WriteOptions& options, WriteBatch* my_batch) {
 
   // May temporarily unlock and wait.
   Status status = MakeRoomForWrite(my_batch == NULL);
+  
+  //ll: code; garbage collection steps
+  if (vlog_->NeedGC())
+    MaybeScheduleGC(); 
+
   uint64_t last_sequence = versions_->LastSequence();
   Writer* last_writer = &w;
 
@@ -1450,6 +1561,9 @@ Status DBImpl::MakeRoomForWrite(bool force) {
   assert(!writers_.empty());
   bool allow_delay = !force;
   Status s;
+
+  //ll: fixme; later, I should stop foreground write traffic if there is not 
+  //enough space in vlog file; and gc will wake this up after it freed spaces 
   while (true) {
     if (!bg_error_.ok()) {
       // Yield previous error
@@ -1663,8 +1777,7 @@ Status DB::Open(const Options& options, const std::string& dbname,
 	impl->vlog_->WriteVlogSB(true); 
       }
 
-      wfile->SeekToOffset(impl->vlog_->GetTail());
-      //  impl->vlog_->SetOffset(impl->vlog_->GetTail());
+      wfile->SeekToOffset(impl->vlog_->GetHead());
       
       fprintf(stdout, "vlog size: %llu MB, ", 
 	      (unsigned long long)wfile_size/(1024*1024));

@@ -126,7 +126,16 @@ class DBImpl : public DB {
       EXCLUSIVE_LOCKS_REQUIRED(mutex_);
 
   //ll: code; my added functions
-  void ReadVlogSB(); 
+  void ReadVlogSB();
+
+  void MaybeScheduleGC() EXCLUSIVE_LOCKS_REQUIRED(mutex_);
+  static void GCWork(void* db);
+  void GCCall();
+  void  BackgroundGC() EXCLUSIVE_LOCKS_REQUIRED(mutex_);
+  Status DoGCWork()
+      EXCLUSIVE_LOCKS_REQUIRED(mutex_);
+
+ 
 
   // Constant after construction
   Env* const env_;
@@ -159,8 +168,19 @@ class DBImpl : public DB {
   vlog::Writer* vlog_;
   RandomAccessFile* vlog_read_;
 
-  //ll: code; add vlog file read buffer for range query
+  //add vlog file read buffer for range query
   char* buf_; 
+
+  // Signalled when background gc finishes
+  port::CondVar bg_gc_cv_;          
+
+  // Has a background gc been scheduled or is running?
+  bool bg_gc_scheduled_;
+
+  // Have we encountered a background error in paranoid mode?
+  Status bg_gc_error_;
+
+  //****************************************************
 
   uint32_t seed_;                // For sampling.
 

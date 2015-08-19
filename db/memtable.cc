@@ -79,6 +79,7 @@ Iterator* MemTable::NewIterator() {
   return new MemTableIterator(&table_);
 }
 
+//ll: memtable copy key/value from user buffer to its own buffer ! 
 void MemTable::Add(SequenceNumber s, ValueType type,
                    const Slice& key,
                    const Slice& value) {
@@ -93,6 +94,8 @@ void MemTable::Add(SequenceNumber s, ValueType type,
   const size_t encoded_len =
       VarintLength(internal_key_size) + internal_key_size +
       VarintLength(val_size) + val_size;
+
+  //ll: memtable allocates its own memory 
   char* buf = arena_.Allocate(encoded_len);
   char* p = EncodeVarint32(buf, internal_key_size);
   memcpy(p, key.data(), key_size);

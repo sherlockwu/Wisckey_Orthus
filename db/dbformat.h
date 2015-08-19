@@ -19,9 +19,9 @@ namespace leveldb {
 //ll: code; vlog superblock
 //store metadata of this vlog file; at the begin of vlog file
 struct SuperBlock {
-  uint64_t size_limit;
-  uint64_t head;
-  uint64_t tail;
+  uint64_t first, last;
+  uint64_t head, tail; 
+  uint64_t free;
 }; 
 
 // Grouping of constants.  We may want to make some of these

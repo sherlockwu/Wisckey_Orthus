@@ -158,11 +158,15 @@ struct ReadOptions {
   // Default: NULL
   const Snapshot* snapshot;
 
+  //ll: code; add an internal flag
+  bool internal; 
+
   ReadOptions()
       : verify_checksums(false),
         fill_cache(true),
-        snapshot(NULL) {
-  }
+        snapshot(NULL),
+        internal(false) {
+      }
 };
 
 // Options that control write operations
