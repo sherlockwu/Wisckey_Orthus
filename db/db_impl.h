@@ -180,6 +180,11 @@ class DBImpl : public DB {
   // Have we encountered a background error in paranoid mode?
   Status bg_gc_error_;
 
+  uint64_t log_time_;
+  uint64_t mem_time_;
+  uint64_t wait_time_; 
+  uint64_t vlog_time_;
+
   //****************************************************
 
   uint32_t seed_;                // For sampling.

@@ -257,11 +257,13 @@ class Stats {
     }
     AppendWithSpace(&extra, message_);
 
-    fprintf(stdout, "%-12s : %11.3f micros/op;%s%s\n",
+    //ll: code; add total seconds output 
+    fprintf(stdout, "%-12s : %11.3f micros/op;%s%s;%10.3f\n",
             name.ToString().c_str(),
             seconds_ * 1e6 / done_,
             (extra.empty() ? "" : " "),
-            extra.c_str());
+            extra.c_str(), 
+	    seconds_);
     if (FLAGS_histogram) {
       fprintf(stdout, "Microseconds per op:\n%s\n", hist_.ToString().c_str());
     }
@@ -607,6 +609,9 @@ class Benchmark {
       arg[0].thread->stats.Merge(arg[i].thread->stats);
     }
     arg[0].thread->stats.Report(name);
+
+    //ll: code; add db stats output 
+    PrintStats("leveldb.stats");
 
     for (int i = 0; i < n; i++) {
       delete arg[i].thread;

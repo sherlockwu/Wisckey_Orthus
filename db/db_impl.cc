@@ -136,12 +136,16 @@ DBImpl::DBImpl(const Options& raw_options, const std::string& dbname)
       logfile_(NULL),
       logfile_number_(0),
       log_(NULL),
-      //ll: code; init vlog 
+      //ll: code; init my variables 
       vlog_write_(NULL),
       vlog_(NULL),
       vlog_read_(NULL),
       bg_gc_cv_(&mutex_),
       bg_gc_scheduled_(false),
+      log_time_(0),
+      mem_time_(0),
+      wait_time_(0),
+      vlog_time_(0),
       seed_(0),
       tmp_batch_(new WriteBatch),
       bg_compaction_scheduled_(false),
@@ -1184,6 +1188,7 @@ void DBImpl::BackgroundGC() {
   }
 }
 
+//fixme; handle rewind cases; update superblock to vlog, punch hole, etc 
 //do the real garbage collection work 
 Status DBImpl::DoGCWork() {
   Status s; 
@@ -1196,7 +1201,6 @@ Status DBImpl::DoGCWork() {
 
   mutex_.Unlock(); 
 
-  //fixme; need to handle rewind cases ! 
   while(total_writes < target) {     
     //read one kv pair 
     uint32_t ksize, vsize;
@@ -1420,12 +1424,15 @@ Status DBImpl::Write(const WriteOptions& options, WriteBatch* my_batch) {
     return w.status;
   }
 
+  const uint64_t start_wait = env_->NowMicros();
   // May temporarily unlock and wait.
   Status status = MakeRoomForWrite(my_batch == NULL);
-  
+
   //ll: code; garbage collection steps
-  if (vlog_->NeedGC())
+  if (vlog_->NeedGC()) {
+    fprintf(stdout, "gc is triggered !!! \n");
     MaybeScheduleGC(); 
+  }
 
   uint64_t last_sequence = versions_->LastSequence();
   Writer* last_writer = &w;
@@ -1448,14 +1455,12 @@ Status DBImpl::Write(const WriteOptions& options, WriteBatch* my_batch) {
     {
       mutex_.Unlock();     
 
-      //ll: code; write values to vlog, construct kUpdates (key, addre, size)
+      //ll: code; write values to vlog, construct kUpdates (key, addre/size)
       WriteBatch kUpdates; 
+      const uint64_t start_vlog = env_->NowMicros();
       status = vlog_->AddRecord(WriteBatchInternal::Contents(updates), &kUpdates);
 
-      //garbage collection steps
-      //      if (vlog_->NeedBG())
-      //MaybeScheduleGC(); 
-      
+      const uint64_t start_log = env_->NowMicros();      
       status = log_->AddRecord(WriteBatchInternal::Contents(&kUpdates));
       bool sync_error = false;
       if (status.ok() && options.sync) {
@@ -1464,11 +1469,21 @@ Status DBImpl::Write(const WriteOptions& options, WriteBatch* my_batch) {
           sync_error = true;
         }
       }
+
+      const uint64_t start_mem = env_->NowMicros();
       if (status.ok()) {      
 	//ll: code; write new key/values to memtable 
         status = WriteBatchInternal::InsertInto(&kUpdates, mem_);
       }
+
       mutex_.Lock();
+
+      //ll: code; update time stats
+      wait_time_ += start_vlog - start_wait; 
+      vlog_time_ += start_log - start_vlog; 
+      log_time_ += start_mem - start_log; 
+      mem_time_ += env_->NowMicros() - start_mem; 
+
       if (sync_error) {
         // The state of the log file is indeterminate: the log record we
         // just added may or may not show up when the DB is re-opened.
@@ -1658,7 +1673,7 @@ bool DBImpl::GetProperty(const Slice& property, std::string* value) {
   } else if (in == "stats") {
     char buf[200];
     snprintf(buf, sizeof(buf),
-             "                               Compactions\n"
+             "                 Compactions\n"
              "Level  Files Size(MB) Time(sec) Read(MB) Write(MB)\n"
              "--------------------------------------------------\n"
              );
@@ -1678,6 +1693,13 @@ bool DBImpl::GetProperty(const Slice& property, std::string* value) {
         value->append(buf);
       }
     }
+
+    //ll: code; add my own output too ! 
+    snprintf(buf, sizeof(buf), "\nwait: %.3f, vlog: %.3f, log: %.3f, mem: %.3f \n",
+             wait_time_ * 1e-6, vlog_time_ * 1e-6, 
+	     log_time_ * 1e-6, mem_time_ * 1e-6);
+    value->append(buf);
+
     return true;
   } else if (in == "sstables") {
     *value = versions_->current()->DebugString();
