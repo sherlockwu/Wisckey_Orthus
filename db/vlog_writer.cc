@@ -19,6 +19,9 @@ namespace leveldb {
 // copy from write_batch.cc 
 static const size_t kHeader = 12;
 
+// flush values in batch fashion 
+static const size_t kBatch = 300*1024;
+
 namespace vlog {
 
 Writer::Writer(WritableFile* dest)
@@ -104,9 +107,9 @@ Status Writer::AddRecord(const Slice& slice, WriteBatch* kUpdates) {
   int count = DecodeFixed32(input.data() + 8);
   input.remove_prefix(kHeader);
 
+  Status s;
   Slice key, value, new_value; 
   uint64_t offset; 
-  std::string values; 
   uint64_t vaddr;
   uint32_t ksize, vsize; 
   int found = 0;
@@ -140,7 +143,11 @@ Status Writer::AddRecord(const Slice& slice, WriteBatch* kUpdates) {
 	  //new (key, addr_size) for a new writebatch; key/new_value copied 
 	  kUpdates->Put(key, new_value); 
 	  offset += 8 + ksize + vsize;
-	  
+
+	  //update vlog superblock; lock ??? 
+	  sb_.head = offset;
+	  sb_.free -= (8 + ksize + vsize);
+	 
 	  /*
           fprintf(stdout, "ksize: %lu, key: %.16s, vsize: %lu, vaddr: %llu, offset: %llu \n", 
 		  (unsigned long)ksize, key.data(), (unsigned long)vsize, 
@@ -174,18 +181,26 @@ Status Writer::AddRecord(const Slice& slice, WriteBatch* kUpdates) {
   if (found != count) {
     return Status::Corruption("WriteBatch has wrong count");
   } 
-  
-  //write value_slice to vlog file 
-  Slice value_slice(values); 
-  Status s;
 
-  s = dest_->Append(value_slice);
-  if (s.ok()) {
-    s = dest_->Flush();
+  //when size over kBatch, flush to vlog file 
+  if (values.size() >= kBatch) {
+    Slice value_slice(values); 
+    s = dest_->Append(value_slice);
+    if (s.ok()) {
+      s = dest_->Flush();
+    }
+
+    //    fprintf(stdout, "flush a batch, size: %zu \n", values.size()); 
+
+    values.clear();   
+  } else {
+
+    //    fprintf(stdout, "no flush, size: %zu \n", values.size()); 
+
   }
+  
 
-  sb_.head += value_slice.size();
-  sb_.free -= value_slice.size();
+  //update vlog superblock; ??? 
 
   return s;
 }

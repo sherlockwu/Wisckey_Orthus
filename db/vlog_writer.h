@@ -42,6 +42,8 @@ class Writer {
   WritableFile* dest_;
   SuperBlock sb_; 
 
+  std::string values; // write buffer for values 
+
   int block_offset_;       // Current offset in block
 
   // crc32c values for all supported record types.  These are
