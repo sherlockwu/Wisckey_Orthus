@@ -844,7 +844,8 @@ Status VersionSet::LogAndApply(VersionEdit* edit, port::Mutex* mu) {
     edit->SetNextFile(next_file_number_);
     s = env_->NewWritableFile(new_manifest_file, &descriptor_file_);
     if (s.ok()) {
-      descriptor_log_ = new log::Writer(descriptor_file_);
+      //ll: NOT use write buffer for manifest log file
+      descriptor_log_ = new log::Writer(descriptor_file_, false);
       s = WriteSnapshot(descriptor_log_);
     }
   }
@@ -936,6 +937,7 @@ Status VersionSet::Recover() {
     log::Reader reader(file, &reporter, true/*checksum*/, 0/*initial_offset*/);
     Slice record;
     std::string scratch;
+
     while (reader.ReadRecord(&record, &scratch) && s.ok()) {
       VersionEdit edit;
       s = edit.DecodeFrom(record);

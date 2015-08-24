@@ -401,7 +401,8 @@ class Repairer {
 
     //fprintf(stderr, "NewDescriptor:\n%s\n", edit_.DebugString().c_str());
     {
-      log::Writer log(file);
+      //ll: NOT use write buffer for manifest file
+      log::Writer log(file, false);
       std::string record;
       edit_.EncodeTo(&record);
       status = log.AddRecord(record);

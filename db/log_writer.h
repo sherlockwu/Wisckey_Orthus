@@ -21,13 +21,19 @@ class Writer {
   // Create a writer that will append data to "*dest".
   // "*dest" must be initially empty.
   // "*dest" must remain live while this Writer is in use.
-  explicit Writer(WritableFile* dest);
+  //ll: code; add a write buffer 
+  explicit Writer(WritableFile* dest, bool buffer);
   ~Writer();
 
   Status AddRecord(const Slice& slice);
 
  private:
   WritableFile* dest_;
+
+  //ll: code; add an option for using buffer for log append
+  bool wbuf_; 
+  std::string values_; // write buffer for values 
+
   int block_offset_;       // Current offset in block
 
   // crc32c values for all supported record types.  These are

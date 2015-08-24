@@ -114,7 +114,7 @@ void TableBuilder::Add(const Slice& key, const Slice& value) {
   r->num_entries++;
   r->data_block.Add(key, value);
 
-  //ll: when the block size is over block_size(4KB), then flush to disk !!! 
+  //ll: when the block size is >= block_size(4KB), then flush to disk !!! 
   const size_t estimated_block_size = r->data_block.CurrentSizeEstimate();
   if (estimated_block_size >= r->options.block_size) {
     Flush();

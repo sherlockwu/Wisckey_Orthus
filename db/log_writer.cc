@@ -12,8 +12,13 @@
 namespace leveldb {
 namespace log {
 
-Writer::Writer(WritableFile* dest)
+//ll: code; flush values in batch fashion 
+static const size_t kBatch = 256*1024;
+
+//ll: code; use buf or not 
+Writer::Writer(WritableFile* dest, bool buf)
     : dest_(dest),
+      wbuf_(buf),
       block_offset_(0) {
   for (int i = 0; i <= kMaxRecordType; i++) {
     char t = static_cast<char>(i);
@@ -41,7 +46,13 @@ Status Writer::AddRecord(const Slice& slice) {
       if (leftover > 0) {
         // Fill the trailer (literal below relies on kHeaderSize being 7)
         assert(kHeaderSize == 7);
-        dest_->Append(Slice("\x00\x00\x00\x00\x00\x00", leftover));
+
+	//ll: code; append to buffer first;
+	if (wbuf_) {
+	  values_.append("\x00\x00\x00\x00\x00\x00", leftover);
+	} else {
+	  dest_->Append(Slice("\x00\x00\x00\x00\x00\x00", leftover));
+	}
       }
       block_offset_ = 0;
     }
@@ -86,15 +97,32 @@ Status Writer::EmitPhysicalRecord(RecordType t, const char* ptr, size_t n) {
   uint32_t crc = crc32c::Extend(type_crc_[t], ptr, n);
   crc = crc32c::Mask(crc);                 // Adjust for storage
   EncodeFixed32(buf, crc);
-
-  // Write the header and the payload
-  Status s = dest_->Append(Slice(buf, kHeaderSize));
-  if (s.ok()) {
-    s = dest_->Append(Slice(ptr, n));
+  
+  //ll: code; copy to buffer, when reach batch size, flush to log file
+  Status s;
+  if (wbuf_) {
+    // use write buffer for log append 
+    values_.append(buf, kHeaderSize);
+    values_.append(ptr, n);
+    if (values_.size() >= kBatch) {
+      // Write the header and the payload
+      s = dest_->Append(Slice(values_));
+      if (s.ok()) {
+	s = dest_->Flush();
+      }
+      values_.clear(); 
+    } 
+  } else {
+    // Write the header and the payload
+    s = dest_->Append(Slice(buf, kHeaderSize));
     if (s.ok()) {
-      s = dest_->Flush();
+      s = dest_->Append(Slice(ptr, n));
+      if (s.ok()) {
+	s = dest_->Flush();
+      }
     }
   }
+   
   block_offset_ += kHeaderSize + n;
   return s;
 }

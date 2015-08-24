@@ -231,7 +231,8 @@ Status DBImpl::NewDB() {
     return s;
   }
   {
-    log::Writer log(file);
+    //ll: NOT use write buffer for manifest log file 
+    log::Writer log(file, false);
     std::string record;
     new_db.EncodeTo(&record);
     s = log.AddRecord(record);
@@ -1635,7 +1636,8 @@ Status DBImpl::MakeRoomForWrite(bool force) {
       delete logfile_;
       logfile_ = lfile;
       logfile_number_ = new_log_number;
-      log_ = new log::Writer(lfile);
+      //ll: code; use write buffer for log file
+      log_ = new log::Writer(lfile, true);
       imm_ = mem_;
       has_imm_.Release_Store(imm_);
       mem_ = new MemTable(internal_comparator_);
@@ -1756,7 +1758,6 @@ DB::~DB() { }
 Status DB::Open(const Options& options, const std::string& dbname,
                 DB** dbptr) {
   *dbptr = NULL;
-
   DBImpl* impl = new DBImpl(options, dbname);
   impl->mutex_.Lock();
   VersionEdit edit;
@@ -1771,7 +1772,8 @@ Status DB::Open(const Options& options, const std::string& dbname,
       edit.SetLogNumber(new_log_number);
       impl->logfile_ = lfile;
       impl->logfile_number_ = new_log_number;
-      impl->log_ = new log::Writer(lfile);
+      //ll: use write buffer for log file
+      impl->log_ = new log::Writer(lfile, true);
     }
 
     //ll: code; init vlog read and write files, similar to log file 
