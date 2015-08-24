@@ -7,6 +7,7 @@
 #include <stdint.h>
 //ll: for sleep
 #include <unistd.h>
+#include <time.h>
 
 #include "leveldb/env.h"
 #include "util/coding.h"
@@ -36,6 +37,22 @@ Writer::Writer(WritableFile* dest)
 Writer::~Writer() {
   //before close vlog file, flush sb to vlog file 
   WriteVlogSB(false);
+
+  //fsync vlog file when close 
+  if (values.size() > 0) {
+    Slice value_slice(values); 
+    Status s = dest_->Append(value_slice);
+    if (s.ok()) {
+      s = dest_->Flush();
+    }
+    values.clear();   
+  }
+
+  time_t start = time(NULL);
+  dest_->Sync();
+  time_t end = time(NULL);
+
+  fprintf(stdout, "vlog writer fsync: %.3f \n", difftime(end, start));
 }
 
 void Writer::SetVlogSB(const char* scratch) {
@@ -189,17 +206,12 @@ Status Writer::AddRecord(const Slice& slice, WriteBatch* kUpdates) {
     if (s.ok()) {
       s = dest_->Flush();
     }
-
     //    fprintf(stdout, "flush a batch, size: %zu \n", values.size()); 
-
     values.clear();   
   } else {
-
     //    fprintf(stdout, "no flush, size: %zu \n", values.size()); 
-
   }
   
-
   //update vlog superblock; ??? 
 
   return s;
