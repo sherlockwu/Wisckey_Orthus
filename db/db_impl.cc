@@ -1365,7 +1365,7 @@ Status DBImpl::Get(const ReadOptions& options,
   return s;
 }
 
-//ll: entry function for iterator of db 
+//ll: entry function for iterator of db; called by users ! 
 Iterator* DBImpl::NewIterator(const ReadOptions& options) {
   SequenceNumber latest_snapshot;
   uint32_t seed;
@@ -1461,15 +1461,18 @@ Status DBImpl::Write(const WriteOptions& options, WriteBatch* my_batch) {
       const uint64_t start_vlog = env_->NowMicros();
       status = vlog_->AddRecord(WriteBatchInternal::Contents(updates), &kUpdates);
 
-      const uint64_t start_log = env_->NowMicros();      
-      status = log_->AddRecord(WriteBatchInternal::Contents(&kUpdates));
       bool sync_error = false;
+      //ll: code; remove lsm log totally ! 
+      /*
+      const uint64_t start_log = env_->NowMicros();  
+      status = log_->AddRecord(WriteBatchInternal::Contents(&kUpdates));
       if (status.ok() && options.sync) {
         status = logfile_->Sync();
         if (!status.ok()) {
           sync_error = true;
         }
       }
+      */
 
       const uint64_t start_mem = env_->NowMicros();
       if (status.ok()) {      
@@ -1481,8 +1484,8 @@ Status DBImpl::Write(const WriteOptions& options, WriteBatch* my_batch) {
 
       //ll: code; update time stats
       wait_time_ += start_vlog - start_wait; 
-      vlog_time_ += start_log - start_vlog; 
-      log_time_ += start_mem - start_log; 
+      vlog_time_ += start_mem - start_vlog; 
+      //      log_time_ += start_mem - start_log; 
       mem_time_ += env_->NowMicros() - start_mem; 
 
       if (sync_error) {
