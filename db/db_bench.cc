@@ -774,10 +774,9 @@ class Benchmark {
       //ll: code; change to access the value to avoid mmap() based read in leveldb 
       //bytes += iter->key().size() + iter->value().size();   
       int64_t ksize = 0, vsize = 0;
-      ksize = iter->key().size();
+      ksize = iter->key().ToString().size();
       vsize = iter->value().ToString().size();
       bytes += ksize + vsize;
-      //      iter->value().ToString(); 
       //fprintf(stdout, "readseq(): ksize: %llu, vsize: %llu \n",  
       //      (unsigned long long)ksize, (unsigned long long)vsize); 
       //fprintf(stdout, "readseq(): value is : %s \n", iter->value().ToString().c_str());
