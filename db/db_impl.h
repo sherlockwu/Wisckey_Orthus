@@ -71,6 +71,9 @@ class DBImpl : public DB {
   // bytes.
   void RecordReadSample(Slice key);
 
+  //ll: code; make this public, use it in db_iter
+  Env* const env_;
+
  private:
   friend class DB;
   struct CompactionState;
@@ -138,12 +141,13 @@ class DBImpl : public DB {
  
 
   // Constant after construction
-  Env* const env_;
+  //  Env* const env_;
+
   const InternalKeyComparator internal_comparator_;
   const InternalFilterPolicy internal_filter_policy_;
   const Options options_;  // options_.comparator == &internal_comparator_
   bool owns_info_log_;
-  bool owns_cache_;
+  bool owns_cache_; 
   const std::string dbname_;
 
   // table_cache_ provides its own synchronization
