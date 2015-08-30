@@ -10,6 +10,22 @@
 
 namespace leveldb {
 
+//ll: code; define my table time for statistics 
+struct Table_Time {
+  uint64_t index_time ;
+  uint64_t meta_time ;
+  uint64_t block_time ;
+
+  Table_Time()
+     : index_time(0),
+       meta_time(0),
+       block_time(0) {
+  }
+};
+
+extern struct Table_Time table_time_;
+
+
 class Block;
 class BlockHandle;
 class Footer;

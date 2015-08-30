@@ -44,6 +44,9 @@ Status Table::Open(const Options& options,
     return Status::Corruption("file is too short to be an sstable");
   }
 
+  //ll: code; timer
+  const uint64_t start_index = options.env->NowMicros();
+
   char footer_space[Footer::kEncodedLength];
   Slice footer_input;
   Status s = file->Read(size - Footer::kEncodedLength, Footer::kEncodedLength,
@@ -62,7 +65,6 @@ Status Table::Open(const Options& options,
     if (options.paranoid_checks) {
       opt.verify_checksums = true;
     }
-
     //ll: output
     //    fprintf(stdout, "read index block \n");
 
@@ -71,6 +73,9 @@ Status Table::Open(const Options& options,
       index_block = new Block(contents);
     }
   }
+
+  //ll: code; timer
+  const uint64_t start_meta = options.env->NowMicros();
 
   if (s.ok()) {
     // We've successfully read the footer and the index block: we're
@@ -89,10 +94,14 @@ Status Table::Open(const Options& options,
     if (index_block) delete index_block;
   }
 
+  //ll: code; calculate the footer/index read time and bloomfilter read time 
+  table_time_.index_time += start_meta - start_index;
+  table_time_.meta_time += options.env->NowMicros() - start_meta;
+
   return s;
 }
 
-//ll: read bloomfilter block 
+//ll: read bloomfilter blocks 
 void Table::ReadMeta(const Footer& footer) {
   if (rep_->options.filter_policy == NULL) {
     return;  // Do not need any metadata
@@ -115,6 +124,7 @@ void Table::ReadMeta(const Footer& footer) {
   std::string key = "filter.";
   key.append(rep_->options.filter_policy->Name());
   iter->Seek(key);
+  //ll: read all bloomfilter blocks !!! 
   if (iter->Valid() && iter->key() == Slice(key)) {
     ReadFilter(iter->value());
   }
@@ -122,6 +132,7 @@ void Table::ReadMeta(const Footer& footer) {
   delete meta;
 }
 
+//ll: read one bloomfilter block
 void Table::ReadFilter(const Slice& filter_handle_value) {
   Slice v = filter_handle_value;
   BlockHandle filter_handle;
@@ -180,6 +191,9 @@ Iterator* Table::BlockReader(void* arg,
   // We intentionally allow extra stuff in index_value so that we
   // can add more features in the future.
 
+  //ll: code; timer
+  const uint64_t start_block = table->rep_->options.env->NowMicros();
+
   if (s.ok()) {
     BlockContents contents;
     if (block_cache != NULL) {
@@ -227,6 +241,10 @@ Iterator* Table::BlockReader(void* arg,
   } else {
     iter = NewErrorIterator(s);
   }
+
+  //ll: code; calculate the kv pair block read time 
+  table_time_.block_time += table->rep_->options.env->NowMicros() - start_block;
+
   return iter;
 }
 
