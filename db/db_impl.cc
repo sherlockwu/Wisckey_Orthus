@@ -43,6 +43,9 @@ namespace leveldb {
 
 const int kNumNonTableCacheFiles = 10;
 
+//ll: code; global variable for table time statistics 
+struct Table_Time table_time_;
+
 // Information kept for every waiting writer
 struct DBImpl::Writer {
   Status status;
@@ -161,7 +164,7 @@ DBImpl::DBImpl(const Options& raw_options, const std::string& dbname)
                              &internal_comparator_);
 
   //ll: code; init read buffer
-  buf_ = new char[150*1024]; 
+  buf_ = new char[512*1024]; 
 }
 
 DBImpl::~DBImpl() {
@@ -1438,6 +1441,9 @@ Status DBImpl::Write(const WriteOptions& options, WriteBatch* my_batch) {
   uint64_t last_sequence = versions_->LastSequence();
   Writer* last_writer = &w;
 
+  //ll: code; make kUpdates have the same sequence number as updates
+  uint64_t my_sequence;
+
   //ll: handle put() and delete() 
   if (status.ok() && my_batch != NULL) {  // NULL batch is for compactions
 
@@ -1446,6 +1452,10 @@ Status DBImpl::Write(const WriteOptions& options, WriteBatch* my_batch) {
     WriteBatch* updates = BuildBatchGroup(&last_writer);
     //ll: set a sequence number for this combined batch 
     WriteBatchInternal::SetSequence(updates, last_sequence + 1);
+
+    //ll: code;
+    my_sequence = last_sequence + 1; 
+
     //ll: sequence number is the number of Put(), not combined batches 
     last_sequence += WriteBatchInternal::Count(updates);
 
@@ -1461,9 +1471,12 @@ Status DBImpl::Write(const WriteOptions& options, WriteBatch* my_batch) {
       const uint64_t start_vlog = env_->NowMicros();
       status = vlog_->AddRecord(WriteBatchInternal::Contents(updates), &kUpdates);
 
+      //ll: code; set the correct sequence number for kupdates
+      WriteBatchInternal::SetSequence(&kUpdates, my_sequence);
+
       bool sync_error = false;
       //ll: code; remove lsm log totally ! 
-      /*
+      
       const uint64_t start_log = env_->NowMicros();  
       status = log_->AddRecord(WriteBatchInternal::Contents(&kUpdates));
       if (status.ok() && options.sync) {
@@ -1472,8 +1485,7 @@ Status DBImpl::Write(const WriteOptions& options, WriteBatch* my_batch) {
           sync_error = true;
         }
       }
-      */
-
+      
       const uint64_t start_mem = env_->NowMicros();
       if (status.ok()) {      
 	//ll: code; write new key/values to memtable 
@@ -1640,7 +1652,7 @@ Status DBImpl::MakeRoomForWrite(bool force) {
       logfile_ = lfile;
       logfile_number_ = new_log_number;
       //ll: code; use write buffer for log file
-      log_ = new log::Writer(lfile, true);
+      log_ = new log::Writer(lfile, false);
       imm_ = mem_;
       has_imm_.Release_Store(imm_);
       mem_ = new MemTable(internal_comparator_);
@@ -1703,6 +1715,11 @@ bool DBImpl::GetProperty(const Slice& property, std::string* value) {
     snprintf(buf, sizeof(buf), "\nwait: %.3f, vlog: %.3f, log: %.3f, mem: %.3f \n",
              wait_time_ * 1e-6, vlog_time_ * 1e-6, 
 	     log_time_ * 1e-6, mem_time_ * 1e-6);
+
+    snprintf(buf, sizeof(buf), "\nindex: %.3f, meta: %.3f, block: %.3f\n",
+             table_time_.index_time * 1e-6, table_time_.meta_time * 1e-6, 
+	     table_time_.block_time * 1e-6);    
+
     value->append(buf);
 
     return true;
@@ -1775,7 +1792,8 @@ Status DB::Open(const Options& options, const std::string& dbname,
       edit.SetLogNumber(new_log_number);
       impl->logfile_ = lfile;
       impl->logfile_number_ = new_log_number;
-      //ll: use write buffer for log file
+
+      //ll: code; use write buffer for lsm log file
       impl->log_ = new log::Writer(lfile, true);
     }
 
@@ -1815,6 +1833,7 @@ Status DB::Open(const Options& options, const std::string& dbname,
       s = impl->versions_->LogAndApply(&edit, &impl->mutex_);
     }
 
+    //ll: after open a db, it will start to do compaction if db needs !!! 
     if (s.ok()) {
       impl->DeleteObsoleteFiles();    
       impl->MaybeScheduleCompaction();
