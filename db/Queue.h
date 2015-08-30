@@ -47,6 +47,18 @@ class Queue
     mlock.unlock();
     cond_.notify_one();
   }
+
+  void push_many(T* item, const int num)
+  {
+    std::unique_lock<std::mutex> mlock(mutex_);
+    for(int i=0; i<num; i++) {
+      queue_.push(item[i]);
+    }
+    mlock.unlock();
+    cond_.notify_all();
+  }
+
+
   Queue()=default;
   Queue(const Queue&) = delete;            // disable copying
   Queue& operator=(const Queue&) = delete; // disable assignment
