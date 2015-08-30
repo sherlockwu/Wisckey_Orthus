@@ -24,6 +24,8 @@
 #include "util/mutexlock.h"
 #include "util/posix_logger.h"
 
+#include <fcntl.h>
+
 namespace leveldb {
 
 namespace {
@@ -362,6 +364,13 @@ class PosixEnv : public Env {
     *result = NULL;
     Status s;
     int fd = open(fname.c_str(), O_RDONLY);
+
+    int ret = posix_fadvise(fd, 0, 100, POSIX_FADV_RANDOM);
+    if (ret == 0)
+      fprintf(stdout, "fadvise works !!! \n");
+    else
+      fprintf(stdout, "fadvise fails  !!! \n");
+    
     if (fd < 0) {
       s = IOError(fname, errno);
     } else { 
