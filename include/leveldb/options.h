@@ -158,7 +158,7 @@ struct ReadOptions {
   // Default: NULL
   const Snapshot* snapshot;
 
-  //ll: code; add an internal flag
+  //ll: code; add an internal flag; true for garbage collection threads. 
   bool internal; 
 
   ReadOptions()

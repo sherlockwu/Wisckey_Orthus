@@ -27,6 +27,16 @@ Writer::Writer(WritableFile* dest, bool buf)
 }
 
 Writer::~Writer() {
+  //ll: code; flush log write buffer 
+  if (wbuf_) {
+    if (values_.size() > 0) {
+      // Write the header and the payload
+      Status s = dest_->Append(Slice(values_));
+      if (s.ok()) {
+	s = dest_->Flush();
+      }
+    }
+  }
 }
 
 Status Writer::AddRecord(const Slice& slice) {

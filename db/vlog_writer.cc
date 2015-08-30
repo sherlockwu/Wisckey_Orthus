@@ -65,7 +65,7 @@ void Writer::WriteVlogSB(bool isnew) {
   if (isnew) {
     //initial sb for a new vlog file 
     sb_.first = sizeof(SuperBlock);
-    sb_.last = (uint64_t)100*1024*1024*1024; 
+    sb_.last = (uint64_t)400*1024*1024*1024; 
     sb_.free = sb_.last - sb_.first; 
     sb_.head = sb_.tail = sb_.first;
   } 
