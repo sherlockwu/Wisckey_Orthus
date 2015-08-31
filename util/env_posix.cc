@@ -360,17 +360,28 @@ class PosixEnv : public Env {
 
   //ll: code; vlog file read; use read() for reads 
   virtual Status NewReadAccessFile(const std::string& fname,
-                                     RandomAccessFile** result) {
+				   RandomAccessFile** result, bool random) {
     *result = NULL;
     Status s;
     int fd = open(fname.c_str(), O_RDONLY);
+    int ret; 
 
-    int ret = posix_fadvise(fd, 0, 100, POSIX_FADV_RANDOM);
-    if (ret == 0)
-      fprintf(stdout, "fadvise works !!! \n");
-    else
-      fprintf(stdout, "fadvise fails  !!! \n");
-    
+    if (random) {
+      //for lookup 
+      ret = posix_fadvise(fd, 0, 0, POSIX_FADV_RANDOM);
+      if (ret == 0)
+	fprintf(stdout, "fadvise random works !!! \n");
+      else
+	fprintf(stdout, "fadvise random fails  !!! \n");
+    } else {
+      //for garbage collection 
+      ret = posix_fadvise(fd, 0, 0, POSIX_FADV_SEQUENTIAL);
+      if (ret == 0)
+	fprintf(stdout, "fadvise sequential works !!! \n");
+      else
+	fprintf(stdout, "fadvise sequential fails  !!! \n");
+    }
+        
     if (fd < 0) {
       s = IOError(fname, errno);
     } else { 
