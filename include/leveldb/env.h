@@ -230,8 +230,9 @@ class WritableFile {
   WritableFile() { }
   virtual ~WritableFile();
 
-  //ll: code; seek to an offset 
-  virtual Status SeekToOffset(uint64_t n) = 0;
+  //ll: code; 
+  virtual Status SeekToOffset(uint64_t n) = 0; // seek to an offset 
+  virtual Status PunchHole(uint64_t offset, uint64_t len) = 0; //punch a hole 
 
   virtual Status Append(const Slice& data) = 0;
   virtual Status Close() = 0;

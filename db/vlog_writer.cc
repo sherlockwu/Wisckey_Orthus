@@ -35,10 +35,21 @@ Writer::Writer(WritableFile* dest)
 }
 
 Writer::~Writer() {
+
+  time_t start = time(NULL);
+  Sync();
+  time_t end = time(NULL);
+
+  fprintf(stdout, "vlog writer fsync: %.3f \n", difftime(end, start));
+
   //before close vlog file, flush sb to vlog file 
   WriteVlogSB(false);
+  dest_->Sync();
+}
 
-  //fsync vlog file when close 
+void Writer::Sync() {
+
+  //flush vlog file user buffer
   if (values.size() > 0) {
     Slice value_slice(values); 
     Status s = dest_->Append(value_slice);
@@ -48,15 +59,12 @@ Writer::~Writer() {
     values.clear();   
   }
 
-  time_t start = time(NULL);
   dest_->Sync();
-  time_t end = time(NULL);
-
-  fprintf(stdout, "vlog writer fsync: %.3f \n", difftime(end, start));
 }
 
 void Writer::SetVlogSB(const char* scratch) {
-  memcpy(&sb_, scratch, sizeof(SuperBlock));
+  //mcpy(&sb_, scratch, sizeof(SuperBlock));
+  sb_ = *(struct SuperBlock *)scratch; 
 }
 
 //write an sb to vlog file 
@@ -65,7 +73,7 @@ void Writer::WriteVlogSB(bool isnew) {
   if (isnew) {
     //initial sb for a new vlog file 
     sb_.first = sizeof(SuperBlock);
-    sb_.last = (uint64_t)400*1024*1024*1024; 
+    sb_.last = (uint64_t)MAX_VLOG_SIZE;
     sb_.free = sb_.last - sb_.first; 
     sb_.head = sb_.tail = sb_.first;
   } 
@@ -104,12 +112,27 @@ void Writer::SetTail(uint64_t addr) {
   sb_.tail = addr;
 }
 
+uint64_t Writer::MaxVlogSize() {
+  return (sb_.last - sb_.first); 
+}
 
 //return whether vlog needs gc now
 bool Writer::NeedGC() {
   //threshold based policy now 
-  uint64_t min = 0.2 * (sb_.last - sb_.first);
-  return sb_.free <= min ? true : false; 
+  uint64_t used_thre = GC_THRESHOLD * (sb_.last - sb_.first);
+  uint64_t used = (sb_.head - sb_.tail);
+  return (used >= used_thre) ? true : false; 
+}
+
+bool Writer::WaitForSpace() {
+  if (sb_.head - sb_.tail >= MaxVlogSize())
+    return true;
+  else 
+    return false; 
+}
+
+Status Writer::PunchHole(uint64_t off, uint64_t len){
+  return dest_->PunchHole(off, len);
 }
 
 //given the key/value slice, write values to vlog, generate 
@@ -183,8 +206,8 @@ Status Writer::AddRecord(const Slice& slice, WriteBatch* kUpdates) {
 	  //for delete, just keep the original kType and key
 	  //no need to write anything for values 
 	  
-	  fprintf(stdout, "deletion record ! \n"); 
 	  kUpdates->Delete(key);
+	  fprintf(stdout, "delete a record ! \n"); 
 
         } else {
           return Status::Corruption("bad WriteBatch Delete");
@@ -212,7 +235,7 @@ Status Writer::AddRecord(const Slice& slice, WriteBatch* kUpdates) {
     //    fprintf(stdout, "no flush, size: %zu \n", values.size()); 
   }
   
-  //update vlog superblock; ??? 
+  //fixme: update vlog superblock; ??? 
 
   return s;
 }

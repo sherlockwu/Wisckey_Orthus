@@ -14,6 +14,12 @@
 
 #include "db/dbformat.h"
 
+
+#define MAX_VLOG_SIZE 200*1024*1024*1024
+#define GC_THRESHOLD 0.9
+#define GC_CHUNK_SIZE 4*1024*1024
+#define GC_CHUNK_NUM 256 
+
 namespace leveldb {
 
 class WritableFile;
@@ -36,7 +42,11 @@ class Writer {
   uint64_t GetTail();
   void SetTail(uint64_t tail); 
  
+  uint64_t MaxVlogSize(); 
   bool NeedGC(); 
+  bool WaitForSpace();
+  Status PunchHole(uint64_t off, uint64_t len);
+  void Sync(); 
 
  private:
   WritableFile* dest_;
