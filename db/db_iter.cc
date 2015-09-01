@@ -19,8 +19,12 @@
 
 namespace leveldb {
 
+//ll: code;
+uint64_t vlog_time_ = 0;
+
 //ll: code; prefetch numbers
 static const size_t kPrefetch = 32; 
+static const size_t kWindow = 64; 
 static bool preworker_on_ = false; 
 static pthread_t preworker[kPrefetch];
 DBImpl *prefetch_db_ = NULL;
@@ -69,6 +73,7 @@ class DBIter: public Iterator {
 	//ll: code;
 	prefetch_on_(false),
 	next_time_(0),
+	queue_time_(0),
 	counter_(0),
         bytes_counter_(RandomPeriod()) {
     
@@ -83,7 +88,8 @@ class DBIter: public Iterator {
   virtual ~DBIter() {
     delete iter_;
 
-    fprintf(stdout, "next_time_ : %f seconds \n", next_time_ * 1e-6);
+    fprintf(stdout, "next_time_ : %f, queue_time_: %f, vlog_time_: %f\n", 
+	    next_time_ * 1e-6, queue_time_ * 1e-6, vlog_time_ * 1e-6);
   }
   virtual bool Valid() const { return valid_; }
   virtual Slice key() const {
@@ -113,6 +119,8 @@ class DBIter: public Iterator {
     size_t n = static_cast<size_t>(vsize);
     Slice real_value;
 
+    const uint64_t start_vlog = prefetch_db_->env_->NowMicros();
+
     //now, just use a shared buffer for scan; assume one thread ! 
     //fixme: for multipthread, just allocate a buffer locally 
     char* buf = db_->Buffer(); 
@@ -120,6 +128,8 @@ class DBIter: public Iterator {
     if (!s.ok()) {
       fprintf(stdout, "db_iter::value(): failed ! \n");
     }
+
+    vlog_time_ += prefetch_db_->env_->NowMicros() - start_vlog;
 
     return real_value; 
   }
@@ -187,6 +197,7 @@ class DBIter: public Iterator {
 
   uint64_t lsm_time_;
   uint64_t next_time_;
+  uint64_t queue_time_;
 
   // No copying allowed
   DBIter(const DBIter&);
@@ -391,7 +402,7 @@ Queue<prefetch_entry> prefetch_q;
 // update the counter and check whether prefetch or not 
 bool DBIter::NeedPrefetch() {
   counter_++; 
-  if (counter_ >= kPrefetch) {
+  if (counter_ >= kWindow) {
     counter_ = 0;
     return true; 
   }
@@ -408,8 +419,10 @@ void DBIter::PrefetchNext() {
 
   //  fprintf(stdout, "PrefetchNext(): cur_key: %s\n", cur_key.data()); 
 
+  struct prefetch_entry entrys[kWindow];
+
   //get addr/size, add them to queue
-  for(int i = 0; i < kPrefetch * 2; i++) {
+  for(int i = 0; i < kWindow; i++) {
     Next(); 
     if (!Valid())
       break;
@@ -423,12 +436,13 @@ void DBIter::PrefetchNext() {
     //    fprintf(stdout, "PrefetchNext(): add address: %llu, size: %lu to queue \n",
     //	    (unsigned long long)vaddr, (unsigned long)vsize); 
 
-    struct prefetch_entry entry;
-    entry.address = vaddr;
-    entry.size = vsize;
-
-    prefetch_q.push(entry);    
+    entrys[i].address = vaddr;
+    entrys[i].size = vsize;
   } 
+
+  const uint64_t start_queue = prefetch_db_->env_->NowMicros();
+  prefetch_q.push_many(entrys, kWindow);  
+  queue_time_ += prefetch_db_->env_->NowMicros() - start_queue;   
 
   //seek back to the user's position 
   Seek(Slice(cur_key)); 
