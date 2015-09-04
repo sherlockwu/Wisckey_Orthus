@@ -143,6 +143,7 @@ DBImpl::DBImpl(const Options& raw_options, const std::string& dbname)
       vlog_write_(NULL),
       vlog_(NULL),
       vlog_read_(NULL),
+      vlog_gc_read_(NULL),
       bg_gc_cv_(&mutex_),
       bg_gc_scheduled_(false),
       log_time_(0),
@@ -165,13 +166,13 @@ DBImpl::DBImpl(const Options& raw_options, const std::string& dbname)
 
   //ll: code; init read buffer
   buf_ = new char[512*1024]; 
+
+  //by default, not write to lsm log 
+  write_lsm_log_ = false; 
 }
 
 DBImpl::~DBImpl() {
   // Wait for background work to finish
-
-  //  fprintf(stdout, "~DBImpl(): begin \n");
-
   mutex_.Lock();
   shutting_down_.Release_Store(this);  // Any non-NULL value is ok
   while (bg_compaction_scheduled_) {
@@ -182,12 +183,30 @@ DBImpl::~DBImpl() {
   //ll: code; wait gc finish
   mutex_.Lock();
   while (bg_gc_scheduled_) {
+    fprintf(stdout, "watiting gc quit ! \n");
+    fflush(stdout); 
     bg_gc_cv_.Wait();
   }
+  fprintf(stdout, "gc quits ! \n");
   mutex_.Unlock();
 
-  //ll: output 
-  //  fprintf(stdout, "~DBImpl(): compacition is done ! \n");
+  //if no lsm log write
+  if (!write_lsm_log_) {
+    //flush imm_ first 
+    if (imm_ != NULL) {
+      fprintf(stdout, "flush imm_ at end \n");
+      CompactMemTableNoLog();
+    }
+    //then flush mem_ 
+    if (mem_ != NULL && mem_->ApproximateMemoryUsage() > 0) {
+      imm_ = mem_;
+      mem_ = NULL; 
+      has_imm_.Release_Store(imm_);
+      fprintf(stdout, "flush mem_ at end \n");
+      CompactMemTableNoLog();
+    }    
+  }
+
 
   if (db_lock_ != NULL) {
     env_->UnlockFile(db_lock_);
@@ -205,6 +224,7 @@ DBImpl::~DBImpl() {
   //  fprintf(stdout, "~DBImpl(): end of delete vlog_ \n");
   delete vlog_write_;
   delete vlog_read_;
+  delete vlog_gc_read_;
   //  fprintf(stdout, "~DBImpl(): end of delete vlog_read_ and vlog_write_ \n");
   delete buf_; 
 
@@ -549,6 +569,39 @@ Status DBImpl::WriteLevel0Table(MemTable* mem, VersionEdit* edit,
   return s;
 }
 
+//ll: code; my own memtable compaction funtion; 
+//call this when shut down a db, and we have to flush memtable to
+//table when we did not write to lsm log 
+void DBImpl::CompactMemTableNoLog() {
+  mutex_.AssertHeld();
+  assert(imm_ != NULL);
+
+  // Save the contents of the memtable as a new Table
+  VersionEdit edit;
+  Version* base = versions_->current();
+  base->Ref();
+  Status s = WriteLevel0Table(imm_, &edit, base);
+  base->Unref();
+
+  // Replace immutable memtable with the generated Table
+  if (s.ok()) {
+    edit.SetPrevLogNumber(0);
+    edit.SetLogNumber(logfile_number_);  // Earlier logs no longer needed
+    s = versions_->LogAndApply(&edit, &mutex_);
+  }
+
+  if (s.ok()) {
+    // Commit to the new state
+    imm_->Unref();
+    imm_ = NULL;
+    has_imm_.Release_Store(NULL);
+    DeleteObsoleteFiles();
+  } else {
+    RecordBackgroundError(s);
+  }
+}
+
+
 void DBImpl::CompactMemTable() {
   mutex_.AssertHeld();
   assert(imm_ != NULL);
@@ -561,6 +614,9 @@ void DBImpl::CompactMemTable() {
   base->Unref();
 
   if (s.ok() && shutting_down_.Acquire_Load()) {
+
+    fprintf(stdout, "compactmem(): shutdown error ! \n");
+
     s = Status::IOError("Deleting DB during memtable compaction");
   }
 
@@ -602,6 +658,12 @@ void DBImpl::CompactRange(const Slice* begin, const Slice* end) {
 //ll: code; return db's internal read buffer for range query usage 
 char* DBImpl::Buffer() {
   return buf_;
+}
+
+//ll: code; return current vlog head and tail
+void DBImpl::GetVlogHT(uint64_t *head, uint64_t *tail) {
+  *head = vlog_->GetHead();
+  *tail = vlog_->GetTail(); 
 }
 
 void DBImpl::TEST_CompactRange(int level, const Slice* begin,const Slice* end) {
@@ -1133,7 +1195,7 @@ int64_t DBImpl::TEST_MaxNextLevelOverlappingBytes() {
   
 //ll: code; garbage collection entry function 
 void DBImpl::MaybeScheduleGC() {
-  mutex_.AssertHeld();
+  //  mutex_.AssertHeld();
   if (bg_gc_scheduled_) {
     // Already scheduled
   } else if (shutting_down_.Acquire_Load()) {
@@ -1142,7 +1204,9 @@ void DBImpl::MaybeScheduleGC() {
     // Already got an error; no more changes
   } else if (!vlog_->NeedGC()) {
     // No work to be done
+    fprintf(stdout, "gc is sleep !!! \n");    
   } else {
+    fprintf(stdout, "gc is triggered !!! \n");
     bg_gc_scheduled_ = true;
     env_->GCSchedule(&DBImpl::GCWork, this);
   }
@@ -1153,7 +1217,7 @@ void DBImpl::GCWork(void* db) {
 }
 
 void DBImpl::GCCall() {
-  MutexLock l(&mutex_);
+  //  MutexLock l(&mutex_);
   assert(bg_gc_scheduled_);
 
   if (shutting_down_.Acquire_Load()) {
@@ -1172,23 +1236,33 @@ void DBImpl::GCCall() {
 
   //fixme; later, in makeroomforwrite(), foreground write will wait(), 
   //and this will wake them up after gc frees spaces 
-  //  bg_gc_cv_.SignalAll();
+
+  //wake up waiting at ~DBImpl() ! 
+  MutexLock l(&mutex_);
+  bg_gc_cv_.SignalAll();
 }
 
 //garbage collection thread main function
 void DBImpl::BackgroundGC() {
-  mutex_.AssertHeld();
+  //  mutex_.AssertHeld();
 
   Status status;
-  status = DoGCWork();
 
-  if (status.ok()) {
-    // Done
-  } else if (shutting_down_.Acquire_Load()) {
-    // Ignore compaction errors found during shutting down
-  } else {
-    Log(options_.info_log,
-        "GC error: %s", status.ToString().c_str());
+  // do 1GB each time when gc is running 
+  for (int i=0; i < GC_CHUNK_NUM; i++) {
+
+    status = DoGCWork();
+
+    if (shutting_down_.Acquire_Load()) {
+      break;
+    }
+
+    if (status.ok()) {
+      // Done
+    }  else {
+      Log(options_.info_log,
+	  "GC error: %s", status.ToString().c_str());
+    }
   }
 }
 
@@ -1196,31 +1270,38 @@ void DBImpl::BackgroundGC() {
 //do the real garbage collection work 
 Status DBImpl::DoGCWork() {
   Status s; 
-  uint32_t target = 1024*1024; 
+  uint32_t target = GC_CHUNK_SIZE; 
   uint32_t total_reads = 0, total_writes = 0; 
   uint64_t read_offset = vlog_->GetTail(); 
+  uint64_t start_offset = read_offset; 
   size_t read_size, header_size = 8;
-  char *kv_buf = new char[200*1024]; //maximal kv pair size 
+  char kv_buf[512*1024]; //maximal kv pair size 
   WriteBatch wb; 
 
-  mutex_.Unlock(); 
+  //  mutex_.Unlock(); 
 
-  while(total_writes < target) {     
+  while(total_reads < target) {     
     //read one kv pair 
     uint32_t ksize, vsize;
     Slice read_data; 
-
+ 
     //read (ksize, vsize) header 
     read_size = header_size; 
-    s = ReadVlog(read_offset, read_size, &read_data, kv_buf); 
+    s = GCReadVlog(read_offset, read_size, &read_data, kv_buf); 
     read_offset += read_size;
     if (s.ok()) {
       ksize = DecodeFixed32(read_data.data());
       vsize = DecodeFixed32(read_data.data() + 4);
 
+      //      fprintf(stdout, "gc, readoff: %llu, ksize: %lu, vsize: %lu \n",
+      //      (unsigned long long)read_offset, 
+      //      (unsigned long)ksize, (unsigned long)vsize); 
+
       //read (key, value) data 
       read_size = ksize + vsize; 
-      s = ReadVlog(read_offset, read_size, &read_data, kv_buf + header_size); 
+      assert(read_size < 512 * 1024); 
+      s = GCReadVlog(read_offset, read_size, &read_data, kv_buf + header_size); 
+
       read_offset += read_size;
       total_reads += (header_size + ksize + vsize); 
     }
@@ -1233,48 +1314,92 @@ Status DBImpl::DoGCWork() {
 
       //read (key, vaddr/vsize) from lsm 
       s = Get(opts, key, &lsm_value);  
+      //found the lsm key/value ! 
       if (s.ok()) {
 	uint64_t vaddr;
 	vaddr = DecodeFixed64(lsm_value.c_str());
-	if (vaddr == read_offset + ksize) {
+	if (vaddr == (read_offset - vsize)) {
 	  //valid kv, write it back to vlog file in a batch fashion
 	  wb.Put(key, value);
+
+	  //	  fprintf(stdout, "gc write, key: %s \n", key.data());
+
 	  total_writes += (header_size + ksize + vsize); 
 	}
       }
     }
   }
 
+  //if gc needs to write some valid data 
   if (WriteBatchInternal::Count(&wb)) {
-    //write this batch to vlog file 
-    s = Write(WriteOptions(), &wb);
+    WriteBatch offsets; 
+
+    // writing to vlog file only 
+    {
+      WriteOptions opt; 
+      opt.internal = true; 
+      opt.vlog_only = true;
+      opt.off_updates = &offsets; 
+      s = Write(opt, &wb);
+      assert(s.ok());
+      vlog_->Sync();
+    }
+
+    // writing to lsm only 
+    {
+      WriteOptions opt; 
+      opt.internal = true; 
+      opt.lsm_only = true;
+      opt.sync = true;   // have to sync lsm log ! 
+      offsets.Put("VLOG_TAIL", "XXX");  //store current tail to lsm 
+      s = Write(opt, &offsets);
+      assert(s.ok());
+    } 
+
     Log(options_.info_log, "gc: writebatch size: %zu\n", 
 	WriteBatchInternal::ByteSize(&wb));
   }
 
-  delete[] kv_buf;
+  // gc may not write any valid data, we still needs to punch hole 
+  // punch hole in vlog file to reclaim space 
+  {
+    vlog_->PunchHole(start_offset, read_offset - start_offset);
+    vlog_->Sync();		      
+  }  
 
-  mutex_.Lock();
+  //  delete kv_buf;
+  //  mutex_.Lock();
 
-  if (s.ok()) {
+  // notfound is because gc read only invalid data ! 
+  if (s.ok() || s.IsNotFound()) {
     //update vlog file for space; now, not punch hole, just overwrite 
     vlog_->SetTail(read_offset); 
+
+    /*
+    if(total_reads > total_writes)
+      bg_gc_cv_.SignalAll();
+    */
+    Log(options_.info_log, "tail: %llu \n", (unsigned long long)read_offset); 
 
     //output gc statistics 
     Log(options_.info_log, "gc: total_reads: %lu, total writes: %lu\n", 
 	(unsigned long)total_reads, (unsigned long)total_writes);
   }
   
-  return s; 
+  return s.ok() ? s : Status::OK(); 
 }
 
-
-//ll: code; vlog file read 
+//ll: code; random read vlog file
 Status DBImpl::ReadVlog(uint64_t offset, size_t n, Slice* result, char* scratch) {
   return vlog_read_->Read(offset, n, result, scratch);
 }
 
-//ll: code; read vlog sb from file to memory
+// sequential read vlog file
+Status DBImpl::GCReadVlog(uint64_t offset, size_t n, Slice* result, char* scratch) {
+  return vlog_gc_read_->Read(offset, n, result, scratch);
+}
+
+//read vlog sb from file to memory
 void DBImpl::ReadVlogSB() {
   Status s; 
   Slice result; 
@@ -1350,7 +1475,7 @@ Status DBImpl::Get(const ReadOptions& options,
       s = ReadVlog(vaddr, n, &real_value, buf); 
       if (s.ok()) {
 	value->assign(real_value.data(), real_value.size());
-	delete[] buf;
+	delete [] buf;
 	//	fprintf(stdout, "Get(): value read size: %u\n", (unsigned)value->size()); 
       }
     }
@@ -1416,6 +1541,18 @@ Status DBImpl::Write(const WriteOptions& options, WriteBatch* my_batch) {
   w.sync = options.sync;
   w.done = false;
 
+  //forground thread and need gc for space
+  if (!options.internal && vlog_->NeedGC()) {
+    MaybeScheduleGC(); 
+    //sleep foreground thread when used space bigger than a threshold 
+    while (vlog_->WaitForSpace()) {  
+      Log(options_.info_log, "vlog is on pressure, wait ... \n");
+      //      bg_gc_cv_.Wait();
+      env_->SleepForMicroseconds(1000);
+    }
+    //    Log(options_.info_log, "vlog is not on pressure, wakeup ... \n");
+  }
+
   //ll: mutex and conditional variable to use together; learn later 
   MutexLock l(&mutex_);
   writers_.push_back(&w);
@@ -1432,12 +1569,6 @@ Status DBImpl::Write(const WriteOptions& options, WriteBatch* my_batch) {
   // May temporarily unlock and wait.
   Status status = MakeRoomForWrite(my_batch == NULL);
 
-  //ll: code; garbage collection steps
-  if (vlog_->NeedGC()) {
-    fprintf(stdout, "gc is triggered !!! \n");
-    MaybeScheduleGC(); 
-  }
-
   uint64_t last_sequence = versions_->LastSequence();
   Writer* last_writer = &w;
 
@@ -1450,55 +1581,79 @@ Status DBImpl::Write(const WriteOptions& options, WriteBatch* my_batch) {
     //ll: try to merge several writers together; each writer is a separate thread; 
     //updates is the combined writebatch; last_write is the last combined writer 
     WriteBatch* updates = BuildBatchGroup(&last_writer);
-    //ll: set a sequence number for this combined batch 
-    WriteBatchInternal::SetSequence(updates, last_sequence + 1);
 
-    //ll: code;
-    my_sequence = last_sequence + 1; 
-
-    //ll: sequence number is the number of Put(), not combined batches 
-    last_sequence += WriteBatchInternal::Count(updates);
+    //ll: code; for gc's vlog only write, no need for sequence number 
+    if (!options.vlog_only) {    
+      //ll: set a sequence number for this combined batch 
+      WriteBatchInternal::SetSequence(updates, last_sequence + 1);
+      //ll: code;
+      my_sequence = last_sequence + 1; 
+      //ll: sequence number is the number of Put(), not combined batches 
+      last_sequence += WriteBatchInternal::Count(updates);
+    }
 
     // Add to log and apply to memtable.  We can release the lock
     // during this phase since &w is currently responsible for logging
     // and protects against concurrent loggers and concurrent writes
     // into mem_.
     {
-      mutex_.Unlock();     
+      mutex_.Unlock();  
+
+      uint64_t start_vlog = 0; 
+      uint64_t start_log = 0; 
+      uint64_t start_mem = 0; 
+      bool sync_error = false;
+
+      wait_time_ += env_->NowMicros() - start_wait; 
 
       //ll: code; write values to vlog, construct kUpdates (key, addre/size)
-      WriteBatch kUpdates; 
-      const uint64_t start_vlog = env_->NowMicros();
-      status = vlog_->AddRecord(WriteBatchInternal::Contents(updates), &kUpdates);
+      WriteBatch *kUpdates; 
+      if (options.vlog_only) {
+	// gc's vlog write only 
+	kUpdates = options.off_updates; // gc set options.off_updates; 
+	start_vlog = env_->NowMicros();
+	status = vlog_->AddRecord(WriteBatchInternal::Contents(updates), kUpdates);	
+	vlog_time_ += env_->NowMicros() - start_vlog; 
+      } else {
+	WriteBatch tmp; 
+	if (options.lsm_only) {
+	  // gc's lsm only write 
+	  kUpdates = updates; 
+	} else {
+	  // user's writes 
+	  kUpdates = &tmp; 
+	  start_vlog = env_->NowMicros();
+	  status = vlog_->AddRecord(WriteBatchInternal::Contents(updates), kUpdates);
+	  vlog_time_ += env_->NowMicros() - start_vlog; 
+	}
 
-      //ll: code; set the correct sequence number for kupdates
-      WriteBatchInternal::SetSequence(&kUpdates, my_sequence);
+	//set the correct sequence number for kupdates
+	WriteBatchInternal::SetSequence(kUpdates, my_sequence);
 
-      bool sync_error = false;
-      //ll: code; remove lsm log totally ! 
-      
-      const uint64_t start_log = env_->NowMicros();  
-      status = log_->AddRecord(WriteBatchInternal::Contents(&kUpdates));
-      if (status.ok() && options.sync) {
-        status = logfile_->Sync();
-        if (!status.ok()) {
-          sync_error = true;
-        }
-      }
-      
-      const uint64_t start_mem = env_->NowMicros();
-      if (status.ok()) {      
-	//ll: code; write new key/values to memtable 
-        status = WriteBatchInternal::InsertInto(&kUpdates, mem_);
+	uint64_t start_log = 0;
+
+	//if user require lsm log or gc's lsm write, then write lsm log 
+	if (write_lsm_log_ || options.lsm_only) {
+	  start_log = env_->NowMicros();  
+	  status = log_->AddRecord(WriteBatchInternal::Contents(kUpdates));
+	  if (status.ok() && options.sync) {
+	    status = logfile_->Sync();
+	    if (!status.ok()) {
+	      sync_error = true;
+	    }
+	  }	 
+	  log_time_ += env_->NowMicros() - start_log; 
+	}
+
+	start_mem = env_->NowMicros();
+	if (status.ok()) {      
+	  //ll: code; write new key/values to memtable 
+	  status = WriteBatchInternal::InsertInto(kUpdates, mem_);
+	}
+	mem_time_ += env_->NowMicros() - start_mem; 
       }
 
       mutex_.Lock();
-
-      //ll: code; update time stats
-      wait_time_ += start_vlog - start_wait; 
-      vlog_time_ += start_mem - start_vlog; 
-      //      log_time_ += start_mem - start_log; 
-      mem_time_ += env_->NowMicros() - start_mem; 
 
       if (sync_error) {
         // The state of the log file is indeterminate: the log record we
@@ -1651,8 +1806,8 @@ Status DBImpl::MakeRoomForWrite(bool force) {
       delete logfile_;
       logfile_ = lfile;
       logfile_number_ = new_log_number;
-      //ll: code; use write buffer for log file
-      log_ = new log::Writer(lfile, false);
+      //ll: code; use write buffer for lsm log file
+      log_ = new log::Writer(lfile, true);
       imm_ = mem_;
       has_imm_.Release_Store(imm_);
       mem_ = new MemTable(internal_comparator_);
@@ -1715,6 +1870,8 @@ bool DBImpl::GetProperty(const Slice& property, std::string* value) {
     snprintf(buf, sizeof(buf), "\nwait: %.3f, vlog: %.3f, log: %.3f, mem: %.3f \n",
              wait_time_ * 1e-6, vlog_time_ * 1e-6, 
 	     log_time_ * 1e-6, mem_time_ * 1e-6);
+
+    value->append(buf);
 
     snprintf(buf, sizeof(buf), "\nindex: %.3f, meta: %.3f, block: %.3f\n",
              table_time_.index_time * 1e-6, table_time_.meta_time * 1e-6, 
@@ -1810,9 +1967,12 @@ Status DB::Open(const Options& options, const std::string& dbname,
     }
 
     RandomAccessFile* rfile;
-    s = options.env->NewReadAccessFile(vLogFileName(dbname), &rfile);
+    RandomAccessFile* gcfile;
+    s = options.env->NewReadAccessFile(vLogFileName(dbname), &rfile, true);
+    s = options.env->NewReadAccessFile(vLogFileName(dbname), &gcfile, false);
     if (s.ok()) {
       impl->vlog_read_ = rfile;
+      impl->vlog_gc_read_ = gcfile;
 
       if(wfile_size > 0) {
 	//if vlog file exists, read and init the superblock 

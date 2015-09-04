@@ -16,6 +16,9 @@ class FilterPolicy;
 class Logger;
 class Snapshot;
 
+//ll: code; add writebatch here
+class WriteBatch;
+
 // DB contents are stored in a set of blocks, each of which holds a
 // sequence of key,value pairs.  Each block may be compressed before
 // being stored in a file.  The following enum describes which
@@ -189,8 +192,18 @@ struct WriteOptions {
   // Default: false
   bool sync;
 
+  //ll: code; 
+  bool internal;  // true for garbage collection threads. 
+  bool vlog_only; // gc write to vlog file 
+  bool lsm_only; // gc write to lsm 
+  WriteBatch* off_updates; // offsets updates return from vlog write 
+
   WriteOptions()
-      : sync(false) {
+      : sync(false),
+        internal(false),
+        vlog_only(false),
+        lsm_only(false),
+        off_updates(NULL) {
   }
 };
 

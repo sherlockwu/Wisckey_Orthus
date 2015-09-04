@@ -207,7 +207,7 @@ Status Writer::AddRecord(const Slice& slice, WriteBatch* kUpdates) {
 	  //no need to write anything for values 
 	  
 	  kUpdates->Delete(key);
-	  fprintf(stdout, "delete a record ! \n"); 
+	  //	  fprintf(stdout, "delete key: %s ! \n", key.data()); 
 
         } else {
           return Status::Corruption("bad WriteBatch Delete");

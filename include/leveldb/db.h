@@ -140,6 +140,9 @@ class DB {
   //    db->CompactRange(NULL, NULL);
   virtual void CompactRange(const Slice* begin, const Slice* end) = 0;
 
+  //ll: code; print current vlog head and tail
+  virtual void GetVlogHT(uint64_t *head, uint64_t *tail) = 0;
+
  private:
   // No copying allowed
   DB(const DB&);

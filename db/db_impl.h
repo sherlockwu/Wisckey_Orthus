@@ -42,9 +42,13 @@ class DBImpl : public DB {
   virtual bool GetProperty(const Slice& property, std::string* value);
   virtual void GetApproximateSizes(const Range* range, int n, uint64_t* sizes);
   virtual void CompactRange(const Slice* begin, const Slice* end);
+  //ll: code; print current vlog head and tail
+  virtual void GetVlogHT(uint64_t *head, uint64_t *tail);
 
-  //ll: code; return its internal read buffer for range query
+  //ll: code; random read vlog file: lookup, range query, etc
   Status ReadVlog(uint64_t offset, size_t n, Slice* result, char* scratch); 
+  // sequential read vlog file: garbage collection thread 
+  Status GCReadVlog(uint64_t offset, size_t n, Slice* result, char* scratch); 
 
   //ll: code; return its internal read buffer for range query
   char* Buffer(); 
@@ -99,6 +103,11 @@ class DBImpl : public DB {
   // log-file/memtable and writes a new descriptor iff successful.
   // Errors are recorded in bg_error_.
   void CompactMemTable() EXCLUSIVE_LOCKS_REQUIRED(mutex_);
+
+  //ll: code; Compact the in-memory write buffer to disk.  Switches to a new
+  // log-file/memtable and writes a new descriptor iff successful.
+  // Errors are recorded in bg_error_.
+  void CompactMemTableNoLog() EXCLUSIVE_LOCKS_REQUIRED(mutex_);
 
   Status RecoverLogFile(uint64_t log_number,
                         VersionEdit* edit,
@@ -171,6 +180,10 @@ class DBImpl : public DB {
   WritableFile* vlog_write_;
   vlog::Writer* vlog_;
   RandomAccessFile* vlog_read_;
+  RandomAccessFile* vlog_gc_read_;
+
+  // whether write to lsm log or not 
+  bool write_lsm_log_;
 
   //add vlog file read buffer for range query
   char* buf_; 

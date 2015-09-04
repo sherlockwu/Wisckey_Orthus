@@ -20,7 +20,7 @@ namespace leveldb {
 //store metadata of this vlog file; at the begin of vlog file
 struct SuperBlock {
   uint64_t first, last;
-  uint64_t head, tail; 
+  volatile uint64_t head, tail; 
   uint64_t free;
 }; 
 
