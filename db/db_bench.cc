@@ -45,6 +45,8 @@ static const char* FLAGS_benchmarks =
     "fillseq,"
     "fillsync,"
     "fillrandom,"
+    "gcload,"
+    "gctest,"
     "overwrite,"
     "readrandom,"
     "readrandom,"  // Extra run to allow previous compactions to quiesce
@@ -79,6 +81,9 @@ static int FLAGS_value_size = 100;
 // Arrange to generate values that shrink to this fraction of
 // their original size after compression
 static double FLAGS_compression_ratio = 0.5;
+
+// For gc workloads. Ratio of free space that the garbage collector will find when cleaning a chunk.
+static double FLAGS_gc_freeratio = 0.5;
 
 // Print histogram of operation timings
 static bool FLAGS_histogram = false;
@@ -462,6 +467,12 @@ class Benchmark {
       } else if (name == Slice("fillrandom")) {
         fresh_db = true;
         method = &Benchmark::WriteRandom;
+      } else if (name == Slice("gcload")) {
+        fresh_db = true;
+        method = &Benchmark::DoGCLoad;
+      } else if (name == Slice("gctest")) {
+        fresh_db = false;
+        method = &Benchmark::DoGCTest;
       } else if (name == Slice("overwrite")) {
         fresh_db = false;
         method = &Benchmark::WriteRandom;
@@ -735,7 +746,35 @@ class Benchmark {
     DoWrite(thread, false);
   }
 
-  void DoWrite(ThreadState* thread, bool seq) {
+  void DoGCLoad(ThreadState* thread) {
+    DoWrite(thread, true);
+    const double freeratio = FLAGS_gc_freeratio;
+    RandomGenerator gen;
+    WriteBatch batch;
+    Status s;
+    for (double i = 0; i < num_; i += 1.0 / freeratio) { 
+      batch.Clear();
+      const int k = int(i);
+      char key[100];
+      snprintf(key, sizeof(key), "%016d", k);
+      batch.Delete(key);
+
+      //      fprintf(stdout, "dogcload(): delete key : %s \n", key);
+
+      thread->stats.FinishedSingleOp();
+      s = db_->Write(write_options_, &batch);
+      if (!s.ok()) {
+        fprintf(stderr, "del error: %s\n", s.ToString().c_str());
+        exit(1);
+      }
+    }
+  }
+
+  void DoGCTest(ThreadState* thread) {
+    DoWrite(thread, false, 100 * 1024 * 1024);
+  }
+
+  void DoWrite(ThreadState* thread, bool seq, const int start = 0) {
     if (num_ != FLAGS_num) {
       char msg[100];
       snprintf(msg, sizeof(msg), "(%d ops)", num_);
@@ -749,7 +788,7 @@ class Benchmark {
     for (int i = 0; i < num_; i += entries_per_batch_) {
       batch.Clear();
       for (int j = 0; j < entries_per_batch_; j++) {
-        const int k = seq ? i+j : (thread->rand.Next() % FLAGS_num);
+        const int k = (seq ? i+j : (thread->rand.Next() % FLAGS_num)) + start;
         char key[100];
         snprintf(key, sizeof(key), "%016d", k);
         batch.Put(key, gen.Generate(value_size_));
@@ -779,7 +818,7 @@ class Benchmark {
       bytes += ksize + vsize;
       //fprintf(stdout, "readseq(): ksize: %llu, vsize: %llu \n",  
       //      (unsigned long long)ksize, (unsigned long long)vsize); 
-      //fprintf(stdout, "readseq(): value is : %s \n", iter->value().ToString().c_str());
+      //      fprintf(stdout, "readseq(): key is : %s \n", iter->key().ToString().c_str());
       thread->stats.FinishedSingleOp();
       ++i;
     }
@@ -973,6 +1012,8 @@ int main(int argc, char** argv) {
       FLAGS_benchmarks = argv[i] + strlen("--benchmarks=");
     } else if (sscanf(argv[i], "--compression_ratio=%lf%c", &d, &junk) == 1) {
       FLAGS_compression_ratio = d;
+    } else if (sscanf(argv[i], "--gc_freeratio=%lf%c", &d, &junk) == 1) {
+      FLAGS_gc_freeratio = d;
     } else if (sscanf(argv[i], "--histogram=%d%c", &n, &junk) == 1 &&
                (n == 0 || n == 1)) {
       FLAGS_histogram = n;
