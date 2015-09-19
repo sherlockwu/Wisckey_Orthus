@@ -240,6 +240,27 @@ Status Writer::AddRecord(const Slice& slice, WriteBatch* kUpdates) {
   return s;
 }
 
+Status Writer::ReadCache(uint64_t offset, size_t n, Slice* result, char* scratch) const {
+	unsigned long long buffer_end = sb_.head - 1;
+	unsigned long long buffer_start = sb_.head - values.size();
+	if (offset >= buffer_start && offset <= buffer_end) {
+		if (n > buffer_end - offset + 1) {
+			// This situation will only happen if a crash resulted
+			// in key-offset being inserted in the LSM, but not in
+			// the Vlog.
+			n = buffer_end - offset + 1;
+		}
+		memcpy(scratch, values.data() + (offset - buffer_start), n);
+		*result = Slice(scratch, n);
+		return Status::OK();
+	} else {
+		assert(offset + n - 1 < buffer_start);
+		return Status::NotFound(Slice());
+	}
+}
+
+
+
 }  // namespace log
 }  // namespace leveldb
 
