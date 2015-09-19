@@ -23,8 +23,12 @@ namespace leveldb {
 uint64_t vlog_time_ = 0;
 
 //ll: code; prefetch numbers
-static const size_t kPrefetch = 32; 
-static const size_t kWindow = 64; 
+static const size_t kPrefetch = 64; 
+static size_t kWindow = 64;
+static size_t kSize = 1024*1024*1024;
+static size_t prefetch_size = 0; 
+static size_t user_reads = 0, prefetch_reads = 0;   
+static std::string prefetch_key; 
 static bool preworker_on_ = false; 
 static pthread_t preworker[kPrefetch];
 DBImpl *prefetch_db_ = NULL;
@@ -88,8 +92,8 @@ class DBIter: public Iterator {
   virtual ~DBIter() {
     delete iter_;
 
-    fprintf(stdout, "next_time_ : %f, queue_time_: %f, vlog_time_: %f\n", 
-	    next_time_ * 1e-6, queue_time_ * 1e-6, vlog_time_ * 1e-6);
+//    fprintf(stdout, "next_time_ : %f, queue_time_: %f, vlog_time_: %f\n", 
+//	    next_time_ * 1e-6, queue_time_ * 1e-6, vlog_time_ * 1e-6);
   }
   virtual bool Valid() const { return valid_; }
   virtual Slice key() const {
@@ -248,9 +252,11 @@ void DBIter::Next() {
   FindNextUserEntry(true, &saved_key_);
 
   //ll: code; trigger the prefetcher 
+  /*
   if (!prefetch_on_ && NeedPrefetch()) {
     PrefetchNext();     
   }
+  */
 }
 
 void DBIter::FindNextUserEntry(bool skipping, std::string* skip) {
@@ -401,11 +407,27 @@ Queue<prefetch_entry> prefetch_q;
 
 // update the counter and check whether prefetch or not 
 bool DBIter::NeedPrefetch() {
-  counter_++; 
-  if (counter_ >= kWindow) {
-    counter_ = 0;
+  counter_++;
+  user_reads++;
+
+  if (prefetch_size  <  kSize && counter_ >= kPrefetch) {
+    kWindow *= 2;
+    prefetch_reads += kWindow; 	
+    counter_ = 0; 
     return true; 
-  }
+  } 
+  if (prefetch_size  >=  kSize) {
+    if (user_reads >= prefetch_reads) {
+      fprintf(stdout, "user_reads: %llu, prefetch_reads: %llu, prefetch_size: %llu \n", 
+	      user_reads, prefetch_reads, prefetch_size);	
+      prefetch_reads = 0;
+      user_reads = 0;
+      prefetch_size = 0;
+      kWindow = 1024;
+      counter_ = 0; 	
+      return true; 
+    }
+  }	
   return false;
 }
 
@@ -418,39 +440,53 @@ void DBIter::PrefetchNext() {
   std::string cur_key = ExtractUserKey(iter_->key()).ToString();
 
   //  fprintf(stdout, "PrefetchNext(): cur_key: %s\n", cur_key.data()); 
-
-  struct prefetch_entry entrys[kWindow];
+  struct prefetch_entry *entrys = new prefetch_entry[1000];
 
   //get addr/size, add them to queue
-  for(int i = 0; i < kWindow; i++) {
-    Next(); 
-    if (!Valid())
-      break;
 
-    uint64_t vaddr;
-    uint32_t vsize;
-    Slice lsm_value = (direction_ == kForward) ? iter_->value() : saved_value_;
-    vaddr = DecodeFixed64(lsm_value.data());
-    vsize = DecodeFixed32(lsm_value.data() + 8);
+  if (prefetch_key.length() != 0)
+	Seek(Slice(prefetch_key));
 
-    //    fprintf(stdout, "PrefetchNext(): add address: %llu, size: %lu to queue \n",
-    //	    (unsigned long long)vaddr, (unsigned long)vsize); 
+  int i, j;
+  for(i = 0; i < kWindow;) {
+    for (j = 0; j < 1000 && i < kWindow; j++, i++) {
+      Next(); 
+      if (!Valid()) {
+        i = kWindow;
+        break;
+      }
+  
+      uint64_t vaddr;
+      uint32_t vsize;
+      Slice lsm_value = (direction_ == kForward) ? iter_->value() : saved_value_;
+      vaddr = DecodeFixed64(lsm_value.data());
+      vsize = DecodeFixed32(lsm_value.data() + 8);
+  
+      //    fprintf(stdout, "PrefetchNext(): add address: %llu, size: %lu to queue \n",
+      //	    (unsigned long long)vaddr, (unsigned long)vsize); 
+  
+      entrys[j].address = vaddr;
+      entrys[j].size = vsize;
 
-    entrys[i].address = vaddr;
-    entrys[i].size = vsize;
-  } 
+      prefetch_size += vsize;
+    }
 
-  const uint64_t start_queue = prefetch_db_->env_->NowMicros();
-  prefetch_q.push_many(entrys, kWindow);  
-  queue_time_ += prefetch_db_->env_->NowMicros() - start_queue;   
+    prefetch_q.push_many(entrys, j);
+  }
+
+  //const uint64_t start_queue = prefetch_db_->env_->NowMicros();
+  //queue_time_ += prefetch_db_->env_->NowMicros() - start_queue;   
+
+  prefetch_key = ExtractUserKey(iter_->key()).ToString();
 
   //seek back to the user's position 
   Seek(Slice(cur_key)); 
   prefetch_on_ = false; 
 
+  delete []entrys; 
+
   next_time_ += prefetch_db_->env_->NowMicros() - start_micros; 
 }
-
 
 void *worker(void *arg) {
   char* buf = new char[MAXVALSIZE]; 
