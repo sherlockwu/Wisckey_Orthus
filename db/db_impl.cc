@@ -1390,7 +1390,12 @@ Status DBImpl::DoGCWork() {
 }
 
 //ll: code; random read vlog file
-Status DBImpl::ReadVlog(uint64_t offset, size_t n, Slice* result, char* scratch) {
+  Status DBImpl::ReadVlog(uint64_t offset, size_t n, Slice* result, char* scratch) {
+  Status ret;
+  ret = vlog_->ReadCache(offset, n, result, scratch);
+  if (ret.ok()) {
+    return ret;
+  }
   return vlog_read_->Read(offset, n, result, scratch);
 }
 
@@ -1408,6 +1413,8 @@ void DBImpl::ReadVlogSB() {
   s = vlog_read_->Read(0, sizeof(SuperBlock), &result, scratch);
   if (s.ok()){
     //init sb by reading from vlog file 
+
+    memcpy(scratch, result.data(), result.size());
     vlog_->SetVlogSB(scratch);
     delete scratch; 
   } else {
@@ -1437,6 +1444,13 @@ Status DBImpl::Get(const ReadOptions& options,
 
   bool have_stat_update = false;
   Version::GetStats stats;
+
+#ifdef ALWAYSON_GC
+  //forground thread and need gc for space
+  if (!options.internal && vlog_->NeedGC()) {
+    MaybeScheduleGC(); 
+  }
+#endif
 
   // Unlock while reading from files and memtables
   {
@@ -1468,13 +1482,15 @@ Status DBImpl::Get(const ReadOptions& options,
 	      key.data(), (unsigned long long)vaddr, (unsigned long)vsize); 
       */
 
-      //read the real value from vlog file 
-      size_t n = static_cast<size_t>(vsize);
+      //read the real value from vlog file; 
+      //read the whole tuple (ksize, vsize, key, value)
+      size_t n = static_cast<size_t>(4 + 4 + key.size() + vsize);
       char* buf = new char[n];
-      Slice real_value;
-      s = ReadVlog(vaddr, n, &real_value, buf); 
+      Slice tuple;
+      uint64_t tuple_addr = vaddr - key.size() - 8; 
+      s = ReadVlog(tuple_addr, n, &tuple, buf); 
       if (s.ok()) {
-	value->assign(real_value.data(), real_value.size());
+	value->assign(tuple.data()+8+key.size(), vsize);
 	delete [] buf;
 	//	fprintf(stdout, "Get(): value read size: %u\n", (unsigned)value->size()); 
       }
@@ -1580,6 +1596,7 @@ Status DBImpl::Write(const WriteOptions& options, WriteBatch* my_batch) {
 
     //ll: try to merge several writers together; each writer is a separate thread; 
     //updates is the combined writebatch; last_write is the last combined writer 
+    //fixme: should not combine gc's write with foreground writes 
     WriteBatch* updates = BuildBatchGroup(&last_writer);
 
     //ll: code; for gc's vlog only write, no need for sequence number 
@@ -1969,6 +1986,8 @@ Status DB::Open(const Options& options, const std::string& dbname,
     RandomAccessFile* rfile;
     RandomAccessFile* gcfile;
     s = options.env->NewReadAccessFile(vLogFileName(dbname), &rfile, true);
+    // use mmap() for sequential range query 
+    //    s = options.env->NewRandomAccessFile(vLogFileName(dbname), &rfile);
     s = options.env->NewReadAccessFile(vLogFileName(dbname), &gcfile, false);
     if (s.ok()) {
       impl->vlog_read_ = rfile;

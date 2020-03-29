@@ -378,12 +378,13 @@ class PosixEnv : public Env {
     int ret; 
 
     if (random) {
-      //for lookup 
+      //for lookup       
       ret = posix_fadvise(fd, 0, 0, POSIX_FADV_RANDOM);
       if (ret == 0)
 	fprintf(stdout, "fadvise random works !!! \n");
       else
 	fprintf(stdout, "fadvise random fails  !!! \n");
+      
     } else {
       //for garbage collection 
       ret = posix_fadvise(fd, 0, 0, POSIX_FADV_SEQUENTIAL);

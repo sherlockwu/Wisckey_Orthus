@@ -17,6 +17,7 @@
 #include "util/mutexlock.h"
 #include "util/random.h"
 #include "util/testutil.h"
+#include <iostream>
 
 // Comma-separated list of operations to run in the specified order
 //   Actual benchmarks:
@@ -258,17 +259,22 @@ class Stats {
       char rate[100];
       snprintf(rate, sizeof(rate), "%6.1f MB/s",
                (bytes_ / 1048576.0) / elapsed);
+      std::cout << "ran for " << elapsed << " s, fetched " << bytes_ << " B\n";
+      std::cout << "=========== Rate: " << rate << "\n";
       extra = rate;
     }
     AppendWithSpace(&extra, message_);
 
     //ll: code; add total seconds output 
-    fprintf(stdout, "%-12s : %11.3f micros/op;%s%s;%10.3f\n",
+    fprintf(stdout, "%-12s : %d ops; %11.3f ops/s;%11.3f micros/op;%s%s;%10.3f\n",
             name.ToString().c_str(),
-            seconds_ * 1e6 / done_,
+            done_,
+	    done_ / (seconds_/ FLAGS_threads),
+	    seconds_ * 1e6 / done_,
             (extra.empty() ? "" : " "),
             extra.c_str(), 
 	    seconds_);
+    std::cout << "Kan!!!! " << extra << " " << seconds_ << std::endl;
     if (FLAGS_histogram) {
       fprintf(stdout, "Microseconds per op:\n%s\n", hist_.ToString().c_str());
     }
@@ -843,6 +849,7 @@ class Benchmark {
     ReadOptions options;
     std::string value;
     int found = 0;
+    int64_t bytes = 0;
     for (int i = 0; i < reads_; i++) {
       char key[100];
 
@@ -853,6 +860,7 @@ class Benchmark {
 
       if (db_->Get(options, key, &value).ok()) {
         found++;
+        thread->stats.AddBytes(value.length());
       }
       thread->stats.FinishedSingleOp();
     }

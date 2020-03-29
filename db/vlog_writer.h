@@ -14,9 +14,13 @@
 
 #include "db/dbformat.h"
 
-
-#define MAX_VLOG_SIZE 200*1024*1024*1024
+//#define ALWAYSON_GC
+#define MAX_VLOG_SIZE 400*1024*1024*1024
+#ifdef ALWAYSON_GC
+#define GC_THRESHOLD 0.01
+#else
 #define GC_THRESHOLD 0.9
+#endif
 #define GC_CHUNK_SIZE 4*1024*1024
 #define GC_CHUNK_NUM 256 
 
@@ -47,7 +51,7 @@ class Writer {
   bool WaitForSpace();
   Status PunchHole(uint64_t off, uint64_t len);
   void Sync(); 
-
+  Status ReadCache(uint64_t offset, size_t n, Slice* result, char* scratch) const;
  private:
   WritableFile* dest_;
   SuperBlock sb_; 

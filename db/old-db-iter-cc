@@ -23,12 +23,8 @@ namespace leveldb {
 uint64_t vlog_time_ = 0;
 
 //ll: code; prefetch numbers
-static const size_t kPrefetch = 64; 
-static size_t kWindow = 64;
-static size_t kSize = 512*1024*1024;
-static size_t prefetch_size = 0; 
-static size_t user_reads = 0, prefetch_reads = 0;   
-static std::string prefetch_key; 
+static const size_t kPrefetch = 32; 
+static const size_t kWindow = 64; 
 static bool preworker_on_ = false; 
 static pthread_t preworker[kPrefetch];
 DBImpl *prefetch_db_ = NULL;
@@ -119,27 +115,19 @@ class DBIter: public Iterator {
     //	    ExtractUserKey(iter_->key()).data(),
     //	    (unsigned long long)vaddr, (unsigned long)vsize); 
     
-    const uint64_t start_vlog = prefetch_db_->env_->NowMicros();
-
     //read the real value from vlog file 
-    //read the whole tuple 
-    uint32_t ksize = key().size(); 
-    size_t n = static_cast<size_t>(4 + 4 + ksize + vsize);
-    Slice tuple;
+    size_t n = static_cast<size_t>(vsize);
+    Slice real_value;
+
+    const uint64_t start_vlog = prefetch_db_->env_->NowMicros();
 
     //now, just use a shared buffer for scan; assume one thread ! 
     //fixme: for multipthread, just allocate a buffer locally 
-    char* buf = db_->Buffer();
-    uint64_t tuple_addr = vaddr - ksize - 8; 
-    s = db_->ReadVlog(tuple_addr, n, &tuple, buf); 
+    char* buf = db_->Buffer(); 
+    s = db_->ReadVlog(vaddr, n, &real_value, buf); 
     if (!s.ok()) {
       fprintf(stdout, "db_iter::value(): failed ! \n");
     }
-    Slice real_value(tuple.data() + 8 + ksize, vsize); 
-
-    //    fprintf(stdout, "tuple addr: %llu, tuple size: %lu, ksize: %lu, vsize: %lu\n",   
-    //	    (unsigned long long)tuple_addr, (unsigned long)n, 
-    //	    (unsigned long)ksize, (unsigned long)vsize);  
 
     vlog_time_ += prefetch_db_->env_->NowMicros() - start_vlog;
 
@@ -260,11 +248,9 @@ void DBIter::Next() {
   FindNextUserEntry(true, &saved_key_);
 
   //ll: code; trigger the prefetcher 
-  
   if (!prefetch_on_ && NeedPrefetch()) {
     PrefetchNext();     
   }
-  
 }
 
 void DBIter::FindNextUserEntry(bool skipping, std::string* skip) {
@@ -415,27 +401,11 @@ Queue<prefetch_entry> prefetch_q;
 
 // update the counter and check whether prefetch or not 
 bool DBIter::NeedPrefetch() {
-  counter_++;
-  user_reads++;
-
-  if (prefetch_size  <  kSize && counter_ >= kPrefetch) {
-    kWindow *= 2;
-    prefetch_reads += kWindow; 	
-    counter_ = 0; 
+  counter_++; 
+  if (counter_ >= kWindow) {
+    counter_ = 0;
     return true; 
-  } 
-  if (prefetch_size  >=  kSize) {
-    if (user_reads >= prefetch_reads) {
-      fprintf(stdout, "user_reads: %llu, prefetch_reads: %llu, prefetch_size: %llu \n", 
-	      user_reads, prefetch_reads, prefetch_size);	
-      prefetch_reads = 0;
-      user_reads = 0;
-      prefetch_size = 0;
-      kWindow = 1024;
-      counter_ = 0; 	
-      return true; 
-    }
-  }	
+  }
   return false;
 }
 
@@ -448,53 +418,40 @@ void DBIter::PrefetchNext() {
   std::string cur_key = ExtractUserKey(iter_->key()).ToString();
 
   //  fprintf(stdout, "PrefetchNext(): cur_key: %s\n", cur_key.data()); 
-  struct prefetch_entry *entrys = new prefetch_entry[1000];
+
+  struct prefetch_entry entrys[kWindow];
 
   //get addr/size, add them to queue
+  int i;
+  for(i = 0; i < kWindow; i++) {
+    Next(); 
+    if (!Valid())
+      break;
 
-  if (prefetch_key.length() != 0)
-	Seek(Slice(prefetch_key));
+    uint64_t vaddr;
+    uint32_t vsize;
+    Slice lsm_value = (direction_ == kForward) ? iter_->value() : saved_value_;
+    vaddr = DecodeFixed64(lsm_value.data());
+    vsize = DecodeFixed32(lsm_value.data() + 8);
 
-  int i, j;
-  for(i = 0; i < kWindow;) {
-    for (j = 0; j < 1000 && i < kWindow; j++, i++) {
-      Next(); 
-      if (!Valid()) {
-        i = kWindow;
-        break;
-      }
-  
-      uint64_t vaddr;
-      uint32_t vsize;
-      Slice lsm_value = (direction_ == kForward) ? iter_->value() : saved_value_;
-      vaddr = DecodeFixed64(lsm_value.data());
-      vsize = DecodeFixed32(lsm_value.data() + 8);
-  
-      //    fprintf(stdout, "PrefetchNext(): add address: %llu, size: %lu to queue \n",
-      //	    (unsigned long long)vaddr, (unsigned long)vsize); 
-  
-      entrys[j].address = vaddr;
-      entrys[j].size = vsize;
+    //    fprintf(stdout, "PrefetchNext(): add address: %llu, size: %lu to queue \n",
+    //	    (unsigned long long)vaddr, (unsigned long)vsize); 
 
-      prefetch_size += vsize;
-    }
-
-    prefetch_q.push_many(entrys, j);
+    entrys[i].address = vaddr;
+    entrys[i].size = vsize;
   }
 
-  //const uint64_t start_queue = prefetch_db_->env_->NowMicros();
-  //queue_time_ += prefetch_db_->env_->NowMicros() - start_queue;   
-
-  prefetch_key = ExtractUserKey(iter_->key()).ToString();
+  const uint64_t start_queue = prefetch_db_->env_->NowMicros();
+  prefetch_q.push_many(entrys, i);  
+  queue_time_ += prefetch_db_->env_->NowMicros() - start_queue;   
 
   //seek back to the user's position 
   Seek(Slice(cur_key)); 
   prefetch_on_ = false; 
 
-  delete []entrys; 
-
   next_time_ += prefetch_db_->env_->NowMicros() - start_micros; 
 }
+
 
 void *worker(void *arg) {
   char* buf = new char[MAXVALSIZE]; 
