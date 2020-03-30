@@ -1,0 +1,383 @@
+Keys:       16 bytes each
+Values:     64 bytes each (64 bytes after compression)
+Entries:    1000000
+RawSize:    76.3 MB (estimated)
+FileSize:   76.3 MB (estimated)
+WARNING: Snappy compression is not enabled
+------------------------------------------------
+fadvise random works !!! 
+fadvise sequential works !!! 
+vlog size: 112640 MB, head: 118111600680, tail: 40 
+ran for 19.3466 s, fetched 12800000 B
+=========== Rate:    0.6 MB/s
+readrandom   : 200000 ops;   10337.739 ops/s;     96.733 micros/op;    0.6 MB/s (200000 of 1000000 found);    19.347
+Kan!!!!    0.6 MB/s (200000 of 1000000 found) 19.3466
+
+                 Compactions
+Level  Files Size(MB) Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  2        2       90         0        0         0
+  3       17      947         0        0         0
+  4      179     9975         0        0         0
+  5      392    21845         0        0         0
+
+wait: 0.000, vlog: 0.000, log: 0.000, mem: 0.000 
+
+index: 0.011, meta: 0.000, block: 5.722
+
+gc quits ! 
+flush mem_ at end 
+vlog writer fsync: 0.000 
+Keys:       16 bytes each
+Values:     64 bytes each (64 bytes after compression)
+Entries:    1000000
+RawSize:    76.3 MB (estimated)
+FileSize:   76.3 MB (estimated)
+WARNING: Snappy compression is not enabled
+------------------------------------------------
+fadvise random works !!! 
+fadvise sequential works !!! 
+vlog size: 112640 MB, head: 118111600680, tail: 40 
+ran for 19.8329 s, fetched 25600000 B
+=========== Rate:    1.2 MB/s
+readrandom   : 400000 ops;   26170.442 ops/s;     76.422 micros/op;    1.2 MB/s (200000 of 1000000 found);    30.569
+Kan!!!!    1.2 MB/s (200000 of 1000000 found) 30.5688
+
+                 Compactions
+Level  Files Size(MB) Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  2        2       90         0        0         0
+  3       17      947         0        0         0
+  4      179     9975         0        0         0
+  5      392    21845         0        0         0
+
+wait: 0.000, vlog: 0.000, log: 0.000, mem: 0.000 
+
+index: 0.011, meta: 0.000, block: 9.458
+
+gc quits ! 
+flush mem_ at end 
+vlog writer fsync: 0.000 
+========================= overall  6  experiments =============================
+==================== results in  /home/kanwu/Research/results/leveldb/bcache  ============================
+                ********* Configured with **********
+{'type': 'randomread', 'threads': 1, 'swapiness': 0, 'readahead': 0, 'memory': 1073741824}
+Doing: echo 0 > /sys/class/block/bcache0/queue/read_ahead_kb
+Returned 0 echo 0 > /sys/class/block/bcache0/queue/read_ahead_kb
+Doing: cgcreate -g memory:charlie
+Returned 0 cgcreate -g memory:charlie
+Doing: sync; echo 3 > /proc/sys/vm/drop_caches; sleep 1
+Returned 0 sync; echo 3 > /proc/sys/vm/drop_caches; sleep 1
+Doing: pkill iostat
+Returned 1 pkill iostat
+Doing: iostat -mx 1 /dev/nvme0n1 /dev/nvme1n1  > /dev/shm//iostat.out &
+Returned 0 iostat -mx 1 /dev/nvme0n1 /dev/nvme1n1  > /dev/shm//iostat.out &
+Doing: sudo pkill blkparse
+Returned 1 sudo pkill blkparse
+Doing: sudo pkill blktrace
+Returned 1 sudo pkill blktrace
+              *********** start running ***********
+['cgexec', '-g', 'memory:charlie', '--sticky', '/home/kanwu/Research/739-wisckey/db_bench', '--db=/mnt/bcache/db_64', '--value_size=64', '--cache_size=0', '--compression_ratio=1', '--benchmarks=readrandom', '--use_existing_db=1', '--db_num=1342177280', '--reads=200000', '--threads=1']
+              **************** done ***************
+Doing: sleep 1; sync; sleep 1
+Returned 0 sleep 1; sync; sleep 1
+Doing: pkill iostat; sleep 1
+Returned 0 pkill iostat; sleep 1
+Doing: sync; sleep 1
+Returned 0 sync; sleep 1
+Doing: cp /dev/shm//running /home/kanwu/Research/results/leveldb/bcache/14-10-55_20200329/running
+Returned 1 cp /dev/shm//running /home/kanwu/Research/results/leveldb/bcache/14-10-55_20200329/running
+Doing: cp /dev/shm//iostat.out /home/kanwu/Research/results/leveldb/bcache/14-10-55_20200329/iostat.out
+Returned 0 cp /dev/shm//iostat.out /home/kanwu/Research/results/leveldb/bcache/14-10-55_20200329/iostat.out
+==== utilization statistics ====
+seems too idle of CPU
+93.0933333333 34.9304761905
+=================================
+                ********* Configured with **********
+{'type': 'randomread', 'threads': 2, 'swapiness': 0, 'readahead': 0, 'memory': 1073741824}
+Doing: echo 0 > /sys/class/block/bcache0/queue/read_ahead_kb
+Returned 0 echo 0 > /sys/class/block/bcache0/queue/read_ahead_kb
+Doing: cgcreate -g memory:charlie
+Returned 0 cgcreate -g memory:charlie
+Doing: sync; echo 3 > /proc/sys/vm/drop_caches; sleep 1
+Returned 0 sync; echo 3 > /proc/sys/vm/drop_caches; sleep 1
+Doing: pkill iostat
+Returned 1 pkill iostat
+Doing: iostat -mx 1 /dev/nvme0n1 /dev/nvme1n1  > /dev/shm//iostat.out &
+Returned 0 iostat -mx 1 /dev/nvme0n1 /dev/nvme1n1  > /dev/shm//iostat.out &
+Doing: sudo pkill blkparse
+Returned 1 sudo pkill blkparse
+Doing: sudo pkill blktrace
+Returned 1 sudo pkill blktrace
+              *********** start running ***********
+['cgexec', '-g', 'memory:charlie', '--sticky', '/home/kanwu/Research/739-wisckey/db_bench', '--db=/mnt/bcache/db_64', '--value_size=64', '--cache_size=0', '--compression_ratio=1', '--benchmarks=readrandom', '--use_existing_db=1', '--db_num=1342177280', '--reads=200000', '--threads=2']
+              **************** done ***************
+Doing: sleep 1; sync; sleep 1
+Returned 0 sleep 1; sync; sleep 1
+Doing: pkill iostat; sleep 1
+Returned 0 pkill iostat; sleep 1
+Doing: sync; sleep 1
+Returned 0 sync; sleep 1
+Doing: cp /dev/shm//running /home/kanwu/Research/results/leveldb/bcache/14-11-22_20200329/running
+Returned 1 cp /dev/shm//running /home/kanwu/Research/results/leveldb/bcache/14-11-22_20200329/running
+Doing: cp /dev/shm//iostat.out /home/kanwu/Research/results/leveldb/bcache/14-11-22_20200329/iostat.out
+Returned 0 cp /dev/shm//iostat.out /home/kanwu/Research/results/leveldb/bcache/14-11-22_20200329/iostat.out
+==== utilization statistics ====
+seems too idle of CPU
+198.103333333 36.4957142857
+=================================
+                ********* Configured with **********
+{'type': 'randomread', 'threads': 4, 'swapiness': 0, 'readahead': 0, 'memory': 1073741824}
+Doing: echo 0 > /sys/class/block/bcache0/queue/readKeys:       16 bytes each
+Values:     64 bytes each (64 bytes after compression)
+Entries:    1000000
+RawSize:    76.3 MB (estimated)
+FileSize:   76.3 MB (estimated)
+WARNING: Snappy compression is not enabled
+------------------------------------------------
+fadvise random works !!! 
+fadvise sequential works !!! 
+vlog size: 112640 MB, head: 118111600680, tail: 40 
+ran for 21.8637 s, fetched 51200000 B
+=========== Rate:    2.2 MB/s
+readrandom   : 800000 ops;   47722.902 ops/s;     83.817 micros/op;    2.2 MB/s (200000 of 1000000 found);    67.054
+Kan!!!!    2.2 MB/s (200000 of 1000000 found) 67.0538
+
+                 Compactions
+Level  Files Size(MB) Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  2        2       90         0        0         0
+  3       17      947         0        0         0
+  4      179     9975         0        0         0
+  5      392    21845         0        0         0
+
+wait: 0.000, vlog: 0.000, log: 0.000, mem: 0.000 
+
+index: 0.012, meta: 0.000, block: 21.248
+
+gc quits ! 
+flush mem_ at end 
+vlog writer fsync: 0.000 
+Keys:       16 bytes each
+Values:     64 bytes each (64 bytes after compression)
+Entries:    1000000
+RawSize:    76.3 MB (estimated)
+FileSize:   76.3 MB (estimated)
+WARNING: Snappy compression is not enabled
+------------------------------------------------
+fadvise random works !!! 
+fadvise sequential works !!! 
+vlog size: 112640 MB, head: 118111600680, tail: 40 
+ran for 26.9229 s, fetched 102400000 B
+=========== Rate:    3.6 MB/s
+readrandom   : 1600000 ops;   75135.647 ops/s;    106.474 micros/op;    3.6 MB/s (200000 of 1000000 found);   170.359
+Kan!!!!    3.6 MB/s (200000 of 1000000 found) 170.359
+
+                 Compactions
+Level  Files Size(MB) Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  2        2       90         0        0         0
+  3       17      947         0        0         0
+  4      179     9975         0        0         0
+  5      392    21845         0        0         0
+
+wait: 0.000, vlog: 0.000, log: 0.000, mem: 0.000 
+
+index: 0.015, meta: 0.000, block: 54.148
+
+gc quits ! 
+flush mem_ at end 
+vlog writer fsync: 0.000 
+_ahead_kb
+Returned 0 echo 0 > /sys/class/block/bcache0/queue/read_ahead_kb
+Doing: cgcreate -g memory:charlie
+Returned 0 cgcreate -g memory:charlie
+Doing: sync; echo 3 > /proc/sys/vm/drop_caches; sleep 1
+Returned 0 sync; echo 3 > /proc/sys/vm/drop_caches; sleep 1
+Doing: pkill iostat
+Returned 1 pkill iostat
+Doing: iostat -mx 1 /dev/nvme0n1 /dev/nvme1n1  > /dev/shm//iostat.out &
+Returned 0 iostat -mx 1 /dev/nvme0n1 /dev/nvme1n1  > /dev/shm//iostat.out &
+Doing: sudo pkill blkparse
+Returned 1 sudo pkill blkparse
+Doing: sudo pkill blktrace
+Returned 1 sudo pkill blktrace
+              *********** start running ***********
+['cgexec', '-g', 'memory:charlie', '--sticky', '/home/kanwu/Research/739-wisckey/db_bench', '--db=/mnt/bcache/db_64', '--value_size=64', '--cache_size=0', '--compression_ratio=1', '--benchmarks=readrandom', '--use_existing_db=1', '--db_num=1342177280', '--reads=200000', '--threads=4']
+              **************** done ***************
+Doing: sleep 1; sync; sleep 1
+Returned 0 sleep 1; sync; sleep 1
+Doing: pkill iostat; sleep 1
+Returned 0 pkill iostat; sleep 1
+Doing: sync; sleep 1
+Returned 0 sync; sleep 1
+Doing: cp /dev/shm//running /home/kanwu/Research/results/leveldb/bcache/14-11-47_20200329/running
+Returned 1 cp /dev/shm//running /home/kanwu/Research/results/leveldb/bcache/14-11-47_20200329/running
+Doing: cp /dev/shm//iostat.out /home/kanwu/Research/results/leveldb/bcache/14-11-47_20200329/iostat.out
+Returned 0 cp /dev/shm//iostat.out /home/kanwu/Research/results/leveldb/bcache/14-11-47_20200329/iostat.out
+==== utilization statistics ====
+seems too idle of CPU
+326.17125 67.9845833333
+=================================
+                ********* Configured with **********
+{'type': 'randomread', 'threads': 8, 'swapiness': 0, 'readahead': 0, 'memory': 1073741824}
+Doing: echo 0 > /sys/class/block/bcache0/queue/read_ahead_kb
+Returned 0 echo 0 > /sys/class/block/bcache0/queue/read_ahead_kb
+Doing: cgcreate -g memory:charlie
+Returned 0 cgcreate -g memory:charlie
+Doing: sync; echo 3 > /proc/sys/vm/drop_caches; sleep 1
+Returned 0 sync; echo 3 > /proc/sys/vm/drop_caches; sleep 1
+Doing: pkill iostat
+Returned 1 pkill iostat
+Doing: iostat -mx 1 /dev/nvme0n1 /dev/nvme1n1  > /dev/shm//iostat.out &
+Returned 0 iostat -mx 1 /dev/nvme0n1 /dev/nvme1n1  > /dev/shm//iostat.out &
+Doing: sudo pkill blkparse
+Returned 1 sudo pkill blkparse
+Doing: sudo pkill blktrace
+Returned 1 sudo pkill blktrace
+              *********** start running ***********
+['cgexec', '-g', 'memory:charlie', '--sticky', '/home/kanwu/Research/739-wisckey/db_bench', '--db=/mnt/bcache/db_64', '--value_size=64', '--cache_size=0', '--compression_ratio=1', '--benchmarks=readrandom', '--use_existing_db=1', '--db_num=1342177280', '--reads=200000', '--threads=8']
+              **************** done ***************
+Doing: sleep 1; sync; sleep 1
+Returned 0 sleep 1; sync; sleep 1
+Doing: pkill iostat; sleep 1
+Returned 0 pkill iostat; sleep 1
+Doing: sync; sleep 1
+Returned 0 sync; sleep 1
+Doing: cp /dev/shm//running /home/kanwu/Research/results/leveldb/bcache/14-12-15_20200329/running
+Returned 1 cp /dev/shm//running /home/kanwu/Research/results/leveldb/bcache/14-12-15_20200329/running
+Doing: cp /dev/shm//iostat.out /home/kanwu/Research/results/leveldb/bcache/14-12-15_20200329/iostat.out
+Returned 0 cp /dev/shm//iostat.out /home/kanwu/Research/results/leveldb/bcache/14-12-15_20200329/iostat.out
+==== utilization statistics ====
+iowait  system  user  idle
+10.0633333333 11.084 2.09333333333 76.7606666667
+520.652142857 135.066428571
+=================================
+                ********* Configured with **********
+{'type': 'randomread', 'threads': 16, 'swapiness': 0, 'readahead': 0, 'memory': 1073741824}
+Doing: echo 0 > /sys/class/block/bcache0/queue/read_ahead_kb
+Returned 0 echo 0 > /sys/class/block/bcache0/queue/read_ahead_kb
+Doing: cgcreate -g memory:charlie
+Returned 0 cgcreate -g memory:charlie
+Doing: sync; echo 3 > /proc/sys/vm/drop_caches; sleep 1
+Returned 0 sync; echo 3 > /proc/sys/vm/drop_caches; sleep 1
+Doing: pkill iostat
+Returned 1 pkill iostat
+Doing: iostat -mx 1 /devKeys:       16 bytes each
+Values:     64 bytes each (64 bytes after compression)
+Entries:    1000000
+RawSize:    76.3 MB (estimated)
+FileSize:   76.3 MB (estimated)
+WARNING: Snappy compression is not enabled
+------------------------------------------------
+fadvise random works !!! 
+fadvise sequential works !!! 
+vlog size: 112640 MB, head: 118111600680, tail: 40 
+ran for 38.6535 s, fetched 204800000 B
+=========== Rate:    5.1 MB/s
+readrandom   : 3200000 ops;   96746.172 ops/s;    165.381 micros/op;    5.1 MB/s (200000 of 1000000 found);   529.220
+Kan!!!!    5.1 MB/s (200000 of 1000000 found) 529.22
+
+                 Compactions
+Level  Files Size(MB) Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  2        2       90         0        0         0
+  3       17      947         0        0         0
+  4      179     9975         0        0         0
+  5      392    21845         0        0         0
+
+wait: 0.000, vlog: 0.000, log: 0.000, mem: 0.000 
+
+index: 0.023, meta: 0.000, block: 154.538
+
+gc quits ! 
+flush mem_ at end 
+vlog writer fsync: 0.000 
+Keys:       16 bytes each
+Values:     64 bytes each (64 bytes after compression)
+Entries:    1000000
+RawSize:    76.3 MB (estimated)
+FileSize:   76.3 MB (estimated)
+WARNING: Snappy compression is not enabled
+------------------------------------------------
+fadvise random works !!! 
+fadvise sequential works !!! 
+vlog size: 112640 MB, head: 118111600680, tail: 40 
+ran for 70.7959 s, fetched 409600000 B
+=========== Rate:    5.5 MB/s
+readrandom   : 6400000 ops;   94873.223 ops/s;    337.292 micros/op;    5.5 MB/s (200000 of 1000000 found);  2158.670
+Kan!!!!    5.5 MB/s (200000 of 1000000 found) 2158.67
+
+                 Compactions
+Level  Files Size(MB) Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  2        2       90         0        0         0
+  3       17      947         0        0         0
+  4      179     9975         0        0         0
+  5      392    21845         0        0         0
+
+wait: 0.000, vlog: 0.000, log: 0.000, mem: 0.000 
+
+index: 0.048, meta: 0.000, block: 620.298
+
+gc quits ! 
+flush mem_ at end 
+vlog writer fsync: 0.000 
+/nvme0n1 /dev/nvme1n1  > /dev/shm//iostat.out &
+Returned 0 iostat -mx 1 /dev/nvme0n1 /dev/nvme1n1  > /dev/shm//iostat.out &
+Doing: sudo pkill blkparse
+Returned 1 sudo pkill blkparse
+Doing: sudo pkill blktrace
+Returned 1 sudo pkill blktrace
+              *********** start running ***********
+['cgexec', '-g', 'memory:charlie', '--sticky', '/home/kanwu/Research/739-wisckey/db_bench', '--db=/mnt/bcache/db_64', '--value_size=64', '--cache_size=0', '--compression_ratio=1', '--benchmarks=readrandom', '--use_existing_db=1', '--db_num=1342177280', '--reads=200000', '--threads=16']
+              **************** done ***************
+Doing: sleep 1; sync; sleep 1
+Returned 0 sleep 1; sync; sleep 1
+Doing: pkill iostat; sleep 1
+Returned 0 pkill iostat; sleep 1
+Doing: sync; sleep 1
+Returned 0 sync; sleep 1
+Doing: cp /dev/shm//running /home/kanwu/Research/results/leveldb/bcache/14-12-48_20200329/running
+Returned 1 cp /dev/shm//running /home/kanwu/Research/results/leveldb/bcache/14-12-48_20200329/running
+Doing: cp /dev/shm//iostat.out /home/kanwu/Research/results/leveldb/bcache/14-12-48_20200329/iostat.out
+Returned 0 cp /dev/shm//iostat.out /home/kanwu/Research/results/leveldb/bcache/14-12-48_20200329/iostat.out
+==== utilization statistics ====
+iowait  system  user  idle
+18.9744736842 18.8818421053 2.46 59.6831578947
+687.247105263 264.531052632
+=================================
+                ********* Configured with **********
+{'type': 'randomread', 'threads': 32, 'swapiness': 0, 'readahead': 0, 'memory': 1073741824}
+Doing: echo 0 > /sys/class/block/bcache0/queue/read_ahead_kb
+Returned 0 echo 0 > /sys/class/block/bcache0/queue/read_ahead_kb
+Doing: cgcreate -g memory:charlie
+Returned 0 cgcreate -g memory:charlie
+Doing: sync; echo 3 > /proc/sys/vm/drop_caches; sleep 1
+Returned 0 sync; echo 3 > /proc/sys/vm/drop_caches; sleep 1
+Doing: pkill iostat
+Returned 1 pkill iostat
+Doing: iostat -mx 1 /dev/nvme0n1 /dev/nvme1n1  > /dev/shm//iostat.out &
+Returned 0 iostat -mx 1 /dev/nvme0n1 /dev/nvme1n1  > /dev/shm//iostat.out &
+Doing: sudo pkill blkparse
+Returned 1 sudo pkill blkparse
+Doing: sudo pkill blktrace
+Returned 1 sudo pkill blktrace
+              *********** start running ***********
+['cgexec', '-g', 'memory:charlie', '--sticky', '/home/kanwu/Research/739-wisckey/db_bench', '--db=/mnt/bcache/db_64', '--value_size=64', '--cache_size=0', '--compression_ratio=1', '--benchmarks=readrandom', '--use_existing_db=1', '--db_num=1342177280', '--reads=200000', '--threads=32']
+              **************** done ***************
+Doing: sleep 1; sync; sleep 1
+Returned 0 sleep 1; sync; sleep 1
+Doing: pkill iostat; sleep 1
+Returned 0 pkill iostat; sleep 1
+Doing: sync; sleep 1
+Returned 0 sync; sleep 1
+Doing: cp /dev/shm//running /home/kanwu/Research/results/leveldb/bcache/14-13-33_20200329/running
+Returned 1 cp /dev/shm//running /home/kanwu/Research/results/leveldb/bcache/14-13-33_20200329/running
+Doing: cp /dev/shm//iostat.out /home/kanwu/Research/results/leveldb/bcache/14-13-33_20200329/iostat.out
+Returned 0 cp /dev/shm//iostat.out /home/kanwu/Research/results/leveldb/bcache/14-13-33_20200329/iostat.out
+==== utilization statistics ====
+iowait  system  user  idle
+36.22 28.7209859155 3.39169014085 31.6678873239
+694.940806452 463.061935484
+=================================

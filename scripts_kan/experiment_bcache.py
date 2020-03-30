@@ -21,7 +21,7 @@ GB = 1024 * MB
 class Experiment(object):
     def __init__(self):
         # config something
-        self.exp_name = 'testing'
+        self.exp_name = 'leveldb/bcache'
         self.home_dir = '/home/kanwu/Research/'
         self.res_dir = self.home_dir + 'results/' + self.exp_name
         self.tmp_dir = '/dev/shm/'
@@ -32,7 +32,7 @@ class Experiment(object):
         self.tools_config = {
             'clear_page_cache': True,   # whether clear page cache before each run 
             'blktrace'        : False,   # check block IOs
-            'iostat'          : False,  # check ios and cpu/io utilization
+            'iostat'          : True,  # check ios and cpu/io utilization
             'perf'            : False,  # draw flamegraph
             'sar'             : False   # check page faults
         }
@@ -40,11 +40,11 @@ class Experiment(object):
         # experiment config
         config = {
           'type': ['randomread'],
-          #'threads': [1, 2, 4, 8, 16, 32],
-          'threads': [16],
+          'threads': [1, 2, 4, 8, 16, 32],
+          #'threads': [1],
           'memory': [1*GB],    #'memory limit'
           'swapiness': [0],
-          'readahead': [16]    # default 128KB
+          'readahead': [0]    # default 128KB
         }
 
         # handle
@@ -73,9 +73,9 @@ class Experiment(object):
         self.dump_config(config)
         
         # set readahead
-        shcmd('echo ' + str(config['readahead']) + ' > /sys/class/block/nvme0n1/queue/read_ahead_kb', ignore_error = True)
-        shcmd('echo ' + str(config['readahead']) + ' > /sys/class/block/nvme1n1/queue/read_ahead_kb', ignore_error = True)
-        #shcmd('echo 0 > /sys/class/block/bcache0/queue/read_ahead_kb', ignore_error = True)
+        #shcmd('echo ' + str(config['readahead']) + ' > /sys/class/block/nvme0n1/queue/read_ahead_kb')
+        #shcmd('echo ' + str(config['readahead']) + ' > /sys/class/block/nvme1n1/queue/read_ahead_kb')
+        shcmd('echo 0 > /sys/class/block/bcache0/queue/read_ahead_kb')
         
         # set cgroup
         self.cg = Cgroup(name='charlie', subs='memory')
@@ -101,7 +101,7 @@ class Experiment(object):
     def exp(self, config):
         print '              *********** start running ***********'
         #cmd = '/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/970/db_64 --value_size=64 --cache_size=0 --compression_ratio=1 --benchmarks=readrandom --use_existing_db=1 --db_num=1342177280 --reads=100000 ' + '--threads=' + str(config['threads']) #+ ' > /dev/shm/running'
-        cmd = '/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/bcache/db_64 --value_size=64 --cache_size=0 --compression_ratio=1 --benchmarks=readrandom --use_existing_db=1 --db_num=1342177280 --reads=10000000 ' + '--threads=' + str(config['threads']) #+ ' > /dev/shm/running'
+        cmd = '/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/bcache/db_64 --value_size=64 --cache_size=0 --compression_ratio=1 --benchmarks=readrandom --use_existing_db=1 --db_num=1342177280 --reads=200000 ' + '--threads=' + str(config['threads']) #+ ' > /dev/shm/running'
         
         #shcmd(cmd)
         p = self.cg.execute(shlex.split(cmd))
