@@ -1390,13 +1390,50 @@ Status DBImpl::DoGCWork() {
 }
 
 //ll: code; random read vlog file
-  Status DBImpl::ReadVlog(uint64_t offset, size_t n, Slice* result, char* scratch) {
+Status DBImpl::ReadVlog(uint64_t offset, size_t n, Slice* result, char* scratch) {
   Status ret;
   ret = vlog_->ReadCache(offset, n, result, scratch);
   if (ret.ok()) {
     return ret;
   }
-  return vlog_read_->Read(offset, n, result, scratch);
+
+  // Kan: add block cache logic
+  Status s;
+  // TODO: how to get the persist_block_cache handler
+  if (vlog_read_->backed_file != NULL && options_.persist_block_cache != NULL) { // it has backed file, not pinned into DRAM, && (fastrand()%100) < 50
+      /*
+      // TODO creat the key for cache lookup
+      char cache_key_buffer[16];
+      EncodeFixed64(cache_key_buffer, table->rep_->cache_id);
+      EncodeFixed64(cache_key_buffer+8, handle.offset());
+      Slice key(cache_key_buffer, sizeof(cache_key_buffer));
+      
+      // TODO look up the cache
+      cache_handle = block_cache->Lookup(key);
+      if (cache_handle != NULL) {
+        // TODO cache hit, it is in Optane SSD; actually we need a space allocator for the Optane device
+        //block = reinterpret_cast<Block*>(block_cache->Value(cache_handle));
+	s = vlog_read_->Read(offset, n, result, scratch);
+      } else {
+	// TODO cache miss, read from the flash file
+        s = (vlog_read_->backed_file)->Read(offset, n, result, scratch);
+        
+	s = ReadBlock(table->rep_->file, options, handle, &contents);
+        if (s.ok()) {
+          block = new Block(contents);
+          if (contents.cachable && options.fill_cache) {
+            cache_handle = block_cache->Insert(
+                key, block, block->size(), &DeleteCachedBlock);
+          }
+        }
+      }
+      */
+  } else {
+    s = vlog_read_->Read(offset, n, result, scratch);
+  }	  
+	  
+  return s;
+  //return vlog_read_->Read(offset, n, result, scratch);
 }
 
 // sequential read vlog file
@@ -1974,6 +2011,8 @@ Status DB::Open(const Options& options, const std::string& dbname,
     //ll: code; init vlog read and write files, similar to log file 
     WritableFile* wfile;
     uint64_t wfile_size;
+
+    //Kan: TODO enable cache for writes
     s = options.env->NewWritableFile(vLogFileName(dbname), &wfile);
     if (s.ok()) {
       impl->vlog_write_ = wfile;
@@ -2010,6 +2049,17 @@ Status DB::Open(const Options& options, const std::string& dbname,
 	      (unsigned long long)impl->vlog_->GetTail());
 
       s = impl->versions_->LogAndApply(&edit, &impl->mutex_);
+    
+      
+      // Kan: to attach a backup file for vlog
+      if (options.use_persist_cache) {
+        std::string backed_file_name = vLogFileName(dbname);
+        std::string substr("optane");
+        std::size_t start_pos = (backed_file_name).find(substr);
+        backed_file_name.replace(start_pos, substr.length(), "970");
+        std::cout << "This is to open the backed vlog file: " << backed_file_name << "\n"; 
+        Status s_backed = options.env->NewReadAccessFile(backed_file_name, &(rfile->backed_file), true); 
+      }
     }
 
     //ll: after open a db, it will start to do compaction if db needs !!! 

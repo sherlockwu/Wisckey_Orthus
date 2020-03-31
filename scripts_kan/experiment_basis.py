@@ -21,7 +21,7 @@ GB = 1024 * MB
 class Experiment(object):
     def __init__(self):
         # config something
-        self.exp_name = 'leveldb/simple_split+reject'
+        self.exp_name = 'leveldb/testing'
         self.home_dir = '/home/kanwu/Research/'
         self.res_dir = self.home_dir + 'results/' + self.exp_name
         self.tmp_dir = '/dev/shm/'
@@ -41,7 +41,7 @@ class Experiment(object):
         config = {
           'type': ['randomread'],
           #'threads': [1, 2, 4, 8, 16, 32],
-          'threads': [1, 2, 4, 8, 16, 32],
+          'threads': [16],
           'memory': [1*GB],    #'memory limit'
           'swapiness': [0],
           #'readahead': [128, 0, 16]    # default 128KB

@@ -6,6 +6,7 @@
 #define STORAGE_LEVELDB_INCLUDE_OPTIONS_H_
 
 #include <stddef.h>
+#include <iostream>
 
 namespace leveldb {
 
@@ -103,6 +104,7 @@ struct Options {
 
   // Kan: for persist cache
   bool use_persist_cache;
+  Cache* persist_block_cache;
 
   // Approximate size of user data packed per block.  Note that the
   // block size specified here corresponds to uncompressed data.  The

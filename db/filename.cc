@@ -31,8 +31,8 @@ std::string LogFileName(const std::string& name, uint64_t number) {
 
 //ll: vlog file name
 std::string vLogFileName(const std::string& dbname) {
-  //return dbname + "/vlog"; 
-  return "/mnt/970/db_64/vlog"; 
+  return dbname + "/vlog"; 
+  //return "/mnt/970/db_64/vlog"; 
 }
 
 std::string TableFileName(const std::string& name, uint64_t number) {

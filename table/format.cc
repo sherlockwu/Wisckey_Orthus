@@ -83,7 +83,7 @@ Status ReadBlock(RandomAccessFile* file,
 
   //Status s = file->Read(handle.offset(), n + kBlockTrailerSize, &contents, buf);
   Status s;
-  if (file->backed_file != NULL && (fastrand()%100) < 18) {
+  if (file->backed_file != NULL && (fastrand()%100) < 0) {
     s = (file->backed_file)->Read(handle.offset(), n + kBlockTrailerSize, &contents, buf);
   } else {
     s = file->Read(handle.offset(), n + kBlockTrailerSize, &contents, buf);
