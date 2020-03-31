@@ -25,6 +25,7 @@
 #include "util/posix_logger.h"
 
 #include <fcntl.h>
+#include <iostream>
 
 namespace leveldb {
 
@@ -98,7 +99,8 @@ class MmapLimiter {
  public:
   // Up to 1000 mmaps for 64-bit binaries; none for smaller pointer sizes.
   MmapLimiter() {
-    SetAllowed(sizeof(void*) >= 8 ? 1000 : 0);
+    SetAllowed(sizeof(void*) >= 8 ? 10000 : 0);  // Kan: to make it easy, don't use mmap
+    //SetAllowed(sizeof(void*) >= 8 ? 1000 : 0);
   }
 
   // If another mmap slot is available, acquire it and return true.
@@ -347,8 +349,10 @@ class PosixEnv : public Env {
     Status s;
     int fd = open(fname.c_str(), O_RDONLY);
     if (fd < 0) {
+      std::cout << "open file failed " << fname << " " << errno << std::endl;
       s = IOError(fname, errno);
-    } else if (mmap_limit_.Acquire()) { //ll: limit is 1000 mmap files ! 
+    } else if (mmap_limit_.Acquire()) { //ll: limit is 1000 mmap files !   //Kan: now limit is 0
+      //std::cout << "!!!!!!!!!! GET IN MMAP !!!!!!!!!!!!\n";
       uint64_t size;
       s = GetFileSize(fname, &size);
       if (s.ok()) {
@@ -363,9 +367,15 @@ class PosixEnv : public Env {
       if (!s.ok()) {
         mmap_limit_.Release();
       }
-    } else { //ll: over the limits, use normal read() over mmap() 
+    } else { //ll: over the limits, use normal read() over mmap()
       *result = new PosixRandomAccessFile(fname, fd);
+      if (*result == NULL) {
+	exit(1);
+      }
     }
+
+    // Kan: set the filename
+    //(*result)->basic_file_name = fname;
     return s;
   }
 

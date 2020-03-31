@@ -9,6 +9,7 @@
 #include "table/block.h"
 #include "util/coding.h"
 #include "util/crc32c.h"
+#include "util/random.h"
 
 namespace leveldb {
 
@@ -80,7 +81,13 @@ Status ReadBlock(RandomAccessFile* file,
   //ll: output
   //  fprintf(stdout, "read size: %zu \n", n);
 
-  Status s = file->Read(handle.offset(), n + kBlockTrailerSize, &contents, buf);
+  //Status s = file->Read(handle.offset(), n + kBlockTrailerSize, &contents, buf);
+  Status s;
+  if (file->backed_file != NULL && (fastrand()%100) < 18) {
+    s = (file->backed_file)->Read(handle.offset(), n + kBlockTrailerSize, &contents, buf);
+  } else {
+    s = file->Read(handle.offset(), n + kBlockTrailerSize, &contents, buf);
+  }
   if (!s.ok()) {
     delete[] buf;
     return s;

@@ -14,6 +14,7 @@
 #include "table/format.h"
 #include "table/two_level_iterator.h"
 #include "util/coding.h"
+#include <iostream>
 
 namespace leveldb {
 
