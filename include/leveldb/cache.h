@@ -20,6 +20,7 @@
 
 #include <stdint.h>
 #include "leveldb/slice.h"
+#include <iostream>
 
 namespace leveldb {
 
