@@ -168,7 +168,13 @@ DBImpl::DBImpl(const Options& raw_options, const std::string& dbname)
   buf_ = new char[512*1024]; 
 
   //by default, not write to lsm log 
-  write_lsm_log_ = false; 
+  write_lsm_log_ = false;
+
+
+  //Kan: to use the persist block cache for vlog
+  vlog_cache_id = options_.persist_block_cache->NewId();
+  persist_block_cache = options_.persist_block_cache;
+  vlog_cache_write_fd = open("/mnt/optane/vlog_cache", O_RDWR, 0644);
 }
 
 DBImpl::~DBImpl() {
@@ -1389,6 +1395,9 @@ Status DBImpl::DoGCWork() {
   return s.ok() ? s : Status::OK(); 
 }
 
+static void DeleteNothing(const Slice& key, void* value) {
+}
+
 //ll: code; random read vlog file
 Status DBImpl::ReadVlog(uint64_t offset, size_t n, Slice* result, char* scratch) {
   Status ret;
@@ -1399,35 +1408,43 @@ Status DBImpl::ReadVlog(uint64_t offset, size_t n, Slice* result, char* scratch)
 
   // Kan: add block cache logic
   Status s;
-  // TODO: how to get the persist_block_cache handler
-  if (vlog_read_->backed_file != NULL && options_.persist_block_cache != NULL) { // it has backed file, not pinned into DRAM, && (fastrand()%100) < 50
-      /*
-      // TODO creat the key for cache lookup
+  Cache::Handle* cache_handle = NULL;
+  if (false && vlog_read_->backed_file != NULL && persist_block_cache != NULL) { // it has backed file, not pinned into DRAM, && (fastrand()%100) < 50
+      // creat the key for cache lookup
       char cache_key_buffer[16];
-      EncodeFixed64(cache_key_buffer, table->rep_->cache_id);
-      EncodeFixed64(cache_key_buffer+8, handle.offset());
+      EncodeFixed64(cache_key_buffer, vlog_cache_id);
+      EncodeFixed64(cache_key_buffer+8, offset / 4096);    // page grained caching for vlog
       Slice key(cache_key_buffer, sizeof(cache_key_buffer));
       
-      // TODO look up the cache
-      cache_handle = block_cache->Lookup(key);
+      // look up the cache
+      cache_handle = persist_block_cache->Lookup(key);
       if (cache_handle != NULL) {
-        // TODO cache hit, it is in Optane SSD; actually we need a space allocator for the Optane device
-        //block = reinterpret_cast<Block*>(block_cache->Value(cache_handle));
-	s = vlog_read_->Read(offset, n, result, scratch);
+        // cache hit, it is in Optane SSD; TODO actually we need a space allocator for the Optane device
+	//std::cout << "we do have a hit \n" << offset / 4096;
+
+	// TODO decide whether to admit the load
+	if (true) {
+	  s = vlog_read_->Read(offset, n, result, scratch);
+        }
       } else {
-	// TODO cache miss, read from the flash file
+	//std::cout << "we got a miss: " << offset / 4096 << std::endl;
+	// cache miss, read from the flash file
         s = (vlog_read_->backed_file)->Read(offset, n, result, scratch);
         
-	s = ReadBlock(table->rep_->file, options, handle, &contents);
-        if (s.ok()) {
-          block = new Block(contents);
-          if (contents.cachable && options.fill_cache) {
-            cache_handle = block_cache->Insert(
-                key, block, block->size(), &DeleteCachedBlock);
-          }
-        }
+	// TODO decide whether to admit
+        if (true) {
+	  
+          // TODO write it to the Optane SSD?
+	  pwrite(vlog_cache_write_fd, scratch, n, offset); 
+	  void * fake_block = (void *) 666;
+          cache_handle = persist_block_cache->Insert(key, fake_block, 4096, &DeleteNothing);
+        
+	}
+
       }
-      */
+      // Need to release the reference
+      if (cache_handle != NULL)  
+        persist_block_cache->Release(cache_handle);
   } else {
     s = vlog_read_->Read(offset, n, result, scratch);
   }	  

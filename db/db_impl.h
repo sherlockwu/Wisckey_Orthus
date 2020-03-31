@@ -15,6 +15,8 @@
 #include "leveldb/env.h"
 #include "port/port.h"
 #include "port/thread_annotations.h"
+#include <fcntl.h>    /* For O_RDWR */
+#include <unistd.h>   /* For open(), creat() */
 
 namespace leveldb {
 
@@ -181,6 +183,10 @@ class DBImpl : public DB {
   vlog::Writer* vlog_;
   RandomAccessFile* vlog_read_;
   RandomAccessFile* vlog_gc_read_;
+  // Kan: for persist cache id
+  uint64_t vlog_cache_id; 
+  Cache * persist_block_cache;
+  int vlog_cache_write_fd;
 
   // whether write to lsm log or not 
   bool write_lsm_log_;

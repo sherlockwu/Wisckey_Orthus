@@ -190,7 +190,7 @@ void LRUCache::Unref(LRUHandle* e) {
     usage_ -= e->charge;
     (*e->deleter)(e->key(), e->value);
     free(e);
-  }
+  } 
 }
 
 void LRUCache::LRU_Remove(LRUHandle* e) {
@@ -244,10 +244,11 @@ Cache::Handle* LRUCache::Insert(
     LRU_Remove(old);
     Unref(old);
   }
-
+  //std::cout << this << " Insert " << charge << ", used: " << usage_  << ", capacity: " << capacity_ << std::endl; 
   while (usage_ > capacity_ && lru_.next != &lru_) {
     LRUHandle* old = lru_.next;
     LRU_Remove(old);
+    //std::cout << "This is to evict " << old->refs << std::endl;
     table_.Remove(old->key(), old->hash);
     Unref(old);
   }
