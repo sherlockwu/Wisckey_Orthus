@@ -100,6 +100,10 @@ struct Options {
   // Default: NULL
   Cache* block_cache;
 
+
+  // Kan: for persist cache
+  bool use_persist_cache;
+
   // Approximate size of user data packed per block.  Note that the
   // block size specified here corresponds to uncompressed data.  The
   // actual size of the unit read from disk may be smaller if

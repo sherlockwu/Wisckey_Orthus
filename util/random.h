@@ -12,6 +12,14 @@ namespace leveldb {
 // A very simple random number generator.  Not especially good at
 // generating truly random bits, but good enough for our needs in this
 // package.
+
+static unsigned int g_seed = 2333; 
+inline int fastrand() { 
+  g_seed = (214013*g_seed+2531011); 
+  return (g_seed>>16)&0x7FFF; 
+} 	
+	
+	
 class Random {
  private:
   uint32_t seed_;

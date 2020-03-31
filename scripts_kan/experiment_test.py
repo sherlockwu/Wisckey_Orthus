@@ -32,16 +32,16 @@ class Experiment(object):
         self.tools_config = {
             'clear_page_cache': True,   # whether clear page cache before each run 
             'blktrace'        : False,   # check block IOs
-            'iostat'          : False,  # check ios and cpu/io utilization
+            'iostat'          : True,  # check ios and cpu/io utilization
             'perf'            : False,  # draw flamegraph
             'sar'             : False   # check page faults
         }
 
         # experiment config
         config = {
-          'type': ['randomread'],
+          'type': ['randomread_optane_only'],
           #'threads': [1, 2, 4, 8, 16, 32],
-          'threads': [16],
+          'threads': [16, 32],
           'memory': [1*GB],    #'memory limit'
           'swapiness': [0],
           'readahead': [16]    # default 128KB
@@ -100,8 +100,8 @@ class Experiment(object):
  
     def exp(self, config):
         print '              *********** start running ***********'
-        #cmd = '/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/970/db_64 --value_size=64 --cache_size=0 --compression_ratio=1 --benchmarks=readrandom --use_existing_db=1 --db_num=1342177280 --reads=100000 ' + '--threads=' + str(config['threads']) #+ ' > /dev/shm/running'
-        cmd = '/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/bcache/db_64 --value_size=64 --cache_size=0 --compression_ratio=1 --benchmarks=readrandom --use_existing_db=1 --db_num=1342177280 --reads=10000000 ' + '--threads=' + str(config['threads']) #+ ' > /dev/shm/running'
+        cmd = '/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/optane/db_64 --value_size=64 --cache_size=0 --compression_ratio=1 --benchmarks=readrandom --use_existing_db=1 --db_num=1342177280 --reads=100000 ' + '--threads=' + str(config['threads']) #+ ' > /dev/shm/running'
+        #cmd = '/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/bcache/db_64 --value_size=64 --cache_size=0 --compression_ratio=1 --benchmarks=readrandom --use_existing_db=1 --db_num=1342177280 --reads=10000000 ' + '--threads=' + str(config['threads']) #+ ' > /dev/shm/running'
         
         #shcmd(cmd)
         p = self.cg.execute(shlex.split(cmd))
