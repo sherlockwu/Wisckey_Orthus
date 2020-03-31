@@ -374,8 +374,6 @@ class PosixEnv : public Env {
       }
     }
 
-    // Kan: set the filename
-    //(*result)->basic_file_name = fname;
     return s;
   }
 
