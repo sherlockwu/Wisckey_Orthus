@@ -59,6 +59,7 @@ class Cache {
   // must call this->Release(handle) when the returned mapping is no
   // longer needed.
   virtual Handle* Lookup(const Slice& key) = 0;
+  virtual Handle* Lookup(const Slice& key, uint64_t * offset) = 0;
 
   // Release a mapping returned by a previous Lookup().
   // REQUIRES: handle must not have been released yet.

@@ -317,10 +317,91 @@ class ShardedLRUCache : public Cache {
   }
 };
 
+
+class ShardedBucketLRUCache : public Cache {
+
+ // bucket = 64KB
+ 
+
+ private:
+  LRUCache shard_[kNumShards];
+  port::Mutex id_mutex_;
+  uint64_t last_id_;
+  
+  uint64_t bucket_size = 64 * 1024;    // Bucket size in KB
+  uint64_t total_buckets = 128; // TODO total size / bucket_size 
+  HandleTable offset_table_;    // map from a key to the offset on Optane SSD
+  uint64_t buffer_buckets[16];  // buffer bucket for blocks, size of k * 4KB
+  
+	  
+  static inline uint32_t HashSlice(const Slice& s) {
+    return Hash(s.data(), s.size(), 0);
+  }
+
+  static uint32_t Shard(uint32_t hash) {
+    return hash >> (32 - kNumShardBits);
+  }
+
+ public:
+  explicit ShardedBucketLRUCache(size_t capacity)
+      : last_id_(0) {
+
+    total_buckets = capacity / bucket_size;
+    for (int i = 0; i < 16; i++)     // set to invalid
+      buffer_buckets[i] = total_buckets + 1;
+
+    const size_t per_shard = (capacity + (kNumShards - 1)) / kNumShards;
+    for (int s = 0; s < kNumShards; s++) {
+      shard_[s].SetCapacity(per_shard);
+    }
+  }
+  virtual ~ShardedBucketLRUCache() { }
+  virtual Handle* Insert(const Slice& key, void* value, size_t charge,
+                         void (*deleter)(const Slice& key, void* value)) {
+    // TODO evict one bucket for putting new data all of size charge, if this kind of buffer bucket does not exist
+    // TODO insert the new bucket into the LRU cache
+    // TODO put the value into the bucket, by updating the hash table!
+    // TODO need to update the frequency of the bucket handle in the lRUcache
+    //Handle * bucket_handle = shard_[Shard(hash)].Lookup(key, hash);
+    
+    const uint32_t hash = HashSlice(key);
+    return shard_[Shard(hash)].Insert(key, hash, value, charge, deleter);
+  }
+  virtual Handle* Lookup(const Slice& key, uint64_t * offset) {
+    // TODO map the key to the bucket, and the in bucket offset
+    
+    //offset = ;
+    
+    // TODO map the bucket id to the hash	  
+    const uint32_t hash = HashSlice(key);
+    Handle * bucket_handle = shard_[Shard(hash)].Lookup(key, hash);
+    return bucket_handle;
+  }
+  virtual Handle* Lookup(const Slice& key) {
+    const uint32_t hash = HashSlice(key);
+    return shard_[Shard(hash)].Lookup(key, hash);
+  }
+  virtual void Release(Handle* handle) {
+    LRUHandle* h = reinterpret_cast<LRUHandle*>(handle);
+    shard_[Shard(h->hash)].Release(handle);
+  }
+  virtual void Erase(const Slice& key) {
+    const uint32_t hash = HashSlice(key);
+    shard_[Shard(hash)].Erase(key, hash);
+  }
+  virtual void* Value(Handle* handle) {
+    return reinterpret_cast<LRUHandle*>(handle)->value;
+  }
+  virtual uint64_t NewId() {
+    MutexLock l(&id_mutex_);
+    return ++(last_id_);
+  }
+};
 }  // end anonymous namespace
 
 Cache* NewLRUCache(size_t capacity) {
-  return new ShardedLRUCache(capacity);
+  //return new ShardedLRUCache(capacity);
+  return new ShardedBucketLRUCache(capacity);
 }
 
 }  // namespace leveldb
