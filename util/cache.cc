@@ -300,6 +300,7 @@ class ShardedLRUCache : public Cache {
     const uint32_t hash = HashSlice(key);
     return shard_[Shard(hash)].Lookup(key, hash);
   }
+  virtual Handle* Lookup(const Slice& key, uint64_t * offset) {};  // this is for persist cache
   virtual void Release(Handle* handle) {
     LRUHandle* h = reinterpret_cast<LRUHandle*>(handle);
     shard_[Shard(h->hash)].Release(handle);
@@ -397,10 +398,15 @@ class ShardedBucketLRUCache : public Cache {
     return ++(last_id_);
   }
 };
+
+
 }  // end anonymous namespace
 
 Cache* NewLRUCache(size_t capacity) {
-  //return new ShardedLRUCache(capacity);
+  return new ShardedLRUCache(capacity);
+}
+
+Cache* NewPersistLRUCache(size_t capacity) {
   return new ShardedBucketLRUCache(capacity);
 }
 

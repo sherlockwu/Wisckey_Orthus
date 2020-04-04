@@ -1409,35 +1409,42 @@ Status DBImpl::ReadVlog(uint64_t offset, size_t n, Slice* result, char* scratch)
   // Kan: add block cache logic
   Status s;
   Cache::Handle* cache_handle = NULL;
-  if (false && vlog_read_->backed_file != NULL && persist_block_cache != NULL) { // it has backed file, not pinned into DRAM, && (fastrand()%100) < 50
+  //if (false && vlog_read_->backed_file != NULL && persist_block_cache != NULL) { // it has backed file, not pinned into DRAM, && (fastrand()%100) < 50
+  if (persist_block_cache != NULL) { // not pinned into DRAM, && (fastrand()%100) < 50
       // creat the key for cache lookup
       char cache_key_buffer[16];
       EncodeFixed64(cache_key_buffer, vlog_cache_id);
-      EncodeFixed64(cache_key_buffer+8, offset / 4096);    // page grained caching for vlog
+      //EncodeFixed64(cache_key_buffer+8, offset / 4096);    // page grained caching for vlog
+      EncodeFixed64(cache_key_buffer+8, offset);    // page grained caching for vlog
       Slice key(cache_key_buffer, sizeof(cache_key_buffer));
       
       // look up the cache
-      cache_handle = persist_block_cache->Lookup(key);
+      uint64_t cache_offset;
+      cache_handle = persist_block_cache->Lookup(key, &cache_offset);
+      cache_handle = NULL;
       if (cache_handle != NULL) {
         // cache hit, it is in Optane SSD; TODO actually we need a space allocator for the Optane device
-	//std::cout << "we do have a hit \n" << offset / 4096;
+	std::cout << "we do have a hit \n" << offset;
 
 	// TODO decide whether to admit the load
+	/*
 	if (true) {
 	  s = vlog_read_->Read(offset, n, result, scratch);
-        }
+        }*/
+	
       } else {
 	//std::cout << "we got a miss: " << offset / 4096 << std::endl;
-	// cache miss, read from the flash file
-        s = (vlog_read_->backed_file)->Read(offset, n, result, scratch);
+	// cache miss, read from the real vlog file
+        s = vlog_read_->Read(offset, n, result, scratch);
+        //s = (vlog_read_->backed_file)->Read(offset, n, result, scratch);
         
 	// TODO decide whether to admit
-        if (true) {
+        if (false) {
 	  
           // TODO write it to the Optane SSD?
-	  pwrite(vlog_cache_write_fd, scratch, n, offset); 
+	  pwrite(vlog_cache_write_fd, scratch, n, offset);
 	  void * fake_block = (void *) 666;
-          cache_handle = persist_block_cache->Insert(key, fake_block, 4096, &DeleteNothing);
+          cache_handle = persist_block_cache->Insert(key, fake_block, n, &DeleteNothing);
         
 	}
 
@@ -2069,7 +2076,7 @@ Status DB::Open(const Options& options, const std::string& dbname,
     
       
       // Kan: to attach a backup file for vlog
-      if (options.use_persist_cache) {
+      if (!options.use_persist_cache) {
         std::string backed_file_name = vLogFileName(dbname);
         std::string substr("optane");
         std::size_t start_pos = (backed_file_name).find(substr);

@@ -79,7 +79,7 @@ Status TableCache::FindTable(uint64_t file_number, uint64_t file_size,
     }
     
     // Kan: to open the backup table
-    if (options_->use_persist_cache) {
+    if (!options_->use_persist_cache) {
       std::string backed_file_name = fname;
       std::string substr("optane");
       std::size_t start_pos = (backed_file_name).find(substr);
