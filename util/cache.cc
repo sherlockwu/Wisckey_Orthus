@@ -5,6 +5,11 @@
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 #include "leveldb/cache.h"
 #include "port/port.h"
@@ -138,25 +143,38 @@ class LRUCache {
   ~LRUCache();
 
   // Separate from constructor so caller can easily make an array of LRUCache
-  void SetCapacity(size_t capacity) { capacity_ = capacity; }
+  void SetCapacity(size_t capacity) { 
+    capacity_ = capacity; 
+    
+    // Kan: to set for persist cache
+    capacity_buckets_ = capacity_ / (64 * 1024);
+    usage_buckets_ = 0;
+  }
 
   // Like Cache methods, but with an extra "hash" parameter.
   Cache::Handle* Insert(const Slice& key, uint32_t hash,
                         void* value, size_t charge,
                         void (*deleter)(const Slice& key, void* value));
   Cache::Handle* Lookup(const Slice& key, uint32_t hash);
+  void Release(Cache::Handle* handle);
+  void Erase(const Slice& key, uint32_t hash);
+
   // Kan: for persistent cache, insert something, unlike normal insert, only when the inserted bucket is full, now it will be inserted into the LRU list
   Cache::Handle* BucketInsert(const Slice& key, uint32_t hash,
                         void* value, size_t charge,
                         void (*deleter)(const Slice& key, void* value), uint64_t* offset);
   Cache::Handle* BucketLookup(const Slice& key, uint32_t hash, uint64_t * offset);
-  void Release(Cache::Handle* handle);
-  void Erase(const Slice& key, uint32_t hash);
-
+ 
+ 
+ 
  private:
   void LRU_Remove(LRUHandle* e);
   void LRU_Append(LRUHandle* e);
   void Unref(LRUHandle* e);
+
+  // Kan: For buckets related
+  size_t capacity_buckets_;
+  size_t usage_buckets_;
 
   // Initialized before use.
   size_t capacity_;
@@ -164,7 +182,7 @@ class LRUCache {
   // mutex_ protects the following state.
   port::Mutex mutex_;
   size_t usage_;
-
+  
   // Dummy head of LRU list.
   // lru.prev is newest entry, lru.next is oldest entry.
   LRUHandle lru_;
@@ -354,13 +372,12 @@ class ShardedLRUCache : public Cache {
     const uint32_t hash = HashSlice(key);
     return shard_[Shard(hash)].Insert(key, hash, value, charge, deleter);
   }
-  virtual Handle* Insert(const Slice& key, void* value, size_t charge,
-                         void (*deleter)(const Slice& key, void* value), uint64_t* offset) {}; // this is for persist cache
+  virtual Handle* Insert(const Slice& key, uint64_t charge, char * scratch) {}; // this is for persist cache
   virtual Handle* Lookup(const Slice& key) {
     const uint32_t hash = HashSlice(key);
     return shard_[Shard(hash)].Lookup(key, hash);
   }
-  virtual Handle* Lookup(const Slice& key, uint64_t * offset) {};  // this is for persist cache
+  virtual Handle* Lookup(const Slice& key, char * scratch) {}; // this is for persistent cache
   virtual void Release(Handle* handle) {
     LRUHandle* h = reinterpret_cast<LRUHandle*>(handle);
     shard_[Shard(h->hash)].Release(handle);
@@ -388,12 +405,8 @@ class ShardedBucketLRUCache : public Cache {
   LRUCache shard_[kNumShards];
   port::Mutex id_mutex_;
   uint64_t last_id_;
-  
-  uint64_t bucket_size = 64 * 1024;    // Bucket size in KB
-  uint64_t total_buckets = 128; // TODO total size / bucket_size 
-  HandleTable offset_table_;    // map from a key to the offset on Optane SSD
-  uint64_t buffer_buckets[16];  // buffer bucket for blocks, size of k * 4KB
-  
+ 
+
 	  
   static inline uint32_t HashSlice(const Slice& s) {
     return Hash(s.data(), s.size(), 0);
@@ -403,18 +416,35 @@ class ShardedBucketLRUCache : public Cache {
     return hash >> (32 - kNumShardBits);
   }
 
+
+  // Kan: for persist cache
+  uint64_t bucket_size = 64 * 1024;    // Bucket size in KB
+  int fds_[kNumShards];                // Backed fds for each shard
+ 
+ 
  public:
   explicit ShardedBucketLRUCache(size_t capacity)
       : last_id_(0) {
-
-    total_buckets = capacity / bucket_size;
-    for (int i = 0; i < 16; i++)     // set to invalid
-      buffer_buckets[i] = total_buckets + 1;
-
+    
+    // set the capacity for each shard
     const size_t per_shard = (capacity + (kNumShards - 1)) / kNumShards;
     for (int s = 0; s < kNumShards; s++) {
       shard_[s].SetCapacity(per_shard);
     }
+
+    // set backed cache file for each shard
+    for (int s = 0; s < kNumShards; s++) {
+      // open backed file
+      std::string cache_file_name = "/mnt/optane/cache_dir/file_" + std::to_string(s);
+      std::cout << "shard " << s << " is going to set a cached file with " << cache_file_name << std::endl;
+      fds_[s] = open(cache_file_name.c_str(), O_RDWR | O_CREAT, 0);
+      int td = ftruncate(fds_[s], per_shard + 1024*1024);
+      if (fds_[s]<0 || td<0) {
+        std::cout << "unable to create file" << fds_[s] << " : " << td << std::endl;
+        exit(1);
+      }
+    }
+    
   }
   virtual ~ShardedBucketLRUCache() { }
   virtual Handle* Insert(const Slice& key, void* value, size_t charge,
@@ -422,23 +452,28 @@ class ShardedBucketLRUCache : public Cache {
     const uint32_t hash = HashSlice(key);
     return shard_[Shard(hash)].Insert(key, hash, value, charge, deleter);
   }
-  virtual Handle* Insert(const Slice& key, void* value, size_t charge,
-                         void (*deleter)(const Slice& key, void* value), uint64_t* offset) {
-    
-    const uint32_t hash = HashSlice(key);
-    Handle * bucket_handle = shard_[Shard(hash)].BucketInsert(key, hash, value, charge, deleter, offset);
-    
-    return bucket_handle;
+  virtual Handle* Insert(const Slice& key, uint64_t charge, char * scratch) {
+    // update the per shard data structure
+    //const uint32_t hash = HashSlice(key);
+    //Handle * bucket_handle = shard_[Shard(hash)].BucketInsert(key, hash, value, charge, deleter, offset);
+    // TODO write to the real cache file
+
+    //return bucket_handle;
+    return NULL;
   }
-  virtual Handle* Lookup(const Slice& key, uint64_t * offset) {
-    // TODO map the key to the bucket, and the in bucket offset
+  virtual Handle* Lookup(const Slice& key, char *scratch) {
+    // TODO map the  to the bucket, and the in bucket offset
     
     //offset = ;
     
     // TODO map the bucket id to the hash	  
-    const uint32_t hash = HashSlice(key);
-    Handle * bucket_handle = shard_[Shard(hash)].Lookup(key, hash);
-    return bucket_handle;
+    //const uint32_t hash = HashSlice(key);
+    //Handle * bucket_handle = shard_[Shard(hash)].Lookup(key, hash);
+
+    // TODO read from the real cache file
+
+    //return bucket_handle;
+    return NULL;
   }
   virtual Handle* Lookup(const Slice& key) {
     const uint32_t hash = HashSlice(key);
@@ -469,6 +504,7 @@ Cache* NewLRUCache(size_t capacity) {
 }
 
 Cache* NewPersistLRUCache(size_t capacity) {
+  std::cout << "========== here is to NewPersistLRUCache\n";
   return new ShardedBucketLRUCache(capacity);
 }
 

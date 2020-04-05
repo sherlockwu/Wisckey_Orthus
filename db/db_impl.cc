@@ -1414,40 +1414,40 @@ Status DBImpl::ReadVlog(uint64_t offset, size_t n, Slice* result, char* scratch)
   //if (false && vlog_read_->backed_file != NULL && persist_block_cache != NULL) { // it has backed file, not pinned into DRAM, && (fastrand()%100) < 50
   if (persist_block_cache != NULL) { // not pinned into DRAM, && (fastrand()%100) < 50
       // creat the key for cache lookup
-      char cache_key_buffer[16];
+      
+      uint64_t start_page, end_page, in_page_offset;
+      start_page = offset/4096;
+      end_page = (offset + n - 1) / 4096;
+      in_page_offset = offset - start_page * 4096;  // start from 0
+
+      char cache_key_buffer[24];
       EncodeFixed64(cache_key_buffer, vlog_cache_id);
-      EncodeFixed64(cache_key_buffer+8, offset / 4096);    // page grained caching for vlog
+      EncodeFixed64(cache_key_buffer+8, start_page);       // start page and end page uniquely identified pages that should be cached
+      EncodeFixed64(cache_key_buffer+16, end_page);
       Slice key(cache_key_buffer, sizeof(cache_key_buffer));
       
       // look up the cache
-      uint64_t cache_offset;
-      cache_handle = persist_block_cache->Lookup(key, &cache_offset);
-      cache_handle = NULL;
+      // key is in page grained, to query the page cache, in_page_offset is to read the real data that we are looking for
+      std::cout << "to lookup value from " << offset << ":" << offset + n - 1 << ", in page cache: " << vlog_cache_id << ", " << start_page << "," << end_page << ":" << in_page_offset << std::endl;
+      cache_handle = persist_block_cache->Lookup(key, scratch);
       if (cache_handle != NULL) {
         // cache hit, it is in Optane SSD; TODO actually we need a space allocator for the Optane device
 	std::cout << "we do have a hit \n" << offset;
-
-	// TODO decide whether to admit the load
-	/*
-	if (true) {
-	  s = vlog_read_->Read(offset, n, result, scratch);
-        }*/
-	
+        // TODO perhaps need to copy to the slice
       } else {
 	//std::cout << "we got a miss: " << offset / 4096 << std::endl;
-	// cache miss, read from the real vlog file
-        s = vlog_read_->Read(offset, n, result, scratch);
-        
 	// TODO decide whether to admit
-        if (false) {
-	  // Insert it into the cache 
-	  void * fake_block = (void *) 666;
-	  uint64_t cache_offset;
-          cache_handle = persist_block_cache->Insert(key, fake_block, n, &DeleteNothing, &cache_offset);
-          // TODO write to the optane cache file 
-	  // pwrite(vlog_cache_write_fd, scratch, n, offset);
+        if (true) {
+	  // read the pages from the real vlog file
+	  char* page_buf = new char[(end_page - start_page + 1) * 4096];
+          s = vlog_read_->Read(start_page * 4096, (end_page - start_page + 1) * 4096, result, page_buf);
+	  //TODO Insert the pages into the cache 
+          cache_handle = persist_block_cache->Insert(key, (end_page - start_page + 1) * 4096, page_buf);
+	  delete [] page_buf;
 	}
-
+	 
+	//TODO perhaps just memcpy?
+	s = vlog_read_->Read(offset, n, result, scratch);
       }
       // Need to release the reference
       if (cache_handle != NULL)  

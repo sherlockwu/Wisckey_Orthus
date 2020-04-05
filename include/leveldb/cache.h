@@ -53,8 +53,7 @@ class Cache {
   // value will be passed to "deleter".
   virtual Handle* Insert(const Slice& key, void* value, size_t charge,
                          void (*deleter)(const Slice& key, void* value)) = 0;
-  virtual Handle* Insert(const Slice& key, void* value, size_t charge,
-                         void (*deleter)(const Slice& key, void* value), uint64_t* offset) = 0;
+  virtual Handle* Insert(const Slice& key, uint64_t charge, char * scratch) = 0;
 
   // If the cache has no mapping for "key", returns NULL.
   //
@@ -62,7 +61,7 @@ class Cache {
   // must call this->Release(handle) when the returned mapping is no
   // longer needed.
   virtual Handle* Lookup(const Slice& key) = 0;
-  virtual Handle* Lookup(const Slice& key, uint64_t * offset) = 0;
+  virtual Handle* Lookup(const Slice& key, char * scratch) = 0;
 
   // Release a mapping returned by a previous Lookup().
   // REQUIRES: handle must not have been released yet.

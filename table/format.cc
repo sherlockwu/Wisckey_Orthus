@@ -83,8 +83,11 @@ Status ReadBlock(RandomAccessFile* file,
 
   //Status s = file->Read(handle.offset(), n + kBlockTrailerSize, &contents, buf);
   Status s;
+  std::cout << "ReadBlock from " << handle.offset() << " : " << n + kBlockTrailerSize << std::endl;
   if (file->backed_file != NULL && (fastrand()%100) < 0) {
     s = (file->backed_file)->Read(handle.offset(), n + kBlockTrailerSize, &contents, buf);
+    // check persist cache, map(cache_id + offset + BlockTrailerSize)
+    // read the real cache file from here
   } else {
     s = file->Read(handle.offset(), n + kBlockTrailerSize, &contents, buf);
   }
