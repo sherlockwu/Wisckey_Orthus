@@ -53,6 +53,8 @@ class Cache {
   // value will be passed to "deleter".
   virtual Handle* Insert(const Slice& key, void* value, size_t charge,
                          void (*deleter)(const Slice& key, void* value)) = 0;
+  virtual Handle* Insert(const Slice& key, void* value, size_t charge,
+                         void (*deleter)(const Slice& key, void* value), uint64_t* offset) = 0;
 
   // If the cache has no mapping for "key", returns NULL.
   //

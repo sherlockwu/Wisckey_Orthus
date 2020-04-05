@@ -145,6 +145,11 @@ class LRUCache {
                         void* value, size_t charge,
                         void (*deleter)(const Slice& key, void* value));
   Cache::Handle* Lookup(const Slice& key, uint32_t hash);
+  // Kan: for persistent cache, insert something, unlike normal insert, only when the inserted bucket is full, now it will be inserted into the LRU list
+  Cache::Handle* BucketInsert(const Slice& key, uint32_t hash,
+                        void* value, size_t charge,
+                        void (*deleter)(const Slice& key, void* value), uint64_t* offset);
+  Cache::Handle* BucketLookup(const Slice& key, uint32_t hash, uint64_t * offset);
   void Release(Cache::Handle* handle);
   void Erase(const Slice& key, uint32_t hash);
 
@@ -264,6 +269,59 @@ void LRUCache::Erase(const Slice& key, uint32_t hash) {
     Unref(e);
   }
 }
+  
+
+Cache::Handle* LRUCache::BucketInsert(const Slice& key, uint32_t hash,
+                        void* value, size_t charge,
+                        void (*deleter)(const Slice& key, void* value), uint64_t* offset) {
+  MutexLock l(&mutex_);
+  // TODO check the buffer bucket for this charge
+  if (charge > 64*1024) {
+    std::cout << "Handling a huge value!" << std::endl;
+    exit(1);
+  }
+//  Cache::Handle* buffer_handle = buffer_buckets[charge/1024];
+//  if (buffle_handle != NULL) {
+   
+//    buffer_handle += charge;
+//    offset = buffer_handle.offset + ;
+//    return buffle_handle;
+//  } 
+  // TODO insert the new bucket into the LRU cache
+  // TODO put the value into the bucket, by updating the hash table!
+  // TODO need to update the frequency of the bucket handle in the lRUcache
+  
+  
+  // TODO Need to first evict a bucket if it's full
+  
+  LRUHandle* e = reinterpret_cast<LRUHandle*>(
+      malloc(sizeof(LRUHandle)-1 + key.size()));
+  e->value = value;
+  e->deleter = deleter;
+  e->charge = charge;
+  e->key_length = key.size();
+  e->hash = hash;
+  e->refs = 2;  // One from LRUCache, one for the returned handle
+  memcpy(e->key_data, key.data(), key.size());
+  LRU_Append(e);
+  usage_ += charge;
+
+  LRUHandle* old = table_.Insert(e);
+  if (old != NULL) {
+    LRU_Remove(old);
+    Unref(old);
+  }
+  //std::cout << this << " Insert " << charge << ", used: " << usage_  << ", capacity: " << capacity_ << std::endl; 
+  while (usage_ > capacity_ && lru_.next != &lru_) {
+    LRUHandle* old = lru_.next;
+    LRU_Remove(old);
+    //std::cout << "This is to evict " << old->refs << std::endl;
+    table_.Remove(old->key(), old->hash);
+    Unref(old);
+  }
+
+  return reinterpret_cast<Cache::Handle*>(e);
+}
 
 static const int kNumShardBits = 4;
 static const int kNumShards = 1 << kNumShardBits;
@@ -296,6 +354,8 @@ class ShardedLRUCache : public Cache {
     const uint32_t hash = HashSlice(key);
     return shard_[Shard(hash)].Insert(key, hash, value, charge, deleter);
   }
+  virtual Handle* Insert(const Slice& key, void* value, size_t charge,
+                         void (*deleter)(const Slice& key, void* value), uint64_t* offset) {}; // this is for persist cache
   virtual Handle* Lookup(const Slice& key) {
     const uint32_t hash = HashSlice(key);
     return shard_[Shard(hash)].Lookup(key, hash);
@@ -359,14 +419,16 @@ class ShardedBucketLRUCache : public Cache {
   virtual ~ShardedBucketLRUCache() { }
   virtual Handle* Insert(const Slice& key, void* value, size_t charge,
                          void (*deleter)(const Slice& key, void* value)) {
-    // TODO evict one bucket for putting new data all of size charge, if this kind of buffer bucket does not exist
-    // TODO insert the new bucket into the LRU cache
-    // TODO put the value into the bucket, by updating the hash table!
-    // TODO need to update the frequency of the bucket handle in the lRUcache
-    //Handle * bucket_handle = shard_[Shard(hash)].Lookup(key, hash);
-    
     const uint32_t hash = HashSlice(key);
     return shard_[Shard(hash)].Insert(key, hash, value, charge, deleter);
+  }
+  virtual Handle* Insert(const Slice& key, void* value, size_t charge,
+                         void (*deleter)(const Slice& key, void* value), uint64_t* offset) {
+    
+    const uint32_t hash = HashSlice(key);
+    Handle * bucket_handle = shard_[Shard(hash)].BucketInsert(key, hash, value, charge, deleter, offset);
+    
+    return bucket_handle;
   }
   virtual Handle* Lookup(const Slice& key, uint64_t * offset) {
     // TODO map the key to the bucket, and the in bucket offset

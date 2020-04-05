@@ -168,6 +168,18 @@ Status Writer::AddRecord(const Slice& slice, WriteBatch* kUpdates) {
 	  //vlog format: (ksize, vsize, key, value)
 	  ksize = static_cast<uint32_t>(key.size());
 	  vsize = static_cast<uint32_t>(value.size());
+	  
+	  //Kan: padding something, to make sure: the (end offset - start offset) / 4096 (aligned up) = size / 4096 (aligned up)
+	  int total_size = 8 + ksize + vsize;
+	  //std::cout << "Start from " << offset / 4096 << ", end at " << (offset + total_size - 1) /4096 << std::endl;
+	  if ((offset + total_size -1) / 4096 - offset / 4096 + 1 > (total_size + 4095) / 4096) {
+	    //std::cout << "Start from " << offset << ", end at " << offset + total_size - 1 << ", hence padding" << std::endl;
+	    uint32_t padding_bytes = 4096 - offset % 4096;
+	    // padding values
+	    values.append(padding_bytes, 'X'); 
+	    offset += padding_bytes;
+	  }
+	  
 	  PutFixed32(&values, ksize);
 	  PutFixed32(&values, vsize);
 	  values.append(key.data(), key.size());
@@ -180,10 +192,10 @@ Status Writer::AddRecord(const Slice& slice, WriteBatch* kUpdates) {
 	  PutFixed32(&addr_size, vsize);
 	  new_value = Slice(addr_size);
 
+          //std::cout << "AddRecord to " << offset << std::endl; 
 	  //new (key, addr_size) for a new writebatch; key/new_value copied 
 	  kUpdates->Put(key, new_value); 
 	  offset += 8 + ksize + vsize;
-
 	  //update vlog superblock; lock ??? 
 	  sb_.head = offset;
 	  sb_.free -= (8 + ksize + vsize);
