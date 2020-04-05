@@ -1400,6 +1400,8 @@ static void DeleteNothing(const Slice& key, void* value) {
 
 //ll: code; random read vlog file
 Status DBImpl::ReadVlog(uint64_t offset, size_t n, Slice* result, char* scratch) {
+  
+  //std::cout << "ReadVlog: " << offset << " : " << n << std::endl;	
   Status ret;
   ret = vlog_->ReadCache(offset, n, result, scratch);
   if (ret.ok()) {
@@ -1414,8 +1416,7 @@ Status DBImpl::ReadVlog(uint64_t offset, size_t n, Slice* result, char* scratch)
       // creat the key for cache lookup
       char cache_key_buffer[16];
       EncodeFixed64(cache_key_buffer, vlog_cache_id);
-      //EncodeFixed64(cache_key_buffer+8, offset / 4096);    // page grained caching for vlog
-      EncodeFixed64(cache_key_buffer+8, offset);    // page grained caching for vlog
+      EncodeFixed64(cache_key_buffer+8, offset / 4096);    // page grained caching for vlog
       Slice key(cache_key_buffer, sizeof(cache_key_buffer));
       
       // look up the cache
@@ -1436,16 +1437,15 @@ Status DBImpl::ReadVlog(uint64_t offset, size_t n, Slice* result, char* scratch)
 	//std::cout << "we got a miss: " << offset / 4096 << std::endl;
 	// cache miss, read from the real vlog file
         s = vlog_read_->Read(offset, n, result, scratch);
-        //s = (vlog_read_->backed_file)->Read(offset, n, result, scratch);
         
 	// TODO decide whether to admit
         if (false) {
-	  
-          // TODO write it to the Optane SSD?
-	  pwrite(vlog_cache_write_fd, scratch, n, offset);
+	  // Insert it into the cache 
 	  void * fake_block = (void *) 666;
-          cache_handle = persist_block_cache->Insert(key, fake_block, n, &DeleteNothing);
-        
+	  uint64_t cache_offset;
+          cache_handle = persist_block_cache->Insert(key, fake_block, n, &DeleteNothing, &cache_offset);
+          // TODO write to the optane cache file 
+	  // pwrite(vlog_cache_write_fd, scratch, n, offset);
 	}
 
       }
