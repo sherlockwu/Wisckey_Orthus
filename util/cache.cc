@@ -22,13 +22,47 @@ Cache::~Cache() {
 }
 
 namespace {
+//Kan: for buckets
+typedef struct bucket_struct_ {
+  uint32_t bucket_id;
+  uint32_t usage_;
+  uint32_t gen_;     // to identify whether the map from key to this bucket is up to date
+} bucket_struct;
+
+
+typedef struct object_location_ {
+  // for hash table
+  struct object_location_* next_hash;
+  size_t key_length;
+  uint32_t hash;      // Hash of key(); used for fast sharding and comparisons
+  
+  // for bucket addressing
+  uint32_t bucket_;
+  uint32_t in_bucket_offset_;
+  uint32_t length_;     // to identify whether the map from key to this bucket is up to date
+  uint32_t gen_;     // to identify whether the map from key to this bucket is up to date
+  
+  
+  char key_data[1];   // Beginning of key
+  
+  
+  Slice key() const {
+    // For cheaper lookups, we allow a temporary Handle object
+    // to store a pointer to a key in "value".
+    //if (next == this) {
+    //  return *(reinterpret_cast<Slice*>(value));
+    //} else {
+      return Slice(key_data, key_length);
+    //}
+  }
+} object_location;
 
 // LRU cache implementation
 
 // An entry is a variable length heap-allocated structure.  Entries
 // are kept in a circular doubly linked list ordered by access time.
 struct LRUHandle {
-  void* value;
+  void* value;    // point to a persist cache bucket structure if it's a persist buffer
   void (*deleter)(const Slice&, void* value);
   LRUHandle* next_hash;
   LRUHandle* next;
@@ -136,6 +170,89 @@ class HandleTable {
   }
 };
 
+// Kan: for bucket use
+class ObjectTable {
+ public:
+  ObjectTable() : length_(0), elems_(0), list_(NULL) { Resize(); }
+  ~ObjectTable() { delete[] list_; }
+
+  object_location* Lookup(const Slice& key, uint32_t hash) {
+    return *FindPointer(key, hash);
+  }
+
+  object_location* Insert(object_location* h) {
+    object_location** ptr = FindPointer(h->key(), h->hash);       // TODO?????????
+    object_location* old = *ptr;
+    h->next_hash = (old == NULL ? NULL : old->next_hash);
+    *ptr = h;
+    if (old == NULL) {
+      ++elems_;
+      if (elems_ > length_) {
+        // Since each cache entry is fairly large, we aim for a small
+        // average linked list length (<= 1).
+        Resize();
+      }
+    }
+    return old;
+  }
+
+  object_location* Remove(const Slice& key, uint32_t hash) {
+    object_location** ptr = FindPointer(key, hash);
+    object_location* result = *ptr;
+    if (result != NULL) {
+      *ptr = result->next_hash;
+      --elems_;
+    }
+    return result;
+  }
+
+ private:
+  // The table consists of an array of buckets where each bucket is
+  // a linked list of cache entries that hash into the bucket.
+  uint32_t length_;
+  uint32_t elems_;
+  object_location** list_;
+
+  // Return a pointer to slot that points to a cache entry that
+  // matches key/hash.  If there is no such cache entry, return a
+  // pointer to the trailing slot in the corresponding linked list.
+  object_location** FindPointer(const Slice& key, uint32_t hash) {
+    object_location** ptr = &list_[hash & (length_ - 1)];
+    while (*ptr != NULL &&
+           ((*ptr)->hash != hash || key != (*ptr)->key())) {
+      ptr = &(*ptr)->next_hash;
+    }
+    return ptr;
+  }
+
+  void Resize() {
+    uint32_t new_length = 4;
+    while (new_length < elems_) {
+      new_length *= 2;
+    }
+    object_location** new_list = new object_location*[new_length];
+    memset(new_list, 0, sizeof(new_list[0]) * new_length);
+    uint32_t count = 0;
+    for (uint32_t i = 0; i < length_; i++) {
+      object_location* h = list_[i];
+      while (h != NULL) {
+        object_location* next = h->next_hash;
+        uint32_t hash = h->hash;
+        object_location** ptr = &new_list[hash & (new_length - 1)];
+        h->next_hash = *ptr;
+        *ptr = h;
+        h = next;
+        count++;
+      }
+    }
+    assert(elems_ == count);
+    delete[] list_;
+    list_ = new_list;
+    length_ = new_length;
+  }
+};
+
+
 // A single shard of sharded cache.
 class LRUCache {
  public:
@@ -146,9 +263,6 @@ class LRUCache {
   void SetCapacity(size_t capacity) { 
     capacity_ = capacity; 
     
-    // Kan: to set for persist cache
-    capacity_buckets_ = capacity_ / (64 * 1024);
-    usage_buckets_ = 0;
   }
 
   // Like Cache methods, but with an extra "hash" parameter.
@@ -162,10 +276,17 @@ class LRUCache {
   // Kan: for persistent cache, insert something, unlike normal insert, only when the inserted bucket is full, now it will be inserted into the LRU list
   Cache::Handle* BucketInsert(const Slice& key, uint32_t hash,
                         void* value, size_t charge,
-                        void (*deleter)(const Slice& key, void* value), uint64_t* offset);
-  Cache::Handle* BucketLookup(const Slice& key, uint32_t hash, uint64_t * offset);
+                        void (*deleter)(const Slice& key, void* value));
+  Cache::Handle* BucketLookup(const Slice& key, uint32_t hash);
  
  
+  void SetBackedFile(int fd_to_set) { 
+    shard_fd_ = fd_to_set;
+    // Kan: to set for persist cache
+    capacity_buckets_ = capacity_ / (64 * 1024);
+    usage_buckets_ = 0;
+    bucket_handles = (LRUHandle *)malloc(capacity_buckets_ * sizeof(LRUHandle)); 
+  }
  
  private:
   void LRU_Remove(LRUHandle* e);
@@ -175,6 +296,11 @@ class LRUCache {
   // Kan: For buckets related
   size_t capacity_buckets_;
   size_t usage_buckets_;
+  int shard_fd_;
+  uint64_t bucket_size = 64 * 1024;    // Bucket size in KB
+  LRUHandle* buffer_bucket = NULL;
+  LRUHandle* bucket_handles = NULL;  // array of LRU_handles for every bucket
+  ObjectTable object_table_;                // map object(eg. a LSM block, a vlog page) key to the object_location struct(bucket, gen, in bucket offset)
 
   // Initialized before use.
   size_t capacity_;
@@ -291,54 +417,78 @@ void LRUCache::Erase(const Slice& key, uint32_t hash) {
 
 Cache::Handle* LRUCache::BucketInsert(const Slice& key, uint32_t hash,
                         void* value, size_t charge,
-                        void (*deleter)(const Slice& key, void* value), uint64_t* offset) {
+                        void (*deleter)(const Slice& key, void* value)) {
   MutexLock l(&mutex_);
-  // TODO check the buffer bucket for this charge
-  if (charge > 64*1024) {
+
+  std::cout << "BucketInsert" << charge << "\n";
+  if (charge > bucket_size) {
     std::cout << "Handling a huge value!" << std::endl;
     exit(1);
   }
-//  Cache::Handle* buffer_handle = buffer_buckets[charge/1024];
-//  if (buffle_handle != NULL) {
-   
-//    buffer_handle += charge;
-//    offset = buffer_handle.offset + ;
-//    return buffle_handle;
-//  } 
-  // TODO insert the new bucket into the LRU cache
-  // TODO put the value into the bucket, by updating the hash table!
-  // TODO need to update the frequency of the bucket handle in the lRUcache
-  
-  
-  // TODO Need to first evict a bucket if it's full
-  
-  LRUHandle* e = reinterpret_cast<LRUHandle*>(
-      malloc(sizeof(LRUHandle)-1 + key.size()));
-  e->value = value;
-  e->deleter = deleter;
-  e->charge = charge;
+
+  // find the correct bucket to hold this data
+  bucket_struct * bucket_info;
+
+  if (buffer_bucket != NULL) {
+    bucket_info = (bucket_struct *)(buffer_bucket->value);
+    if (bucket_info->usage_ + charge > bucket_size) {
+      buffer_bucket = NULL;
+    } 
+  }
+
+  if (buffer_bucket == NULL) {	  
+    //check if this shard is full
+    if (usage_buckets_ < capacity_buckets_) {
+      std::cout << "This shard is not fully utilized, could find a free bucket to insert new data\n";
+      // set the new buffer_bucket
+      bucket_info = (bucket_struct *) malloc(sizeof(bucket_struct));
+      bucket_info->bucket_id = usage_buckets_++;
+      bucket_info->usage_ = 0;
+      bucket_info->gen_ = 0;
+      
+      buffer_bucket = &(bucket_handles[bucket_info->bucket_id]);
+      buffer_bucket->value = (void *)bucket_info;
+      buffer_bucket->deleter = deleter;
+      buffer_bucket->refs = 2;  // One from LRUCache, one for the returned handle
+      LRU_Append(buffer_bucket);
+    } else {
+      //if full, reuse a bucket
+      if (lru_.next == &lru_) {
+        std::cout << "Get some error\n";
+        exit(1);
+      }
+      LRUHandle* to_reuse = lru_.next;
+      to_reuse->refs++;
+      LRU_Remove(to_reuse);
+      LRU_Append(to_reuse);
+      buffer_bucket = to_reuse;
+      bucket_info = (bucket_struct *)(buffer_bucket->value);
+      bucket_info->usage_ = 0;
+      bucket_info->gen_ += 1;
+    }
+  } else {
+    buffer_bucket->refs++; // TODO?
+    LRU_Remove(buffer_bucket);
+    LRU_Append(buffer_bucket);
+  }
+
+  // map key to the (bucket, gen, in-bucket offset, length)
+  object_location* e = reinterpret_cast<object_location*>(
+      malloc(sizeof(object_location)-1 + key.size()));
   e->key_length = key.size();
   e->hash = hash;
-  e->refs = 2;  // One from LRUCache, one for the returned handle
   memcpy(e->key_data, key.data(), key.size());
-  LRU_Append(e);
-  usage_ += charge;
-
-  LRUHandle* old = table_.Insert(e);
-  if (old != NULL) {
-    LRU_Remove(old);
-    Unref(old);
-  }
-  //std::cout << this << " Insert " << charge << ", used: " << usage_  << ", capacity: " << capacity_ << std::endl; 
-  while (usage_ > capacity_ && lru_.next != &lru_) {
-    LRUHandle* old = lru_.next;
-    LRU_Remove(old);
-    //std::cout << "This is to evict " << old->refs << std::endl;
-    table_.Remove(old->key(), old->hash);
-    Unref(old);
-  }
-
-  return reinterpret_cast<Cache::Handle*>(e);
+  
+  e->bucket_ = bucket_info->bucket_id;
+  e->in_bucket_offset_ = bucket_info->usage_;
+  bucket_info->usage_ += charge;
+  e->length_ = charge;
+  e->gen_ = bucket_info->gen_;
+  
+  object_table_.Insert(e);
+  // TODO write the data to the backed_file
+  
+  return reinterpret_cast<Cache::Handle*>(buffer_bucket);
 }
 
 static const int kNumShardBits = 4;
@@ -395,6 +545,8 @@ class ShardedLRUCache : public Cache {
   }
 };
 
+static void DeleteNothing(const Slice& key, void* value) {
+}
 
 class ShardedBucketLRUCache : public Cache {
 
@@ -418,7 +570,6 @@ class ShardedBucketLRUCache : public Cache {
 
 
   // Kan: for persist cache
-  uint64_t bucket_size = 64 * 1024;    // Bucket size in KB
   int fds_[kNumShards];                // Backed fds for each shard
  
  
@@ -443,6 +594,8 @@ class ShardedBucketLRUCache : public Cache {
         std::cout << "unable to create file" << fds_[s] << " : " << td << std::endl;
         exit(1);
       }
+
+      shard_[s].SetBackedFile(fds_[s]);
     }
     
   }
@@ -453,13 +606,9 @@ class ShardedBucketLRUCache : public Cache {
     return shard_[Shard(hash)].Insert(key, hash, value, charge, deleter);
   }
   virtual Handle* Insert(const Slice& key, uint64_t charge, char * scratch) {
-    // update the per shard data structure
-    //const uint32_t hash = HashSlice(key);
-    //Handle * bucket_handle = shard_[Shard(hash)].BucketInsert(key, hash, value, charge, deleter, offset);
-    // TODO write to the real cache file
-
-    //return bucket_handle;
-    return NULL;
+    const uint32_t hash = HashSlice(key);
+    Handle * bucket_handle = shard_[Shard(hash)].BucketInsert(key, hash, scratch, charge, &DeleteNothing);
+    return bucket_handle;
   }
   virtual Handle* Lookup(const Slice& key, char *scratch) {
     // TODO map the  to the bucket, and the in bucket offset
