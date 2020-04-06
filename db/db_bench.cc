@@ -732,7 +732,8 @@ class Benchmark {
     
     //Kan: for persist cache
     options.use_persist_cache = true;
-    options.persist_block_cache = NewPersistLRUCache(((size_t)1)*1024*1024*1024);
+    //options.persist_block_cache = NewPersistLRUCache(((size_t)1)*1024*1024*1024);
+    options.persist_block_cache = NewPersistLRUCache(((size_t)1)*1024*1024);
 
     Status s = DB::Open(options, FLAGS_db, &db_);
     if (!s.ok()) {

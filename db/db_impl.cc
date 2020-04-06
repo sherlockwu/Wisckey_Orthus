@@ -1428,20 +1428,20 @@ Status DBImpl::ReadVlog(uint64_t offset, size_t n, Slice* result, char* scratch)
       
       // look up the cache
       // key is in page grained, to query the page cache, in_page_offset is to read the real data that we are looking for
-      std::cout << "to lookup value from " << offset << ":" << offset + n - 1 << ", in page cache: " << vlog_cache_id << ", " << start_page << "," << end_page << ":" << in_page_offset << std::endl;
+      std::cout << "\n\n== Lookup " << offset << ":" << offset + n - 1 << ", in page cache: " << vlog_cache_id << ", " << start_page << "," << end_page << ":" << in_page_offset << std::endl;
       cache_handle = persist_block_cache->Lookup(key, scratch);
       if (cache_handle != NULL) {
-        // cache hit, it is in Optane SSD; TODO actually we need a space allocator for the Optane device
-	std::cout << "we do have a hit \n" << offset;
+	std::cout << "  == we do have a hit \n" << offset;
         // TODO perhaps need to copy to the slice
       } else {
-	//std::cout << "we got a miss: " << offset / 4096 << std::endl;
+	std::cout << "  == we got a miss: " << std::endl;
 	// TODO decide whether to admit
         if (true) {
 	  // read the pages from the real vlog file
 	  char* page_buf = new char[(end_page - start_page + 1) * 4096];
           s = vlog_read_->Read(start_page * 4096, (end_page - start_page + 1) * 4096, result, page_buf);
-	  //TODO Insert the pages into the cache 
+	  
+	  //Insert the pages into the cache 
           cache_handle = persist_block_cache->Insert(key, (end_page - start_page + 1) * 4096, page_buf);
 	  delete [] page_buf;
 	}

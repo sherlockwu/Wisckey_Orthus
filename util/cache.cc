@@ -277,7 +277,7 @@ class LRUCache {
   Cache::Handle* BucketInsert(const Slice& key, uint32_t hash,
                         void* value, size_t charge,
                         void (*deleter)(const Slice& key, void* value));
-  Cache::Handle* BucketLookup(const Slice& key, uint32_t hash);
+  Cache::Handle* BucketLookup(const Slice& key, uint32_t hash, void * scratch);
  
  
   void SetBackedFile(int fd_to_set) { 
@@ -415,12 +415,17 @@ void LRUCache::Erase(const Slice& key, uint32_t hash) {
 }
   
 
+Cache::Handle* LRUCache::BucketLookup(const Slice& key, uint32_t hash, void * scratch) {
+  MutexLock l(&mutex_);
+  
+  return NULL;
+}
+
 Cache::Handle* LRUCache::BucketInsert(const Slice& key, uint32_t hash,
                         void* value, size_t charge,
                         void (*deleter)(const Slice& key, void* value)) {
   MutexLock l(&mutex_);
 
-  std::cout << "BucketInsert" << charge << "\n";
   if (charge > bucket_size) {
     std::cout << "Handling a huge value!" << std::endl;
     exit(1);
@@ -432,14 +437,15 @@ Cache::Handle* LRUCache::BucketInsert(const Slice& key, uint32_t hash,
   if (buffer_bucket != NULL) {
     bucket_info = (bucket_struct *)(buffer_bucket->value);
     if (bucket_info->usage_ + charge > bucket_size) {
+      std::cout << "    The previous buffer bucket is fully utilized: " << bucket_info->usage_ << std::endl;
       buffer_bucket = NULL;
     } 
   }
 
-  if (buffer_bucket == NULL) {	  
+  if (buffer_bucket == NULL) {
+    std::cout << "    == Need to find a buffer_bucket \n";
     //check if this shard is full
     if (usage_buckets_ < capacity_buckets_) {
-      std::cout << "This shard is not fully utilized, could find a free bucket to insert new data\n";
       // set the new buffer_bucket
       bucket_info = (bucket_struct *) malloc(sizeof(bucket_struct));
       bucket_info->bucket_id = usage_buckets_++;
@@ -451,10 +457,11 @@ Cache::Handle* LRUCache::BucketInsert(const Slice& key, uint32_t hash,
       buffer_bucket->deleter = deleter;
       buffer_bucket->refs = 2;  // One from LRUCache, one for the returned handle
       LRU_Append(buffer_bucket);
+      std::cout << "      shard not fully utilized, find bucket " << bucket_info->bucket_id << " to buffer\n";
     } else {
       //if full, reuse a bucket
       if (lru_.next == &lru_) {
-        std::cout << "Get some error\n";
+        std::cout << "Get some cannot fixed error\n";
         exit(1);
       }
       LRUHandle* to_reuse = lru_.next;
@@ -465,11 +472,13 @@ Cache::Handle* LRUCache::BucketInsert(const Slice& key, uint32_t hash,
       bucket_info = (bucket_struct *)(buffer_bucket->value);
       bucket_info->usage_ = 0;
       bucket_info->gen_ += 1;
+      std::cout << "      reuse a bucket " << bucket_info->bucket_id << " to buffer\n";
     }
   } else {
     buffer_bucket->refs++; // TODO?
     LRU_Remove(buffer_bucket);
     LRU_Append(buffer_bucket);
+    std::cout << "    Has a buffer bucket, inserting into " << ((bucket_struct *)(buffer_bucket->value))->bucket_id << " \n";
   }
 
   // map key to the (bucket, gen, in-bucket offset, length)
@@ -486,12 +495,14 @@ Cache::Handle* LRUCache::BucketInsert(const Slice& key, uint32_t hash,
   e->gen_ = bucket_info->gen_;
   
   object_table_.Insert(e);
+  std::cout << "    == Creat a map from key to bucket, (bucket_id, in_bucket_offset, gen) " << e->bucket_ << ":" << e->in_bucket_offset_ << ":" << e->gen_ << " \n";
   // TODO write the data to the backed_file
   
   return reinterpret_cast<Cache::Handle*>(buffer_bucket);
 }
 
-static const int kNumShardBits = 4;
+//static const int kNumShardBits = 4;
+static const int kNumShardBits = 1;   // TODO Kan: just for test
 static const int kNumShards = 1 << kNumShardBits;
 
 class ShardedLRUCache : public Cache {
@@ -607,22 +618,15 @@ class ShardedBucketLRUCache : public Cache {
   }
   virtual Handle* Insert(const Slice& key, uint64_t charge, char * scratch) {
     const uint32_t hash = HashSlice(key);
+    std::cout << "  == BucketInsert to shard " << Shard(hash) << ", " << charge << "\n";
     Handle * bucket_handle = shard_[Shard(hash)].BucketInsert(key, hash, scratch, charge, &DeleteNothing);
     return bucket_handle;
   }
   virtual Handle* Lookup(const Slice& key, char *scratch) {
-    // TODO map the  to the bucket, and the in bucket offset
-    
-    //offset = ;
-    
-    // TODO map the bucket id to the hash	  
-    //const uint32_t hash = HashSlice(key);
-    //Handle * bucket_handle = shard_[Shard(hash)].Lookup(key, hash);
-
-    // TODO read from the real cache file
-
-    //return bucket_handle;
-    return NULL;
+    const uint32_t hash = HashSlice(key);
+    std::cout << "  == BucketLookup in shard " << Shard(hash) << "\n";
+    Handle * bucket_handle = shard_[Shard(hash)].BucketLookup(key, hash, scratch);
+    return bucket_handle;
   }
   virtual Handle* Lookup(const Slice& key) {
     const uint32_t hash = HashSlice(key);
