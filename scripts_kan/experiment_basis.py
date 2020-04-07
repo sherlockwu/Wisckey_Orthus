@@ -100,7 +100,8 @@ class Experiment(object):
  
     def exp(self, config):
         print '              *********** start running ***********'
-        cmd = '/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/970/db_64 --value_size=64 --cache_size=0 --compression_ratio=1 --benchmarks=readrandom --use_existing_db=1 --db_num=1342177280 --reads=100000 ' + '--threads=' + str(config['threads']) #+ ' > /dev/shm/running'
+        #cmd = '/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/970/db_64 --value_size=64 --cache_size=0 --compression_ratio=1 --benchmarks=readrandom --use_existing_db=1 --db_num=1342177280 --reads=100000 ' + '--threads=' + str(config['threads']) #+ ' > /dev/shm/running'
+        cmd = '/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/970/db_64 --value_size=64 --cache_size=0 --compression_ratio=1 --benchmarks=readrandom --use_existing_db=1 --db_num=100000000 --reads=100000 ' + '--threads=' + str(config['threads']) #+ ' > /dev/shm/running'
         #cmd = '/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/optane/db_64 --value_size=64 --cache_size=0 --compression_ratio=1 --benchmarks=readrandom --use_existing_db=1 --db_num=1342177280 --reads=200000 ' + '--threads=' + str(config['threads']) #+ ' > /dev/shm/running'
         
         #shcmd(cmd)
