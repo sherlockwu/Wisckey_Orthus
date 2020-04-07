@@ -1432,27 +1432,19 @@ Status DBImpl::ReadVlog(uint64_t offset, size_t n, Slice* result, char* scratch)
       // look up the cache
       char* page_buf = new char[(end_page - start_page + 1) * 4096];
       cache_handle = persist_block_cache->Lookup(key, page_buf);
-      if (cache_handle != NULL) {
-	//std::cout << "  == we do have a hit \n";
-        // TODO perhaps need to copy to the slice
-	s = vlog_read_->Read(offset, n, result, scratch);
-        
-      } else {
+      if (cache_handle == NULL) {
 	//std::cout << "  == we got a miss " << std::endl;
 	// TODO decide whether to admit
         if (true) {
 	  // read the pages from the real vlog file
-	  //char* page_buf = new char[(end_page - start_page + 1) * 4096];
           s = vlog_read_->Read(start_page * 4096, (end_page - start_page + 1) * 4096, result, page_buf);
-	  
 	  // insert the pages into the cache 
           cache_handle = persist_block_cache->Insert(key, (end_page - start_page + 1) * 4096, page_buf);
-	  //delete [] page_buf;
 	}
-	 
-	//TODO perhaps just memcpy?
-	s = vlog_read_->Read(offset, n, result, scratch);
       }
+      
+      memcpy((void *)scratch, (void *)(page_buf + in_page_offset), n);
+      *result = Slice(scratch, n);
       delete [] page_buf;
       // Need to release the reference, don't need, because it's bucket handle, will never be evicted
       // if (cache_handle != NULL)  
