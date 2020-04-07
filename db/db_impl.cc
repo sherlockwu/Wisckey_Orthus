@@ -172,9 +172,10 @@ DBImpl::DBImpl(const Options& raw_options, const std::string& dbname)
 
 
   //Kan: to use the persist block cache for vlog
-  vlog_cache_id = options_.persist_block_cache->NewId();
   persist_block_cache = options_.persist_block_cache;
-  vlog_cache_write_fd = open("/mnt/optane/vlog_cache", O_RDWR, 0644);
+  if (persist_block_cache != NULL) {
+    vlog_cache_id = options_.persist_block_cache->NewId();
+  }  
 }
 
 DBImpl::~DBImpl() {
@@ -1411,10 +1412,8 @@ Status DBImpl::ReadVlog(uint64_t offset, size_t n, Slice* result, char* scratch)
   // Kan: add block cache logic
   Status s;
   Cache::Handle* cache_handle = NULL;
-  //if (false && vlog_read_->backed_file != NULL && persist_block_cache != NULL) { // it has backed file, not pinned into DRAM, && (fastrand()%100) < 50
   if (persist_block_cache != NULL) { // not pinned into DRAM, && (fastrand()%100) < 50
       // creat the key for cache lookup
-      
       uint64_t start_page, end_page, in_page_offset;
       start_page = offset/4096;
       end_page = (offset + n - 1) / 4096;
@@ -1426,32 +1425,38 @@ Status DBImpl::ReadVlog(uint64_t offset, size_t n, Slice* result, char* scratch)
       EncodeFixed64(cache_key_buffer+16, end_page);
       Slice key(cache_key_buffer, sizeof(cache_key_buffer));
       
+      //std::cout << "\n\n== Lookup " << offset << ":" << offset + n - 1 << ", in page cache: " 
+	//        << vlog_cache_id << ", " << start_page << "," << end_page << ":" << in_page_offset << std::endl;
+      
+      
       // look up the cache
-      // key is in page grained, to query the page cache, in_page_offset is to read the real data that we are looking for
-      std::cout << "\n\n== Lookup " << offset << ":" << offset + n - 1 << ", in page cache: " << vlog_cache_id << ", " << start_page << "," << end_page << ":" << in_page_offset << std::endl;
-      cache_handle = persist_block_cache->Lookup(key, scratch);
+      char* page_buf = new char[(end_page - start_page + 1) * 4096];
+      cache_handle = persist_block_cache->Lookup(key, page_buf);
       if (cache_handle != NULL) {
-	std::cout << "  == we do have a hit \n" << offset;
+	//std::cout << "  == we do have a hit \n";
         // TODO perhaps need to copy to the slice
+	s = vlog_read_->Read(offset, n, result, scratch);
+        
       } else {
-	std::cout << "  == we got a miss: " << std::endl;
+	//std::cout << "  == we got a miss " << std::endl;
 	// TODO decide whether to admit
         if (true) {
 	  // read the pages from the real vlog file
-	  char* page_buf = new char[(end_page - start_page + 1) * 4096];
+	  //char* page_buf = new char[(end_page - start_page + 1) * 4096];
           s = vlog_read_->Read(start_page * 4096, (end_page - start_page + 1) * 4096, result, page_buf);
 	  
-	  //Insert the pages into the cache 
+	  // insert the pages into the cache 
           cache_handle = persist_block_cache->Insert(key, (end_page - start_page + 1) * 4096, page_buf);
-	  delete [] page_buf;
+	  //delete [] page_buf;
 	}
 	 
 	//TODO perhaps just memcpy?
 	s = vlog_read_->Read(offset, n, result, scratch);
       }
-      // Need to release the reference
-      if (cache_handle != NULL)  
-        persist_block_cache->Release(cache_handle);
+      delete [] page_buf;
+      // Need to release the reference, don't need, because it's bucket handle, will never be evicted
+      // if (cache_handle != NULL)  
+      //  persist_block_cache->Release(cache_handle);
   } else {
     s = vlog_read_->Read(offset, n, result, scratch);
   }	  
@@ -2076,14 +2081,14 @@ Status DB::Open(const Options& options, const std::string& dbname,
     
       
       // Kan: to attach a backup file for vlog
-      if (!options.use_persist_cache) {
+      /*if (!options.use_persist_cache) {
         std::string backed_file_name = vLogFileName(dbname);
         std::string substr("optane");
         std::size_t start_pos = (backed_file_name).find(substr);
         backed_file_name.replace(start_pos, substr.length(), "970");
         std::cout << "This is to open the backed vlog file: " << backed_file_name << "\n"; 
         Status s_backed = options.env->NewReadAccessFile(backed_file_name, &(rfile->backed_file), true); 
-      }
+      }*/
     }
 
     //ll: after open a db, it will start to do compaction if db needs !!! 

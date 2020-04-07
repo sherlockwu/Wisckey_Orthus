@@ -78,15 +78,14 @@ Status TableCache::FindTable(uint64_t file_number, uint64_t file_size,
       *handle = cache_->Insert(key, tf, 1, &DeleteEntry);
     }
     
-    // Kan: to open the backup table
-    if (!options_->use_persist_cache) {
+    /*if (!options_->use_persist_cache) {
       std::string backed_file_name = fname;
       std::string substr("optane");
       std::size_t start_pos = (backed_file_name).find(substr);
       backed_file_name.replace(start_pos, substr.length(), "970");
       //std::cout << "This is to open the backed file: " << backed_file_name << "\n"; 
       Status s_backed = env_->NewRandomAccessFile(backed_file_name, &(file->backed_file));
-    }
+    }*/
 
   }
   return s;
