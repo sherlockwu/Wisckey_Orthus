@@ -91,6 +91,12 @@ Status Table::Open(const Options& options,
     rep->filter = NULL;
     *table = new Table(rep);
     (*table)->ReadMeta(footer);
+  
+    // Kan: for persistent block cache
+    if (options.use_persist_cache) {
+      file->persist_block_cache = (void *) options.persist_block_cache;
+      file->persist_cache_id = options.persist_block_cache->NewId();
+    }
   } else {
     if (index_block) delete index_block;
   }
