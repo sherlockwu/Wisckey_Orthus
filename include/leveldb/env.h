@@ -201,7 +201,8 @@ class SequentialFile {
 // A file abstraction for randomly reading the contents of a file.
 class RandomAccessFile {
  public:
-  RandomAccessFile * backed_file = NULL;
+  void * persist_block_cache = NULL;
+  uint64_t persist_cache_id = -1;
 
   RandomAccessFile() { }
   virtual ~RandomAccessFile();

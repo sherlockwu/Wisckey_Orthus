@@ -10,6 +10,7 @@
 #include "util/coding.h"
 #include "util/crc32c.h"
 #include "util/random.h"
+#include "leveldb/cache.h"
 
 namespace leveldb {
 
@@ -81,17 +82,46 @@ Status ReadBlock(RandomAccessFile* file,
   //ll: output
   //  fprintf(stdout, "read size: %zu \n", n);
 
-  //Status s = file->Read(handle.offset(), n + kBlockTrailerSize, &contents, buf);
   Status s;
+  Cache::Handle* cache_handle = NULL;
+  Cache* persist_block_cache = (Cache *) (file->persist_block_cache);
+
   //std::cout << "ReadBlock from " << handle.offset() << " : " << n + kBlockTrailerSize << std::endl;
-  if (file->backed_file != NULL && (fastrand()%100) < 0) {
-    s = (file->backed_file)->Read(handle.offset(), n + kBlockTrailerSize, &contents, buf);
-    // check persist cache, map(cache_id + offset + BlockTrailerSize)
-    // read the real cache file from here
+  //if (file->backed_file != NULL && (fastrand()%100) < 0) {
+    //s = (file->backed_file)->Read(handle.offset(), n + kBlockTrailerSize, &contents, buf);
+ 
+  if (true && file->persist_block_cache != NULL) {
+    // creat the key for cache lookup
+    char cache_key_buffer[16];    // perhaps we could use 16 vs 24 to identify it's value or LSM page
+    if (file->persist_cache_id == -1) {
+      std::cout << "This file was not inited in persist block cache\n";
+      exit(1);
+    }
+    EncodeFixed64(cache_key_buffer, file->persist_cache_id);     // how to get the cache_id ???????
+    EncodeFixed64(cache_key_buffer+8, handle.offset());
+    
+    Slice key(cache_key_buffer, sizeof(cache_key_buffer));
+      
+    //look up the cache
+    cache_handle = persist_block_cache->Lookup(key, buf);
+    if (cache_handle == NULL) {
+      //std::cout << "  == we got a miss " << std::endl;
+      // read the pages from flash
+      s = file->Read(handle.offset(), n + kBlockTrailerSize, &contents, buf);
+      
+      // TODO decide whether to admit
+      if (true) {
+        // insert the pages into the cache 
+        cache_handle = persist_block_cache->Insert(key, n + kBlockTrailerSize, buf);
+      }
+    }
+    //contents = Slice(buf, n + kBlockTrailerSize);
   } else {
     s = file->Read(handle.offset(), n + kBlockTrailerSize, &contents, buf);
   }
   if (!s.ok()) {
+    std::cout << "Didn't find this page!\n";
+    exit(1);
     delete[] buf;
     return s;
   }

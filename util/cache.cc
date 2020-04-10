@@ -451,7 +451,7 @@ Cache::Handle* LRUCache::BucketLookup(const Slice& key, uint32_t hash, void * sc
   LRU_Remove(to_check_bucket);
   LRU_Append(to_check_bucket);
   
-  // TODO 3. read data from the bucket
+  // 3. read data from the bucket
   //std::cout << "Read from cache " << shard_fd_ << ", " << bucket_id << " : " << in_bucket_offset << ", " << bucket_id * bucket_size + in_bucket_offset << " : " << object_len << std::endl;
   ssize_t r = pread(shard_fd_, scratch, object_len, bucket_id * bucket_size + in_bucket_offset);
   if (r != object_len) {
@@ -545,7 +545,7 @@ Cache::Handle* LRUCache::BucketInsert(const Slice& key, uint32_t hash,
   if (print_cache_behavior)
     std::cout << "    == Creat a map from key to bucket, (bucket_id, in_bucket_offset, gen) " << e->bucket_ << ":" << e->in_bucket_offset_ << ":" << e->gen_ << " \n";
   
-  // TODO write the data to the backed_file
+  // write the data to the backed_file
   //std::cout << "Write to cache " << shard_fd_ << ", " << e->bucket_ << " : " << e->in_bucket_offset_ << ", " << e->bucket_ * bucket_size + e->in_bucket_offset_ << " : " << charge << std::endl;
   ssize_t r = pwrite(shard_fd_, value, charge, e->bucket_ * bucket_size + e->in_bucket_offset_);
   if (r != charge) {
