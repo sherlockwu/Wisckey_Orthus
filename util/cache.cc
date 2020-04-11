@@ -280,7 +280,11 @@ class LRUCache {
   size_t usage_buckets_;
   int shard_fd_;
   uint64_t bucket_size = 64 * 1024;    // Bucket size in KB
-  LRUHandle* buffer_bucket = NULL;
+  
+  //LRUHandle* buffer_bucket = NULL;
+  LRUHandle* buffer_bucket_lsm = NULL;
+  LRUHandle* buffer_bucket_vlog = NULL;
+  
   LRUHandle* bucket_handles = NULL;  // array of LRU_handles for every bucket
   ObjectTable object_table_;                // map object(eg. a LSM block, a vlog page) key to the object_location struct(bucket, gen, in bucket offset)
   
@@ -476,16 +480,27 @@ Cache::Handle* LRUCache::BucketInsert(const Slice& key, uint32_t hash,
   // find the correct bucket to hold this data
   bucket_struct * bucket_info;
 
-  if (buffer_bucket != NULL) {
-    bucket_info = (bucket_struct *)(buffer_bucket->value);
+  
+  LRUHandle** buffer_bucket;
+  if (key.size() == 16) {
+    //std::cout << "The key size is 16, use lsm bucket\n";
+    buffer_bucket = &buffer_bucket_lsm;
+  } else {
+    //std::cout << "The key size is " << key.size() << ", use vlog bucket\n";
+    buffer_bucket = &buffer_bucket_vlog;
+  }
+
+
+  if (*buffer_bucket != NULL) {
+    bucket_info = (bucket_struct *)((*buffer_bucket)->value);
     if (bucket_info->usage_ + charge > bucket_size) {
       if (print_cache_behavior)
         std::cout << "    The previous buffer bucket is fully utilized: " << bucket_info->usage_ << std::endl;
-      buffer_bucket = NULL;
+      *buffer_bucket = NULL;
     } 
   }
 
-  if (buffer_bucket == NULL) {
+  if (*buffer_bucket == NULL) {
     if (print_cache_behavior) 
       std::cout << "    == Need to find a buffer_bucket \n";
     //check if this shard is full
@@ -496,11 +511,11 @@ Cache::Handle* LRUCache::BucketInsert(const Slice& key, uint32_t hash,
       bucket_info->usage_ = 0;
       bucket_info->gen_ = 0;
       
-      buffer_bucket = &(bucket_handles[bucket_info->bucket_id]);
-      buffer_bucket->value = (void *)bucket_info;
-      buffer_bucket->deleter = deleter;
-      buffer_bucket->refs = 2;  // One from LRUCache, one for the returned handle
-      LRU_Append(buffer_bucket);
+      *buffer_bucket = &(bucket_handles[bucket_info->bucket_id]);
+      (*buffer_bucket)->value = (void *)bucket_info;
+      (*buffer_bucket)->deleter = deleter;
+      (*buffer_bucket)->refs = 2;  // One from LRUCache, one for the returned handle
+      LRU_Append(*buffer_bucket);
       if (print_cache_behavior)
         std::cout << "      shard not fully utilized, find bucket " << bucket_info->bucket_id << " to buffer\n";
     } else {
@@ -513,8 +528,8 @@ Cache::Handle* LRUCache::BucketInsert(const Slice& key, uint32_t hash,
       to_reuse->refs++;
       LRU_Remove(to_reuse);
       LRU_Append(to_reuse);
-      buffer_bucket = to_reuse;
-      bucket_info = (bucket_struct *)(buffer_bucket->value);
+      *buffer_bucket = to_reuse;
+      bucket_info = (bucket_struct *)((*buffer_bucket)->value);
       bucket_info->usage_ = 0;
       bucket_info->gen_ += 1;
       if (print_cache_behavior)
@@ -522,10 +537,10 @@ Cache::Handle* LRUCache::BucketInsert(const Slice& key, uint32_t hash,
     }
   } else {
     //buffer_bucket->refs++; // TODO?
-    LRU_Remove(buffer_bucket);
-    LRU_Append(buffer_bucket);
+    LRU_Remove(*buffer_bucket);
+    LRU_Append(*buffer_bucket);
     if (print_cache_behavior)
-      std::cout << "    Has a buffer bucket, inserting into " << ((bucket_struct *)(buffer_bucket->value))->bucket_id << " \n";
+      std::cout << "    Has a buffer bucket, inserting into " << ((bucket_struct *)((*buffer_bucket)->value))->bucket_id << " \n";
   }
 
   // map key to the (bucket, gen, in-bucket offset, length)
@@ -553,7 +568,7 @@ Cache::Handle* LRUCache::BucketInsert(const Slice& key, uint32_t hash,
     exit(1);
   }
 
-  return reinterpret_cast<Cache::Handle*>(buffer_bucket);
+  return reinterpret_cast<Cache::Handle*>(*buffer_bucket);
 }
 
 static const int kNumShardBits = 4;

@@ -41,7 +41,7 @@ class Experiment(object):
         config = {
           'type': ['randomread'],
           #'threads': [1, 2, 4, 8, 16, 32],
-          'threads': [1],
+          'threads': [16],
           'memory': [1*GB],    #'memory limit'
           'swapiness': [0],
           #'readahead': [128, 0, 16]    # default 128KB
