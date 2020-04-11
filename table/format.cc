@@ -12,6 +12,8 @@
 #include "util/random.h"
 #include "leveldb/cache.h"
 
+
+#include <bits/stdc++.h>
 namespace leveldb {
 
 void BlockHandle::EncodeTo(std::string* dst) const {
@@ -86,38 +88,76 @@ Status ReadBlock(RandomAccessFile* file,
   Cache::Handle* cache_handle = NULL;
   Cache* persist_block_cache = (Cache *) (file->persist_block_cache);
 
-  //std::cout << "ReadBlock from " << handle.offset() << " : " << n + kBlockTrailerSize << std::endl;
+  //std::cout << "== ReadBlock: " << file->persist_cache_id << " " << handle.offset() << " " << n + kBlockTrailerSize<< "\n";
   //if (file->backed_file != NULL && (fastrand()%100) < 0) {
     //s = (file->backed_file)->Read(handle.offset(), n + kBlockTrailerSize, &contents, buf);
  
-  if (true && file->persist_block_cache != NULL) {
+  // TODO how to handle very large requests 
+  if (true && (file->persist_block_cache != NULL) && (file->persist_cache_id != -1) && n+kBlockTrailerSize < 8000) {
     // creat the key for cache lookup
     char cache_key_buffer[16];    // perhaps we could use 16 vs 24 to identify it's value or LSM page
-    if (file->persist_cache_id == -1) {
-      std::cout << "This file was not inited in persist block cache\n";
-      exit(1);
-    }
     EncodeFixed64(cache_key_buffer, file->persist_cache_id);     // how to get the cache_id ???????
     EncodeFixed64(cache_key_buffer+8, handle.offset());
     
     Slice key(cache_key_buffer, sizeof(cache_key_buffer));
       
     //look up the cache
+    
     cache_handle = persist_block_cache->Lookup(key, buf);
     if (cache_handle == NULL) {
-      //std::cout << "  == we got a miss " << std::endl;
       // read the pages from flash
       s = file->Read(handle.offset(), n + kBlockTrailerSize, &contents, buf);
-      
+        /*
+	std::cout << "Insert cache for " << file->persist_cache_id << " " << handle.offset() << " " << n + kBlockTrailerSize <<  "\n"; 
+        for (int i = 0; i < 30; i++) {
+          int val = int(buf[i]); 
+          std::cout << val << " " ;
+	}
+        std::cout << "\n"; 
+        */
       // TODO decide whether to admit
       if (true) {
         // insert the pages into the cache 
         cache_handle = persist_block_cache->Insert(key, n + kBlockTrailerSize, buf);
       }
+    } else {
+      contents = Slice(buf, n + kBlockTrailerSize);
+      /*
+      char* buf_to_check = new char[n + kBlockTrailerSize];
+      s = file->Read(handle.offset(), n + kBlockTrailerSize, &contents, buf_to_check);
+      
+      if (strcmp(buf, buf_to_check) != 0) {
+        std::cout << "The data from flash is different from what is cached! " << file->persist_cache_id << " " << handle.offset() << "\n";
+        for (int i = 0; i < n + kBlockTrailerSize; i++) {
+          if (buf[i] != buf_to_check[i]) {
+	    std::cout << i << " ";
+	  } 
+        }
+        std::cout << "\n";
+        for (int i = 0; i < 30; i++) {
+	  std::cout << int(buf[i]) << " ";
+	}
+        std::cout << "\n";
+        for (int i = 0; i < 30; i++) {
+	  std::cout << int(buf_to_check[i]) << " ";
+	}
+        std::cout << "\n";
+	//exit(1);
+      }
+      std::cout << "The data from flash is same as what is cached! " << handle.offset() << "\n";
+      */
     }
-    //contents = Slice(buf, n + kBlockTrailerSize);
+    
+    //s = file->Read(handle.offset(), n + kBlockTrailerSize, &contents, buf);
   } else {
     s = file->Read(handle.offset(), n + kBlockTrailerSize, &contents, buf);
+    
+    /*std::cout << "Read from file " << file->persist_cache_id << " " << handle.offset() << " " << n + kBlockTrailerSize << "\n";
+    //for (int i = 0; i < n + kBlockTrailerSize - 10; i+=4) {
+        //std::cout << int(buf[i]) << " ";
+    //    std::cout << *((int*)(&(buf[i]))) << " ";
+    //}
+    std::cout << "\n";*/
   }
   if (!s.ok()) {
     std::cout << "Didn't find this page!\n";
@@ -127,6 +167,8 @@ Status ReadBlock(RandomAccessFile* file,
   }
   if (contents.size() != n + kBlockTrailerSize) {
     delete[] buf;
+    std::cout << "contents is not correct!\n";
+    exit(1);
     return Status::Corruption("truncated block read");
   }
 
@@ -138,6 +180,8 @@ Status ReadBlock(RandomAccessFile* file,
     if (actual != crc) {
       delete[] buf;
       s = Status::Corruption("block checksum mismatch");
+      std::cout << "checksum mismatch\n";
+      exit(1);
       return s;
     }
   }
@@ -179,6 +223,8 @@ Status ReadBlock(RandomAccessFile* file,
       break;
     }
     default:
+      std::cout << "bad block type\n";
+      exit(1);
       delete[] buf;
       return Status::Corruption("bad block type");
   }

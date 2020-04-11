@@ -72,6 +72,9 @@ Status Table::Open(const Options& options,
     s = ReadBlock(file, opt, footer.index_handle(), &contents);
     if (s.ok()) {
       index_block = new Block(contents);
+    } else {
+      std::cout << "index block read failed!\n";
+      exit(1);
     }
   }
 
@@ -96,6 +99,7 @@ Status Table::Open(const Options& options,
     if (options.use_persist_cache) {
       file->persist_block_cache = (void *) options.persist_block_cache;
       file->persist_cache_id = options.persist_block_cache->NewId();
+      //std::cout << "Open a new table file with persist block cache Id as " << file->persist_cache_id << "\n";
     }
   } else {
     if (index_block) delete index_block;
@@ -123,6 +127,7 @@ void Table::ReadMeta(const Footer& footer) {
   BlockContents contents;
   if (!ReadBlock(rep_->file, opt, footer.metaindex_handle(), &contents).ok()) {
     // Do not propagate errors since meta info is not needed for operation
+    std::cout << "Read Meta failed!\n";
     return;
   }
   Block* meta = new Block(contents);
@@ -155,6 +160,7 @@ void Table::ReadFilter(const Slice& filter_handle_value) {
   }
   BlockContents block;
   if (!ReadBlock(rep_->file, opt, filter_handle, &block).ok()) {
+    std::cout << "ReadFilter failed!\n";
     return;
   }
   if (block.heap_allocated) {
@@ -223,7 +229,9 @@ Iterator* Table::BlockReader(void* arg,
             cache_handle = block_cache->Insert(
                 key, block, block->size(), &DeleteCachedBlock);
           }
-        }
+        } else {
+	  std::cout << "ReadBLock Failed!\n";
+	}
       }
     } else {
 
@@ -233,6 +241,8 @@ Iterator* Table::BlockReader(void* arg,
       s = ReadBlock(table->rep_->file, options, handle, &contents);
       if (s.ok()) {
         block = new Block(contents);
+      } else {
+	std::cout << "ReadBLock Failed!\n";
       }
     }
   }

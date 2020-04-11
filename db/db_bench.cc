@@ -731,10 +731,10 @@ class Benchmark {
     options.filter_policy = filter_policy_;
     
     //Kan: for persist cache
-    options.use_persist_cache = false;
-    options.persist_block_cache = NULL;
+    options.use_persist_cache = true;
+    //options.persist_block_cache = NULL;
     //options.use_persist_cache = true;
-    //options.persist_block_cache = NewPersistLRUCache(((size_t)4)*1024*1024*1024);
+    options.persist_block_cache = NewPersistLRUCache(((size_t)40)*1024*1024*1024);
 
     Status s = DB::Open(options, FLAGS_db, &db_);
     if (!s.ok()) {
