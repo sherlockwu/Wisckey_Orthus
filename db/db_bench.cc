@@ -174,6 +174,7 @@ class Stats {
   double finish_;
   double seconds_;
   int done_;
+  int last_done_;
   int next_report_;
   int64_t bytes_;
   double last_op_finish_;
@@ -188,6 +189,7 @@ class Stats {
     last_op_finish_ = start_;
     hist_.Clear();
     done_ = 0;
+    last_done_ = 0;
     bytes_ = 0;
     seconds_ = 0;
     start_ = Env::Default()->NowMicros();
@@ -230,6 +232,15 @@ class Stats {
 
     done_++;
     if (done_ >= next_report_) {
+      double now = Env::Default()->NowMicros();
+      double micros = now - last_op_finish_;
+      int last_finished = done_ - last_done_;
+      last_op_finish_ = now;
+      last_done_ = done_;
+
+      double speed = last_finished / micros * 1000000;
+      //std::cout << micros << " " << last_finished << "\n";
+
       if      (next_report_ < 1000)   next_report_ += 100;
       else if (next_report_ < 5000)   next_report_ += 500;
       else if (next_report_ < 10000)  next_report_ += 1000;
@@ -237,8 +248,11 @@ class Stats {
       else if (next_report_ < 100000) next_report_ += 10000;
       else if (next_report_ < 500000) next_report_ += 50000;
       else                            next_report_ += 100000;
-      fprintf(stderr, "... finished %d ops%30s\r", done_, "");
-      fflush(stderr);
+      //fprintf(stderr, "... finished %d ops%30s\r", done_, "");
+      //fprintf(stderr, "... finished %d ops, %.1f ops/s%30s\r", done_, speed, "");
+      //fflush(stderr);
+      fprintf(stdout, "... finished %d ops, %.1f ops/s%30s\n", done_, speed, "");
+      fflush(stdout);
     }
   }
 
