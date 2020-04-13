@@ -50,6 +50,8 @@ static const char* FLAGS_benchmarks =
     "gctest,"
     "overwrite,"
     "readrandom,"
+    "readrandom_1,"
+    "readrandom_warmup,"
     "readrandom,"  // Extra run to allow previous compactions to quiesce
     "readseq,"
     "readreverse,"
@@ -513,6 +515,15 @@ class Benchmark {
         method = &Benchmark::ReadReverse;
       } else if (name == Slice("readrandom")) {
         method = &Benchmark::ReadRandom;
+      } else if (name == Slice("readrandom_1")) {
+	num_threads = 1;
+        method = &Benchmark::ReadRandom;
+      } else if (name == Slice("readrandom_warmup")) {
+        std::cout << "This is to warm up for random reads\n";
+	num_threads = 16;
+	reads_ /= 10;
+        method = &Benchmark::ReadRandom;
+        std::cout << "This is to warm up for random reads" << num_ << "\n";
       } else if (name == Slice("readmissing")) {
         method = &Benchmark::ReadMissing;
       } else if (name == Slice("seekrandom")) {
@@ -745,10 +756,10 @@ class Benchmark {
     options.filter_policy = filter_policy_;
     
     //Kan: for persist cache
-    options.use_persist_cache = true;
+    //options.use_persist_cache = false;
     //options.persist_block_cache = NULL;
-    //options.use_persist_cache = true;
-    options.persist_block_cache = NewPersistLRUCache(((size_t)4)*1024*1024*1024);
+    options.use_persist_cache = true;
+    options.persist_block_cache = NewPersistLRUCache(((size_t)80)*1024*1024*1024);
 
     Status s = DB::Open(options, FLAGS_db, &db_);
     if (!s.ok()) {
