@@ -118,7 +118,8 @@ Status ReadBlock(RandomAccessFile* file,
       // TODO decide whether to admit
       if (true) {
         // insert the pages into the cache 
-        cache_handle = persist_block_cache->Insert(key, n + kBlockTrailerSize, buf);
+        //cache_handle = persist_block_cache->Insert(key, n + kBlockTrailerSize, buf);
+        cache_handle = persist_block_cache->Insert(key, n + kBlockTrailerSize, (char*)(contents.data()));
       }
     } else {
       contents = Slice(buf, n + kBlockTrailerSize);
@@ -151,13 +152,6 @@ Status ReadBlock(RandomAccessFile* file,
     //s = file->Read(handle.offset(), n + kBlockTrailerSize, &contents, buf);
   } else {
     s = file->Read(handle.offset(), n + kBlockTrailerSize, &contents, buf);
-    
-    /*std::cout << "Read from file " << file->persist_cache_id << " " << handle.offset() << " " << n + kBlockTrailerSize << "\n";
-    //for (int i = 0; i < n + kBlockTrailerSize - 10; i+=4) {
-        //std::cout << int(buf[i]) << " ";
-    //    std::cout << *((int*)(&(buf[i]))) << " ";
-    //}
-    std::cout << "\n";*/
   }
   if (!s.ok()) {
     std::cout << "Didn't find this page!\n";

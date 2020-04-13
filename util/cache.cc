@@ -10,12 +10,12 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <atomic>
 
 #include "leveldb/cache.h"
 #include "port/port.h"
 #include "util/hash.h"
 #include "util/mutexlock.h"
-
 namespace leveldb {
 
 Cache::~Cache() {
@@ -24,7 +24,9 @@ Cache::~Cache() {
 namespace {
 //Kan: for buckets
 bool print_cache_behavior = false;
-	
+std::atomic<uint32_t> cache_access(0);
+std::atomic<uint32_t> cache_miss(0);
+
 typedef struct bucket_struct_ {
   uint32_t bucket_id;
   uint32_t usage_;
@@ -54,7 +56,7 @@ typedef struct object_location_ {
     //if (next == this) {
     //  return *(reinterpret_cast<Slice*>(value));
     //} else {
-      return Slice(key_data, key_length);
+    return Slice(key_data, key_length);
     //}
   }
 } object_location;
@@ -694,7 +696,21 @@ class ShardedBucketLRUCache : public Cache {
     const uint32_t hash = HashSlice(key);
     if (print_cache_behavior)
       std::cout << "  == BucketLookup in shard " << Shard(hash) << "\n";
-    Handle * bucket_handle = shard_[Shard(hash)].BucketLookup(key, hash, scratch);
+    int bucket = Shard(hash);
+    //Handle * bucket_handle = shard_[Shard(hash)].BucketLookup(key, hash, scratch);
+    Handle * bucket_handle = shard_[bucket].BucketLookup(key, hash, scratch);
+    
+    // Update cache statistics
+    cache_access += 1;
+    if (bucket_handle == NULL) {
+      cache_miss += 1;
+    }
+
+    if (bucket == 0 && cache_access > 1000000) {
+      std::cout << "Cache access: " << cache_access << ", miss: " << cache_miss << ", miss ratio: " << (double) cache_miss / cache_access * 100 << "\n";
+      cache_access = 0;
+      cache_miss = 0;
+    }
     return bucket_handle;
   }
   virtual Handle* Lookup(const Slice& key) {
