@@ -10,6 +10,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <vector>
+#include <chrono>
 //ll: for sleep 
 #include <unistd.h>
 
@@ -122,6 +123,61 @@ Options SanitizeOptions(const std::string& dbname,
   return result;
 }
 
+// Kan: for monitoring load of optane SSD
+uint64_t perf_counter()
+{
+  uint32_t lo, hi;
+  // take time stamp counter, rdtscp does serialize by itself, and is much cheaper than using CPUID
+  //"rdtscp" : "=a"(lo), "=d"(hi)
+  __asm__ __volatile__ (
+      "rdtscp" : "=a"(lo), "=d"(hi)
+      :: "%rcx");
+  return ((uint64_t)lo) | (((uint64_t)hi) << 32);
+}
+
+
+void * monitor_func(void *vargp) {
+  // create a monitor file on Optane SSD to detect
+  int fd_monitor = open("/mnt/optane/cache_dir/file_monitor", O_RDWR | O_DIRECT | O_CREAT, 0);
+  //int td = 0;
+  int td = ftruncate(fd_monitor, 1*1024*1024*1024);
+  if (fd_monitor <0 || td<0) {
+    std::cout << "unable to create file" << fd_monitor << " : " << td << " " << errno << std::endl;
+    exit(1);
+  }
+  
+  int io_size = 4096;
+  char * read_buf = (char *) malloc(sizeof(char) * io_size);
+  int ret = posix_memalign((void **)&read_buf, 512, io_size);
+  uint64_t start_time, end_time;
+
+  while(true) {
+    if (flag_monitor) {
+    //if (true) {
+      std::cout << "Get in monitor_func\n";
+      //TODO monitor the load of Optane SSD
+      //start_time = perf_counter();
+      auto timeStart = std::chrono::high_resolution_clock::now();
+      ret = pread(fd_monitor, read_buf, io_size, 0);
+      //assert(ret == io_size);
+      //end_time = perf_counter();
+      //std::cout << "Last IO takes: " << (end_time - start_time) / 1000.0 << "us\n";
+      std::cout << "Thread on CPU " << sched_getcpu() << "\n"; 
+      auto timeEnd = std::chrono::high_resolution_clock::now();
+      long long duration = std::chrono::duration_cast<std::chrono::microseconds>(timeEnd - timeStart).count();
+      std::cout << "Last IO takes: " << duration << "us\n";
+      
+      //TODO decide data admit, load admit ratio 
+      
+      usleep(100000);
+    } else {
+      usleep(1000000);
+    }
+  }
+  return NULL;
+}
+
+
 DBImpl::DBImpl(const Options& raw_options, const std::string& dbname)
     : env_(raw_options.env),
       internal_comparator_(raw_options.comparator),
@@ -173,9 +229,14 @@ DBImpl::DBImpl(const Options& raw_options, const std::string& dbname)
 
   //Kan: to use the persist block cache for vlog
   persist_block_cache = options_.persist_block_cache;
+  //persist_block_cache = options_.persist_vlog_cache;
   if (persist_block_cache != NULL) {
-    vlog_cache_id = options_.persist_block_cache->NewId();
-  }  
+    vlog_cache_id = persist_block_cache->NewId();
+  }
+  
+  // TODO start a thread to monitor the load of Optane SSD
+  pthread_t monitor_thread; 
+  pthread_create(&monitor_thread, NULL, monitor_func, NULL);
 }
 
 DBImpl::~DBImpl() {
@@ -1437,7 +1498,7 @@ Status DBImpl::ReadVlog(uint64_t offset, size_t n, Slice* result, char* scratch)
 	// read the pages from the real vlog file
 	s = vlog_read_->Read(start_page * 4096, (end_page - start_page + 1) * 4096, result, page_buf);
 	// TODO decide whether to admit
-        if (true) {
+        if (flag_admit) {
 	  // insert the pages into the cache 
           cache_handle = persist_block_cache->Insert(key, (end_page - start_page + 1) * 4096, page_buf);
 	}
@@ -2036,7 +2097,6 @@ Status DB::Open(const Options& options, const std::string& dbname,
     WritableFile* wfile;
     uint64_t wfile_size;
 
-    //Kan: TODO enable cache for writes
     s = options.env->NewWritableFile(vLogFileName(dbname), &wfile);
     if (s.ok()) {
       impl->vlog_write_ = wfile;
@@ -2082,6 +2142,13 @@ Status DB::Open(const Options& options, const std::string& dbname,
       impl->DeleteObsoleteFiles();    
       impl->MaybeScheduleCompaction();
     }
+
+
+    //Kan: start a thread to monitor the load of Optane SSD
+    std::cout << "========== Here is in DB::Open, to start a thread to monitor Optane\n";
+
+
+
 
   }
   impl->mutex_.Unlock();

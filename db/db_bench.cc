@@ -453,6 +453,9 @@ class Benchmark {
     Open();
 
     const char* benchmarks = FLAGS_benchmarks;
+    
+    int threads_ratio = 1;
+
     while (benchmarks != NULL) {
       const char* sep = strchr(benchmarks, ',');
       Slice name;
@@ -473,6 +476,8 @@ class Benchmark {
 
       void (Benchmark::*method)(ThreadState*) = NULL;
       bool fresh_db = false;
+      
+      
       int num_threads = FLAGS_threads;
 
       if (name == Slice("open")) {
@@ -514,14 +519,18 @@ class Benchmark {
       } else if (name == Slice("readreverse")) {
         method = &Benchmark::ReadReverse;
       } else if (name == Slice("readrandom")) {
+	num_threads = num_threads / threads_ratio;
+	threads_ratio *= 2;
+	flag_monitor = true;
+	flag_admit = false;
         method = &Benchmark::ReadRandom;
       } else if (name == Slice("readrandom_1")) {
 	num_threads = 1;
         method = &Benchmark::ReadRandom;
       } else if (name == Slice("readrandom_warmup")) {
-        std::cout << "This is to warm up for random reads\n";
-	num_threads = 16;
-	reads_ /= 10;
+        std::cout << "====== This is to warm up for random reads\n";
+	num_threads = 32;
+	reads_ /= 2;
         method = &Benchmark::ReadRandom;
         std::cout << "This is to warm up for random reads" << num_ << "\n";
       } else if (name == Slice("readmissing")) {
@@ -759,7 +768,9 @@ class Benchmark {
     //options.use_persist_cache = false;
     //options.persist_block_cache = NULL;
     options.use_persist_cache = true;
-    options.persist_block_cache = NewPersistLRUCache(((size_t)80)*1024*1024*1024);
+    //options.persist_block_cache = NewPersistLRUCache(((size_t)28)*1024*1024*1024);
+    options.persist_block_cache = NewPersistLRUCache(((size_t)56)*1024*1024*1024);
+    //options.persist_vlog_cache = NewPersistLRUCache(((size_t)2)*1024*1024*1024);  // need to setup the db_impl code to separate lsm and vlog cache
 
     Status s = DB::Open(options, FLAGS_db, &db_);
     if (!s.ok()) {
@@ -886,7 +897,10 @@ class Benchmark {
       char key[100];
 
       //ll: code; change this to db size 
-      const int k = thread->rand.Next() % FLAGS_db_num;
+      //const int k = thread->rand.Next() % FLAGS_db_num;
+      
+      //Kan: for skewed accesses
+      const int k = thread->rand.Next() % (FLAGS_db_num / 2);
       //const int k = thread->rand.Next() % FLAGS_num;
       snprintf(key, sizeof(key), "%016d", k);
 
