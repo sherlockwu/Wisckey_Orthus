@@ -21,11 +21,13 @@ namespace leveldb {
 Cache::~Cache() {
 }
 
+bool flag_admit = true;
+bool flag_monitor = false;
+
+
 namespace {
 //Kan: for buckets
 bool print_cache_behavior = false;
-std::atomic<uint32_t> cache_access(0);
-std::atomic<uint32_t> cache_miss(0);
 
 typedef struct bucket_struct_ {
   uint32_t bucket_id;
@@ -632,6 +634,9 @@ static void DeleteNothing(const Slice& key, void* value) {
 }
 
 class ShardedBucketLRUCache : public Cache {
+  std::atomic<uint32_t> cache_access;
+  std::atomic<uint32_t> cache_miss;
+  size_t total_capacity;
 
  private:
   LRUCache shard_[kNumShards];
@@ -658,6 +663,7 @@ class ShardedBucketLRUCache : public Cache {
       : last_id_(0) {
     
     // set the capacity for each shard
+    total_capacity = capacity;
     const size_t per_shard = (capacity + (kNumShards - 1)) / kNumShards;
     for (int s = 0; s < kNumShards; s++) {
       shard_[s].SetCapacity(per_shard);
@@ -666,13 +672,16 @@ class ShardedBucketLRUCache : public Cache {
     // set backed cache file for each shard
     for (int s = 0; s < kNumShards; s++) {
       // open backed file
-      std::string cache_file_name = "/mnt/optane/cache_dir/file_" + std::to_string(s);
-      std::cout << "shard " << s << " is going to set a cached file with " << cache_file_name << std::endl;
+      std::string cache_file_name = "/mnt/optane/cache_dir/file_" + std::to_string(capacity)+ "_" + std::to_string(s);
+      std::cout << "shard " << s << " is going to set a cached file with " << cache_file_name << " size: " << per_shard << std::endl;
       fds_[s] = open(cache_file_name.c_str(), O_RDWR | O_CREAT, 0);
       int td = ftruncate(fds_[s], per_shard + 1024*1024);
       if (fds_[s]<0 || td<0) {
         std::cout << "unable to create file" << fds_[s] << " : " << td << std::endl;
         exit(1);
+      }
+      if (posix_fadvise(fds_[s], 0, per_shard, POSIX_FADV_DONTNEED) != 0) {
+        std::cout << "fadvise failed" << std::endl;
       }
 
       shard_[s].SetBackedFile(fds_[s]);
@@ -707,7 +716,7 @@ class ShardedBucketLRUCache : public Cache {
     }
 
     if (bucket == 0 && cache_access > 1000000) {
-      std::cout << "Cache access: " << cache_access << ", miss: " << cache_miss << ", miss ratio: " << (double) cache_miss / cache_access * 100 << "\n";
+      std::cout << total_capacity << " Cache access: " << cache_access << ", miss: " << cache_miss << ", miss ratio: " << (double) cache_miss / cache_access * 100 << "\n";
       cache_access = 0;
       cache_miss = 0;
     }

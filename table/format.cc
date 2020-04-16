@@ -93,16 +93,14 @@ Status ReadBlock(RandomAccessFile* file,
     //s = (file->backed_file)->Read(handle.offset(), n + kBlockTrailerSize, &contents, buf);
  
   // TODO how to handle very large requests 
-  if (true && (file->persist_block_cache != NULL) && (file->persist_cache_id != -1) && n+kBlockTrailerSize < 8000) {
+  if (true && (file->persist_block_cache != NULL) && (file->persist_cache_id != -1) && n+kBlockTrailerSize < 8000 && (fastrand()%100) < 100) {
     // creat the key for cache lookup
     char cache_key_buffer[16];    // perhaps we could use 16 vs 24 to identify it's value or LSM page
     EncodeFixed64(cache_key_buffer, file->persist_cache_id);     // how to get the cache_id ???????
     EncodeFixed64(cache_key_buffer+8, handle.offset());
-    
     Slice key(cache_key_buffer, sizeof(cache_key_buffer));
       
     //look up the cache
-    
     cache_handle = persist_block_cache->Lookup(key, buf);
     if (cache_handle == NULL) {
       // read the pages from flash
@@ -116,7 +114,7 @@ Status ReadBlock(RandomAccessFile* file,
         std::cout << "\n"; 
         */
       // TODO decide whether to admit
-      if (true) {
+      if (flag_admit) {
         // insert the pages into the cache 
         //cache_handle = persist_block_cache->Insert(key, n + kBlockTrailerSize, buf);
         cache_handle = persist_block_cache->Insert(key, n + kBlockTrailerSize, (char*)(contents.data()));

@@ -31,6 +31,14 @@ class Cache;
 extern Cache* NewLRUCache(size_t capacity);
 extern Cache* NewPersistLRUCache(size_t capacity);
 
+extern bool flag_admit;
+extern bool flag_monitor;
+//extern int vlog_data_admit_ratio;
+//extern int vlog_load_admit_ratio
+//extern int lsm_data_admit_ratio;
+//extern int lsm_load_admit_ratio;
+
+
 class Cache {
  public:
   Cache() { }

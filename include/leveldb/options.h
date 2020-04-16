@@ -105,6 +105,7 @@ struct Options {
   // Kan: for persist cache
   bool use_persist_cache;
   Cache* persist_block_cache;
+  Cache* persist_vlog_cache;
 
   // Approximate size of user data packed per block.  Note that the
   // block size specified here corresponds to uncompressed data.  The
