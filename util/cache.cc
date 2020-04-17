@@ -22,7 +22,7 @@ Cache::~Cache() {
 }
 
 bool flag_admit = true;
-bool flag_monitor = false;
+bool flag_monitor = true;
 
 
 namespace {

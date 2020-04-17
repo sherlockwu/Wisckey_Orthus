@@ -138,9 +138,10 @@ uint64_t perf_counter()
 
 void * monitor_func(void *vargp) {
   // create a monitor file on Optane SSD to detect
-  int fd_monitor = open("/mnt/optane/cache_dir/file_monitor", O_RDWR | O_DIRECT | O_CREAT, 0);
-  //int td = 0;
-  int td = ftruncate(fd_monitor, 1*1024*1024*1024);
+  //int fd_monitor = open("/mnt/optane/cache_dir/file_monitor", O_RDWR | O_DIRECT | O_CREAT, 0);
+  int fd_monitor = open("/mnt/optane/test_file", O_RDONLY | O_DIRECT);
+  int td = 0;
+  //int td = ftruncate(fd_monitor, 1*1024*1024*1024);
   if (fd_monitor <0 || td<0) {
     std::cout << "unable to create file" << fd_monitor << " : " << td << " " << errno << std::endl;
     exit(1);
@@ -149,27 +150,29 @@ void * monitor_func(void *vargp) {
   int io_size = 4096;
   char * read_buf = (char *) malloc(sizeof(char) * io_size);
   int ret = posix_memalign((void **)&read_buf, 512, io_size);
-  uint64_t start_time, end_time;
-
+  long long avg_lat_100 = 0;
+  
   while(true) {
     if (flag_monitor) {
-    //if (true) {
-      std::cout << "Get in monitor_func\n";
+      //std::cout << "Get in monitor_func\n";
       //TODO monitor the load of Optane SSD
-      //start_time = perf_counter();
-      auto timeStart = std::chrono::high_resolution_clock::now();
-      ret = pread(fd_monitor, read_buf, io_size, 0);
-      //assert(ret == io_size);
-      //end_time = perf_counter();
-      //std::cout << "Last IO takes: " << (end_time - start_time) / 1000.0 << "us\n";
-      std::cout << "Thread on CPU " << sched_getcpu() << "\n"; 
-      auto timeEnd = std::chrono::high_resolution_clock::now();
-      long long duration = std::chrono::duration_cast<std::chrono::microseconds>(timeEnd - timeStart).count();
-      std::cout << "Last IO takes: " << duration << "us\n";
+      for (int i = 0; i < 1000; i++) {
+        auto timeStart = std::chrono::high_resolution_clock::now();
+        ret = pread(fd_monitor, read_buf, io_size, io_size);
+        assert(ret == io_size);
+        long long duration = std::chrono::duration_cast<std::chrono::microseconds>(
+	  	      std::chrono::high_resolution_clock::now() - timeStart).count();
+        //std::cout << "Thread on CPU " << sched_getcpu() << "\n"; 
+        //std::cout << "Last IO takes: " << (end_time - start_time) / 1000.0 << "us\n";
+        //std::cout << "Last IO takes: " << duration << "us\n";
+        avg_lat_100 += duration;
+      }
+      std::cout << "Last 1000 IOs, avg lat: " << avg_lat_100 / 1000 << "us\n";
+      avg_lat_100 = 0;
       
       //TODO decide data admit, load admit ratio 
-      
-      usleep(100000);
+
+      usleep(1000000);
     } else {
       usleep(1000000);
     }
@@ -237,6 +240,8 @@ DBImpl::DBImpl(const Options& raw_options, const std::string& dbname)
   // TODO start a thread to monitor the load of Optane SSD
   pthread_t monitor_thread; 
   pthread_create(&monitor_thread, NULL, monitor_func, NULL);
+
+  //usleep(1000000000000);
 }
 
 DBImpl::~DBImpl() {
