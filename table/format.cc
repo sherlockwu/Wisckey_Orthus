@@ -116,8 +116,9 @@ Status ReadBlock(RandomAccessFile* file,
       // TODO decide whether to admit
       if (flag_admit) {
         // insert the pages into the cache 
-        //cache_handle = persist_block_cache->Insert(key, n + kBlockTrailerSize, buf);
-        cache_handle = persist_block_cache->Insert(key, n + kBlockTrailerSize, (char*)(contents.data()));
+        //char* buf_to_write = new char[n + kBlockTrailerSize];
+        
+	cache_handle = persist_block_cache->Insert(key, n + kBlockTrailerSize, (char*)(contents.data()));
       }
     } else {
       contents = Slice(buf, n + kBlockTrailerSize);
