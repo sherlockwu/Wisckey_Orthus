@@ -156,19 +156,18 @@ void * monitor_func(void *vargp) {
     if (flag_monitor) {
       //std::cout << "Get in monitor_func\n";
       //TODO monitor the load of Optane SSD
+      auto timeStart = std::chrono::high_resolution_clock::now();
       for (int i = 0; i < 1000; i++) {
-        auto timeStart = std::chrono::high_resolution_clock::now();
-        ret = pread(fd_monitor, read_buf, io_size, io_size);
+        ret = pread(fd_monitor, read_buf, io_size, (fastrand()%100000)*io_size);
         assert(ret == io_size);
-        long long duration = std::chrono::duration_cast<std::chrono::microseconds>(
-	  	      std::chrono::high_resolution_clock::now() - timeStart).count();
-        //std::cout << "Thread on CPU " << sched_getcpu() << "\n"; 
-        //std::cout << "Last IO takes: " << (end_time - start_time) / 1000.0 << "us\n";
         //std::cout << "Last IO takes: " << duration << "us\n";
-        avg_lat_100 += duration;
+        //avg_lat_100 += duration;
       }
-      std::cout << "Last 1000 IOs, avg lat: " << avg_lat_100 / 1000 << "us\n";
-      avg_lat_100 = 0;
+      long long duration = std::chrono::duration_cast<std::chrono::microseconds>(
+	  	    std::chrono::high_resolution_clock::now() - timeStart).count();
+      //std::cout << "Last 1000 IOs, avg lat: " << avg_lat_100 / 1000 << "us\n";
+      std::cout << "Last 1000 IOs, avg lat: " << duration / 1000 << "us\n";
+      //avg_lat_100 = 0;
       
       //TODO decide data admit, load admit ratio 
 

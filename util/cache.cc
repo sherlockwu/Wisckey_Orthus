@@ -114,7 +114,7 @@ class HandleTable {
       if (elems_ > length_) {
         // Since each cache entry is fairly large, we aim for a small
         // average linked list length (<= 1).
-        Resize();
+	Resize();
       }
     }
     return old;
@@ -196,6 +196,7 @@ class ObjectTable {
       if (elems_ > length_) {
         // Since each cache entry is fairly large, we aim for a small
         // average linked list length (<= 1).
+	//std::cout << "======== This is to Resize\n";
         Resize();
       }
     }
@@ -566,7 +567,11 @@ Cache::Handle* LRUCache::BucketInsert(const Slice& key, uint32_t hash,
   
   // write the data to the backed_file
   //std::cout << "Write to cache " << shard_fd_ << ", " << e->bucket_ << " : " << e->in_bucket_offset_ << ", " << e->bucket_ * bucket_size + e->in_bucket_offset_ << " : " << charge << std::endl;
+  
   ssize_t r = pwrite(shard_fd_, value, charge, e->bucket_ * bucket_size + e->in_bucket_offset_);
+  int ret = fdatasync(shard_fd_);
+  //assert (ret == 0);
+
   if (r != charge) {
     std::cout << "pwrite to cache file failed!\n";
     exit(1);
@@ -575,7 +580,7 @@ Cache::Handle* LRUCache::BucketInsert(const Slice& key, uint32_t hash,
   return reinterpret_cast<Cache::Handle*>(*buffer_bucket);
 }
 
-static const int kNumShardBits = 4;
+static const int kNumShardBits = 7;
 //static const int kNumShardBits = 1;   // TODO Kan: just for test
 static const int kNumShards = 1 << kNumShardBits;
 

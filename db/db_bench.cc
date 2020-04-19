@@ -530,7 +530,7 @@ class Benchmark {
       } else if (name == Slice("readrandom_warmup")) {
         std::cout << "====== This is to warm up for random reads\n";
 	num_threads = 32;
-	reads_ /= 2;
+	reads_ /= 1;
 	flag_monitor = false;
         method = &Benchmark::ReadRandom;
         std::cout << "This is to warm up for random reads" << num_ << "\n";
@@ -770,7 +770,7 @@ class Benchmark {
     //options.persist_block_cache = NULL;
     options.use_persist_cache = true;
     options.persist_block_cache = NewPersistLRUCache(((size_t)28)*1024*1024*1024);
-    //options.persist_block_cache = NewPersistLRUCache(((size_t)56)*1024*1024*1024);
+    //options.persist_block_cache = NewPersistLRUCache(((size_t)110)*1024*1024*1024);
     //options.persist_vlog_cache = NewPersistLRUCache(((size_t)2)*1024*1024*1024);  // need to setup the db_impl code to separate lsm and vlog cache
 
     Status s = DB::Open(options, FLAGS_db, &db_);
@@ -902,7 +902,7 @@ class Benchmark {
       
       //Kan: for skewed accesses
       //const int k = thread->rand.Next() % (FLAGS_db_num / 2);
-      const int k = thread->rand.Next() % (FLAGS_db_num / 4);
+      const int k = thread->rand.Next() % (FLAGS_db_num / 2);
       //const int k = thread->rand.Next() % FLAGS_num;
       snprintf(key, sizeof(key), "%016d", k);
 
