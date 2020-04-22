@@ -152,26 +152,49 @@ void * monitor_func(void *vargp) {
   int ret = posix_memalign((void **)&read_buf, 512, io_size);
   long long avg_lat_100 = 0;
   
+  
+  //int lat_thresh = 55;  // For 64KB
+  int lat_thresh = 35;
+
+
+  float low_ratio = 0.85;
+
   while(true) {
     if (flag_monitor) {
-      //std::cout << "Get in monitor_func\n";
-      //TODO monitor the load of Optane SSD
+      //monitor the load of Optane SSD
       auto timeStart = std::chrono::high_resolution_clock::now();
       for (int i = 0; i < 1000; i++) {
         ret = pread(fd_monitor, read_buf, io_size, (fastrand()%100000)*io_size);
         assert(ret == io_size);
-        //std::cout << "Last IO takes: " << duration << "us\n";
-        //avg_lat_100 += duration;
       }
-      long long duration = std::chrono::duration_cast<std::chrono::microseconds>(
-	  	    std::chrono::high_resolution_clock::now() - timeStart).count();
-      //std::cout << "Last 1000 IOs, avg lat: " << avg_lat_100 / 1000 << "us\n";
-      std::cout << "Last 1000 IOs, avg lat: " << duration / 1000 << "us\n";
-      //avg_lat_100 = 0;
+      long long detected_lat = std::chrono::duration_cast<std::chrono::microseconds>(
+	  	    std::chrono::high_resolution_clock::now() - timeStart).count() / 1000;
+      std::cout << "Last 1000 IOs, avg lat: " << detected_lat << "us\n";
       
-      //TODO decide data admit, load admit ratio 
-
-      usleep(1000000);
+      //TODO auto tune data admit, load admit ratio 
+      //data_admit_ratio = 100;
+      //load_admit_ratio = 100;
+      
+      ///*
+      if (detected_lat >= lat_thresh) {
+        if (data_admit_ratio > 0) {
+	  data_admit_ratio = (data_admit_ratio < 20)?0:data_admit_ratio/2;     // TODO how to adjust?
+	} else {
+	  if (flag_tune_load_admit)
+	    load_admit_ratio = (load_admit_ratio>=10)?load_admit_ratio-5:0;
+	}
+      }
+      if (detected_lat <= low_ratio * lat_thresh) {
+        if (load_admit_ratio < 100) {
+	  load_admit_ratio = (load_admit_ratio >= 90)?100:load_admit_ratio+10;
+	} else {
+	  data_admit_ratio = (data_admit_ratio >= 90)?100:data_admit_ratio+10;
+	}
+      }
+      //*/
+      std::cout << "Data admit ratio: " << data_admit_ratio << " Load admit ratio: " << load_admit_ratio << "\n";
+      
+      usleep(500000);
     } else {
       usleep(1000000);
     }
@@ -240,7 +263,7 @@ DBImpl::DBImpl(const Options& raw_options, const std::string& dbname)
   pthread_t monitor_thread; 
   pthread_create(&monitor_thread, NULL, monitor_func, NULL);
 
-  //usleep(1000000000000);
+  usleep(1000000000000);
 }
 
 DBImpl::~DBImpl() {
@@ -1498,11 +1521,11 @@ Status DBImpl::ReadVlog(uint64_t offset, size_t n, Slice* result, char* scratch)
       char* page_buf = new char[(end_page - start_page + 1) * 4096];
       cache_handle = persist_block_cache->Lookup(key, page_buf);
       if (cache_handle == NULL) {
-	//std::cout << "  == we got a miss " << std::endl;
 	// read the pages from the real vlog file
 	s = vlog_read_->Read(start_page * 4096, (end_page - start_page + 1) * 4096, result, page_buf);
-	// TODO decide whether to admit
-        if (flag_admit) {
+	// decide whether to admit
+        //if (flag_admit) {
+        if ((fastrand()%100) < data_admit_ratio) {
 	  // insert the pages into the cache 
           cache_handle = persist_block_cache->Insert(key, (end_page - start_page + 1) * 4096, page_buf);
 	}
@@ -1511,15 +1534,11 @@ Status DBImpl::ReadVlog(uint64_t offset, size_t n, Slice* result, char* scratch)
       memcpy((void *)scratch, (void *)(page_buf + in_page_offset), n);
       *result = Slice(scratch, n);
       delete [] page_buf;
-      // Need to release the reference, don't need, because it's bucket handle, will never be evicted
-      // if (cache_handle != NULL)  
-      //  persist_block_cache->Release(cache_handle);
   } else {
     s = vlog_read_->Read(offset, n, result, scratch);
   }	  
 	  
   return s;
-  //return vlog_read_->Read(offset, n, result, scratch);
 }
 
 // sequential read vlog file

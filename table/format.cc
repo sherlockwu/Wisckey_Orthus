@@ -81,19 +81,15 @@ Status ReadBlock(RandomAccessFile* file,
   char* buf = new char[n + kBlockTrailerSize];
   Slice contents;
 
-  //ll: output
-  //  fprintf(stdout, "read size: %zu \n", n);
 
   Status s;
   Cache::Handle* cache_handle = NULL;
   Cache* persist_block_cache = (Cache *) (file->persist_block_cache);
 
   //std::cout << "== ReadBlock: " << file->persist_cache_id << " " << handle.offset() << " " << n + kBlockTrailerSize<< "\n";
-  //if (file->backed_file != NULL && (fastrand()%100) < 0) {
-    //s = (file->backed_file)->Read(handle.offset(), n + kBlockTrailerSize, &contents, buf);
  
-  // TODO how to handle very large requests 
-  if (true && (file->persist_block_cache != NULL) && (file->persist_cache_id != -1) && n+kBlockTrailerSize < 8000 && (fastrand()%100) < 100) {
+  // avoid handle very large block
+  if (true && (file->persist_block_cache != NULL) && (file->persist_cache_id != -1) && n+kBlockTrailerSize < 8000) {
     // creat the key for cache lookup
     char cache_key_buffer[16];    // perhaps we could use 16 vs 24 to identify it's value or LSM page
     EncodeFixed64(cache_key_buffer, file->persist_cache_id);     // how to get the cache_id ???????
@@ -105,50 +101,16 @@ Status ReadBlock(RandomAccessFile* file,
     if (cache_handle == NULL) {
       // read the pages from flash
       s = file->Read(handle.offset(), n + kBlockTrailerSize, &contents, buf);
-        /*
-	std::cout << "Insert cache for " << file->persist_cache_id << " " << handle.offset() << " " << n + kBlockTrailerSize <<  "\n"; 
-        for (int i = 0; i < 30; i++) {
-          int val = int(buf[i]); 
-          std::cout << val << " " ;
-	}
-        std::cout << "\n"; 
-        */
-      // TODO decide whether to admit
-      if (flag_admit) {
+      
+      // decide whether to admit
+      if ((fastrand()%100) < data_admit_ratio) {
         // insert the pages into the cache 
-        //char* buf_to_write = new char[n + kBlockTrailerSize];
-        
 	cache_handle = persist_block_cache->Insert(key, n + kBlockTrailerSize, (char*)(contents.data()));
       }
     } else {
       contents = Slice(buf, n + kBlockTrailerSize);
-      /*
-      char* buf_to_check = new char[n + kBlockTrailerSize];
-      s = file->Read(handle.offset(), n + kBlockTrailerSize, &contents, buf_to_check);
-      
-      if (strcmp(buf, buf_to_check) != 0) {
-        std::cout << "The data from flash is different from what is cached! " << file->persist_cache_id << " " << handle.offset() << "\n";
-        for (int i = 0; i < n + kBlockTrailerSize; i++) {
-          if (buf[i] != buf_to_check[i]) {
-	    std::cout << i << " ";
-	  } 
-        }
-        std::cout << "\n";
-        for (int i = 0; i < 30; i++) {
-	  std::cout << int(buf[i]) << " ";
-	}
-        std::cout << "\n";
-        for (int i = 0; i < 30; i++) {
-	  std::cout << int(buf_to_check[i]) << " ";
-	}
-        std::cout << "\n";
-	//exit(1);
-      }
-      std::cout << "The data from flash is same as what is cached! " << handle.offset() << "\n";
-      */
     }
     
-    //s = file->Read(handle.offset(), n + kBlockTrailerSize, &contents, buf);
   } else {
     s = file->Read(handle.offset(), n + kBlockTrailerSize, &contents, buf);
   }

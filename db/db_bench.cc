@@ -187,7 +187,7 @@ class Stats {
   Stats() { Start(); }
 
   void Start() {
-    next_report_ = 100;
+    next_report_ = 1000;
     last_op_finish_ = start_;
     hist_.Clear();
     done_ = 0;
@@ -243,9 +243,10 @@ class Stats {
       double speed = last_finished / micros * 1000000;
       //std::cout << micros << " " << last_finished << "\n";
 
-      if      (next_report_ < 1000)   next_report_ += 100;
-      else if (next_report_ < 5000)   next_report_ += 500;
-      else if (next_report_ < 10000)  next_report_ += 1000;
+      //if      (next_report_ < 1000)   next_report_ += 100;
+      //else if (next_report_ < 5000)   next_report_ += 500;
+      //else
+      if (next_report_ < 10000)  next_report_ += 1000;
       else if (next_report_ < 50000)  next_report_ += 5000;
       else if (next_report_ < 100000) next_report_ += 10000;
       else if (next_report_ < 500000) next_report_ += 50000;
@@ -522,7 +523,7 @@ class Benchmark {
 	num_threads = num_threads / threads_ratio;
 	threads_ratio *= 2;
 	flag_monitor = true;
-	flag_admit = true;
+	flag_tune_load_admit = false;
         method = &Benchmark::ReadRandom;
       } else if (name == Slice("readrandom_1")) {
 	num_threads = 1;
@@ -530,8 +531,7 @@ class Benchmark {
       } else if (name == Slice("readrandom_warmup")) {
         std::cout << "====== This is to warm up for random reads\n";
 	num_threads = 32;
-	reads_ /= 1;
-	flag_monitor = false;
+	reads_ = 500000;
         method = &Benchmark::ReadRandom;
         std::cout << "This is to warm up for random reads" << num_ << "\n";
       } else if (name == Slice("readmissing")) {
@@ -770,7 +770,13 @@ class Benchmark {
     //options.persist_block_cache = NULL;
     options.use_persist_cache = true;
     options.persist_block_cache = NewPersistLRUCache(((size_t)28)*1024*1024*1024);
+    //options.persist_block_cache = NewPersistLRUCache(((size_t)46)*1024*1024*1024);
+    
+    
+    //options.persist_block_cache = NewPersistLRUCache(((size_t)92)*1024*1024*1024);
     //options.persist_block_cache = NewPersistLRUCache(((size_t)110)*1024*1024*1024);
+    
+    
     //options.persist_vlog_cache = NewPersistLRUCache(((size_t)2)*1024*1024*1024);  // need to setup the db_impl code to separate lsm and vlog cache
 
     Status s = DB::Open(options, FLAGS_db, &db_);
@@ -901,8 +907,8 @@ class Benchmark {
       //const int k = thread->rand.Next() % FLAGS_db_num;
       
       //Kan: for skewed accesses
-      //const int k = thread->rand.Next() % (FLAGS_db_num / 2);
       const int k = thread->rand.Next() % (FLAGS_db_num / 2);
+      //const int k = thread->rand.Next() % (FLAGS_db_num / 3);
       //const int k = thread->rand.Next() % FLAGS_num;
       snprintf(key, sizeof(key), "%016d", k);
 

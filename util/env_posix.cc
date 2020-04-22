@@ -99,8 +99,8 @@ class MmapLimiter {
  public:
   // Up to 1000 mmaps for 64-bit binaries; none for smaller pointer sizes.
   MmapLimiter() {
-    SetAllowed(sizeof(void*) >= 8 ? 10000 : 0);  // Kan: to make it easy, don't use mmap
-    //SetAllowed(sizeof(void*) >= 8 ? 0 : 0);
+    //SetAllowed(sizeof(void*) >= 8 ? 10000 : 0);  // Kan: to make it easy, don't use mmap
+    SetAllowed(sizeof(void*) >= 8 ? 0 : 0);
   }
 
   // If another mmap slot is available, acquire it and return true.
@@ -348,6 +348,11 @@ class PosixEnv : public Env {
     *result = NULL;
     Status s;
     int fd = open(fname.c_str(), O_RDONLY);
+    if (fd >= 0) { 
+      int ret = posix_fadvise(fd, 0, 0, POSIX_FADV_RANDOM);
+      if (ret != 0)
+	fprintf(stdout, "fadvise random fails  !!! \n");
+    }
     if (fd < 0) {
       std::cout << "open file failed " << fname << " " << errno << std::endl;
       s = IOError(fname, errno);
