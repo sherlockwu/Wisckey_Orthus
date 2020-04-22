@@ -16,13 +16,19 @@
 #include "port/port.h"
 #include "util/hash.h"
 #include "util/mutexlock.h"
+#include "util/random.h"
+
 namespace leveldb {
 
 Cache::~Cache() {
 }
 
-bool flag_admit = true;
+//bool flag_monitor = false;
 bool flag_monitor = true;
+bool flag_tune_load_admit = true;
+
+int data_admit_ratio = 100;
+int load_admit_ratio = 100;
 
 
 namespace {
@@ -284,7 +290,8 @@ class LRUCache {
   size_t capacity_buckets_;
   size_t usage_buckets_;
   int shard_fd_;
-  uint64_t bucket_size = 64 * 1024;    // Bucket size in KB
+  //uint64_t bucket_size = 64 * 1024;    // Bucket size in KB
+  uint64_t bucket_size = 256 * 1024;    // Bucket size in KB
   
   //LRUHandle* buffer_bucket = NULL;
   LRUHandle* buffer_bucket_lsm = NULL;
@@ -462,6 +469,12 @@ Cache::Handle* LRUCache::BucketLookup(const Slice& key, uint32_t hash, void * sc
   
   // 3. read data from the bucket
   //std::cout << "Read from cache " << shard_fd_ << ", " << bucket_id << " : " << in_bucket_offset << ", " << bucket_id * bucket_size + in_bucket_offset << " : " << object_len << std::endl;
+  
+  // TODO load admission logic
+  if ((fastrand()%100) > load_admit_ratio) {
+    return NULL;
+  }
+  
   ssize_t r = pread(shard_fd_, scratch, object_len, bucket_id * bucket_size + in_bucket_offset);
   if (r != object_len) {
     std::cout << "pread from cache file failed!\n";
@@ -678,7 +691,7 @@ class ShardedBucketLRUCache : public Cache {
     for (int s = 0; s < kNumShards; s++) {
       // open backed file
       std::string cache_file_name = "/mnt/optane/cache_dir/file_" + std::to_string(capacity)+ "_" + std::to_string(s);
-      std::cout << "shard " << s << " is going to set a cached file with " << cache_file_name << " size: " << per_shard << std::endl;
+      //std::cout << "shard " << s << " is going to set a cached file with " << cache_file_name << " size: " << per_shard << std::endl;
       fds_[s] = open(cache_file_name.c_str(), O_RDWR | O_CREAT, 0);
       int td = ftruncate(fds_[s], per_shard + 1024*1024);
       if (fds_[s]<0 || td<0) {
@@ -721,7 +734,8 @@ class ShardedBucketLRUCache : public Cache {
     }
 
     if (bucket == 0 && cache_access > 1000000) {
-      std::cout << total_capacity << " Cache access: " << cache_access << ", miss: " << cache_miss << ", miss ratio: " << (double) cache_miss / cache_access * 100 << "\n";
+      //std::cout << total_capacity << " Cache access: " << cache_access << ", miss: " << cache_miss << ", miss ratio: " << (double) cache_miss / cache_access * 100 << "\n";
+      std::cout << "====== miss ratio: " << (double) cache_miss / cache_access * 100 << "\n";
       cache_access = 0;
       cache_miss = 0;
     }

@@ -31,8 +31,11 @@ class Cache;
 extern Cache* NewLRUCache(size_t capacity);
 extern Cache* NewPersistLRUCache(size_t capacity);
 
-extern bool flag_admit;
 extern bool flag_monitor;
+extern bool flag_tune_load_admit;
+
+extern int data_admit_ratio;
+extern int load_admit_ratio;
 //extern int vlog_data_admit_ratio;
 //extern int vlog_load_admit_ratio
 //extern int lsm_data_admit_ratio;
