@@ -13,6 +13,8 @@
 #include <chrono>
 //ll: for sleep 
 #include <unistd.h>
+#include <sstream> 
+#include <vector>
 
 #include "db/builder.h"
 #include "db/db_iter.h"
@@ -139,43 +141,38 @@ uint64_t perf_counter()
 void * monitor_func(void *vargp) {
   // create a monitor file on Optane SSD to detect
   //int fd_monitor = open("/mnt/optane/cache_dir/file_monitor", O_RDWR | O_DIRECT | O_CREAT, 0);
-  int fd_monitor = open("/mnt/optane/test_file", O_RDONLY | O_DIRECT);
-  int td = 0;
-  //int td = ftruncate(fd_monitor, 1*1024*1024*1024);
-  if (fd_monitor <0 || td<0) {
-    std::cout << "unable to create file" << fd_monitor << " : " << td << " " << errno << std::endl;
+  int fd_monitor = open("/sys/block/nvme1n1/stat", O_RDONLY);
+  if (fd_monitor < 0) {
+    std::cout << "unable to open file" << fd_monitor << " " << errno << std::endl;
     exit(1);
   }
   
-  int io_size = 4096;
-  char * read_buf = (char *) malloc(sizeof(char) * io_size);
-  int ret = posix_memalign((void **)&read_buf, 512, io_size);
-  long long avg_lat_100 = 0;
-  
-  
-  //int lat_thresh = 55;  // For 64KB
-  int lat_thresh = 35;
-
-
-  float low_ratio = 0.85;
+  char * read_buf = (char *) malloc(sizeof(char) * 1024);
+  int ret;
 
   while(true) {
     if (flag_monitor) {
       //monitor the load of Optane SSD
-      auto timeStart = std::chrono::high_resolution_clock::now();
-      for (int i = 0; i < 1000; i++) {
-        ret = pread(fd_monitor, read_buf, io_size, (fastrand()%100000)*io_size);
-        assert(ret == io_size);
-      }
-      long long detected_lat = std::chrono::duration_cast<std::chrono::microseconds>(
-	  	    std::chrono::high_resolution_clock::now() - timeStart).count() / 1000;
-      std::cout << "Last 1000 IOs, avg lat: " << detected_lat << "us\n";
-      
-      //TODO auto tune data admit, load admit ratio 
-      //data_admit_ratio = 100;
-      //load_admit_ratio = 100;
-      
-      ///*
+      ret = pread(fd_monitor, read_buf, 1024, 0);
+      assert(ret > 0);
+      std::stringstream ss(read_buf);
+      std::string s;
+      std::vector<uint64_t> stats;
+	
+      read_buf[ret+1] = '\n';
+      while (getline(ss, s, ' ')) {
+        if (s.size() == 0)
+	  continue;
+	  stats.push_back(std::stoll(s));
+      } 
+
+      for (int j = 0; j < stats.size(); j++)
+        std::cout << stats[j] << " ";
+      std::cout << std::endl;
+      std::cout << "time: " << stats[9] << std::endl;
+      usleep(500000);
+
+      /*
       if (detected_lat >= lat_thresh) {
         if (data_admit_ratio > 0) {
 	  data_admit_ratio = (data_admit_ratio < 20)?0:data_admit_ratio/2;     // TODO how to adjust?
@@ -191,10 +188,9 @@ void * monitor_func(void *vargp) {
 	  data_admit_ratio = (data_admit_ratio >= 90)?100:data_admit_ratio+10;
 	}
       }
-      //*/
-      std::cout << "Data admit ratio: " << data_admit_ratio << " Load admit ratio: " << load_admit_ratio << "\n";
+      */
+      //std::cout << "Data admit ratio: " << data_admit_ratio << " Load admit ratio: " << load_admit_ratio << "\n";
       
-      usleep(500000);
     } else {
       usleep(1000000);
     }

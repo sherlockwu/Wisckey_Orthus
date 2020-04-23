@@ -23,8 +23,8 @@ namespace leveldb {
 Cache::~Cache() {
 }
 
-bool flag_monitor = false;
-//bool flag_monitor = true;
+//bool flag_monitor = false;
+bool flag_monitor = true;
 bool flag_tune_load_admit = true;
 
 int data_admit_ratio = 100;
