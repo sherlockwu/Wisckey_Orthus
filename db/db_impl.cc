@@ -138,59 +138,113 @@ uint64_t perf_counter()
 }
 
 
+void parse_counters(char * string_to_parse, std::vector<uint64_t> & parsed_elements) {
+  std::string s;
+  std::stringstream ss(string_to_parse);
+  
+  parsed_elements.clear();
+  while (getline(ss, s, ' ')) {
+    if (s.size() == 0)
+      continue;
+    
+    parsed_elements.push_back(std::stoll(s));
+  } 
+  return;
+}
+
 void * monitor_func(void *vargp) {
   // create a monitor file on Optane SSD to detect
-  //int fd_monitor = open("/mnt/optane/cache_dir/file_monitor", O_RDWR | O_DIRECT | O_CREAT, 0);
-  int fd_monitor = open("/sys/block/nvme1n1/stat", O_RDONLY);
-  if (fd_monitor < 0) {
-    std::cout << "unable to open file" << fd_monitor << " " << errno << std::endl;
+  int fd_optane = open("/sys/block/nvme1n1/stat", O_RDONLY);
+  if (fd_optane < 0) {
+    std::cout << "unable to open file" << fd_optane << " " << errno << std::endl;
     exit(1);
   }
   
-  char * read_buf = (char *) malloc(sizeof(char) * 1024);
+  int fd_flash = open("/sys/block/nvme0n1/stat", O_RDONLY);
+  if (fd_flash < 0) {
+    std::cout << "unable to open file" << fd_flash << " " << errno << std::endl;
+    exit(1);
+  }
+  
+  char * optane_buf = (char *) malloc(sizeof(char) * 1024);
+  char * flash_buf = (char *) malloc(sizeof(char) * 1024);
+  
+  
   int ret;
+
+  std::vector<uint64_t> stats_optane, stats_flash, last_stats_optane, last_stats_flash;
+  float last_throughput, detected_throughput;
+  int last_action, this_action;
+  last_throughput = -1;
+  last_action = -1;
 
   while(true) {
     if (flag_monitor) {
-      //monitor the load of Optane SSD
-      ret = pread(fd_monitor, read_buf, 1024, 0);
-      assert(ret > 0);
-      std::stringstream ss(read_buf);
-      std::string s;
-      std::vector<uint64_t> stats;
-	
-      read_buf[ret+1] = '\n';
-      while (getline(ss, s, ' ')) {
-        if (s.size() == 0)
-	  continue;
-	  stats.push_back(std::stoll(s));
-      } 
-
-      for (int j = 0; j < stats.size(); j++)
-        std::cout << stats[j] << " ";
-      std::cout << std::endl;
-      std::cout << "time: " << stats[9] << std::endl;
-      usleep(500000);
-
-      /*
-      if (detected_lat >= lat_thresh) {
-        if (data_admit_ratio > 0) {
-	  data_admit_ratio = (data_admit_ratio < 20)?0:data_admit_ratio/2;     // TODO how to adjust?
-	} else {
-	  if (flag_tune_load_admit)
-	    load_admit_ratio = (load_admit_ratio>=10)?load_admit_ratio-5:0;
-	}
-      }
-      if (detected_lat <= low_ratio * lat_thresh) {
-        if (load_admit_ratio < 100) {
-	  load_admit_ratio = (load_admit_ratio >= 90)?100:load_admit_ratio+10;
-	} else {
-	  data_admit_ratio = (data_admit_ratio >= 90)?100:data_admit_ratio+10;
-	}
-      }
-      */
-      //std::cout << "Data admit ratio: " << data_admit_ratio << " Load admit ratio: " << load_admit_ratio << "\n";
       
+      //monitor the load of Optane SSD and Flash SSD
+      ret = pread(fd_optane, optane_buf, 1024, 0);
+      assert(ret > 0);
+      ret = pread(fd_flash, flash_buf, 1024, 0);
+      assert(ret > 0);
+      
+      parse_counters(optane_buf, stats_optane);
+      parse_counters(flash_buf, stats_flash);
+
+      /*for (int j = 0; j < stats_optane.size(); j++)
+        std::cout << stats_optane[j] << " ";
+      std::cout << std::endl;
+      for (int j = 0; j < stats_flash.size(); j++)
+        std::cout << stats_flash[j] << " ";
+      std::cout << std::endl;*/
+ 
+      if (last_stats_flash.size()!=15) {  // first second
+        last_stats_flash = stats_flash;
+        last_stats_optane = stats_optane;
+        continue;
+      }
+      
+      
+      // TODO detected Optane and Flash throughput
+      std::cout << "Optane read throughput: " << (stats_optane[2] - last_stats_optane[2]) / (2.0 * (stats_optane[9] - last_stats_optane[9])) << "\n";
+      std::cout << "Flash read throughput: " << (stats_flash[2] - last_stats_flash[2]) / (2.0 * (stats_flash[9] - last_stats_flash[9])) << "\n";
+
+      detected_throughput = 0.0;
+      if (stats_optane[9] - last_stats_optane[9] > 0)
+        detected_throughput += (stats_optane[2] - last_stats_optane[2]) / (2.0 * (stats_optane[9] - last_stats_optane[9]));
+      if (stats_flash[9] - last_stats_flash[9] > 0)
+        detected_throughput += (stats_flash[2] - last_stats_flash[2]) / (2.0 * (stats_flash[9] - last_stats_flash[9]));
+      std::cout << "Overall throughput observed: " << detected_throughput << "\n";
+
+      // TODO compare to last throughput
+
+      //std::cout << "time: " << stats_optane[9] << std::endl;
+      if (detected_throughput > last_throughput) {
+        this_action = last_action;
+      } else {
+        this_action = -1 * last_action;
+      }
+      
+      if (this_action > 0) {
+        if (load_admit_ratio < 100) {
+	  load_admit_ratio = (load_admit_ratio + this_action > 100)?100:load_admit_ratio + this_action;
+	} else {
+	  data_admit_ratio = (data_admit_ratio + this_action > 100)?100:data_admit_ratio + this_action;
+	}
+      } else {
+        if (data_admit_ratio > 0) {
+	  data_admit_ratio = (data_admit_ratio + this_action < 0)?0:data_admit_ratio + this_action;
+	} else {
+	  load_admit_ratio = (load_admit_ratio + this_action < 0)?0:load_admit_ratio + this_action;
+	}
+      } 
+	      
+
+      last_stats_flash = stats_flash;
+      last_stats_optane = stats_optane;
+      last_throughput = detected_throughput;      
+      last_action = this_action;
+      std::cout << "Data admit ratio: " << data_admit_ratio << " Load admit ratio: " << load_admit_ratio << "\n";
+      usleep(500000);
     } else {
       usleep(1000000);
     }
@@ -259,7 +313,7 @@ DBImpl::DBImpl(const Options& raw_options, const std::string& dbname)
   pthread_t monitor_thread; 
   pthread_create(&monitor_thread, NULL, monitor_func, NULL);
 
-  usleep(1000000000000);
+  //usleep(1000000000000);
 }
 
 DBImpl::~DBImpl() {

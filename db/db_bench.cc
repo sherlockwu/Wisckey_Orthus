@@ -769,8 +769,8 @@ class Benchmark {
     //options.use_persist_cache = false;
     //options.persist_block_cache = NULL;
     options.use_persist_cache = true;
-    options.persist_block_cache = NewPersistLRUCache(((size_t)28)*1024*1024*1024);
-    //options.persist_block_cache = NewPersistLRUCache(((size_t)46)*1024*1024*1024);
+    //options.persist_block_cache = NewPersistLRUCache(((size_t)28)*1024*1024*1024);
+    options.persist_block_cache = NewPersistLRUCache(((size_t)46)*1024*1024*1024);
     
     
     //options.persist_block_cache = NewPersistLRUCache(((size_t)92)*1024*1024*1024);
@@ -907,8 +907,8 @@ class Benchmark {
       //const int k = thread->rand.Next() % FLAGS_db_num;
       
       //Kan: for skewed accesses
-      const int k = thread->rand.Next() % (FLAGS_db_num / 2);
-      //const int k = thread->rand.Next() % (FLAGS_db_num / 3);
+      //const int k = thread->rand.Next() % (FLAGS_db_num / 2);
+      const int k = thread->rand.Next() % (FLAGS_db_num / 3);
       //const int k = thread->rand.Next() % FLAGS_num;
       snprintf(key, sizeof(key), "%016d", k);
 
