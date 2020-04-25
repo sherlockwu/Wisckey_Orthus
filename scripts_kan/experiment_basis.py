@@ -23,7 +23,7 @@ class Experiment(object):
         # config something
         #self.exp_name = 'leveldb/rerun/cache_automatic'
         #self.exp_name = 'leveldb/64Bvalue/cache_only_tune_data_admit'
-        self.exp_name = 'leveldb/testing/test_feedback'
+        self.exp_name = 'leveldb/testing/feedback_analysis'
         self.home_dir = '/home/kanwu/Research/'
         self.res_dir = self.home_dir + 'results/' + self.exp_name
         self.tmp_dir = '/dev/shm/'
@@ -34,7 +34,7 @@ class Experiment(object):
         self.tools_config = {
             'clear_page_cache': True,   # whether clear page cache before each run 
             'blktrace'        : False,   # check block IOs
-            'iostat'          : True,  # check ios and cpu/io utilization
+            'iostat'          : False,  # check ios and cpu/io utilization
             'perf'            : False,  # draw flamegraph
             'sar'             : False   # check page faults
         }
@@ -42,9 +42,9 @@ class Experiment(object):
         # experiment config
         config = {
           'type': ['randomread'],
-          'threads': [1, 4, 8, 16, 24, 32],
-          #'threads': [1],
-          #'threads': [1, 4, 8, 16, 24],
+          #'threads': [1, 4, 8, 16, 24, 32],
+          'threads': [24],
+          #'threads': [1, 4, 8, 16],
           'memory': [4*GB],    #'memory limit'
           'swapiness': [0],
           #'readahead': [128, 0, 16]    # default 128KB
@@ -107,12 +107,13 @@ class Experiment(object):
         
         #Small: 64B value
         #cmd = '/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/970/db_64 --value_size=64 --cache_size=0 --compression_ratio=1 --benchmarks=readrandom --use_existing_db=1 --db_num=1000000000 --reads=500000 ' + '--threads=' + str(config['threads']) #+ ' > /dev/shm/running'
-        #cmd = '/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/970/db_64 --value_size=64 --cache_size=0 --compression_ratio=1 --benchmarks=readrandom_warmup,readrandom --use_existing_db=1 --db_num=1000000000 --reads=200000 ' + '--threads=' + str(config['threads']) #+ ' > /dev/shm/running'
+        #cmd = '/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/970/db_64 --value_size=64 --cache_size=0 --compression_ratio=1 --benchmarks=readrandom_warmup,readrandom --use_existing_db=1 --db_num=1000000000 --reads=1000000 ' + '--threads=' + str(config['threads']) #+ ' > /dev/shm/running'
         #cmd = '/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/optane/db_64 --value_size=64 --cache_size=0 --compression_ratio=1 --benchmarks=readrandom_warmup,readrandom --use_existing_db=1 --db_num=1000000000 --reads=1000000 ' + '--threads=' + str(config['threads']) #+ ' > /dev/shm/running'
         
         #Large: 64KB value
-        #cmd = '/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/970/db_65536 --value_size=65536 --cache_size=0 --compression_ratio=1 --benchmarks=readrandom --use_existing_db=1 --db_num=2000000 --reads=200000 ' + '--threads=' + str(config['threads']) #+ ' > /dev/shm/running'
-        cmd = '/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/970/db_65536 --value_size=65536 --cache_size=0 --compression_ratio=1 --benchmarks=readrandom_warmup,readrandom --use_existing_db=1 --db_num=2000000 --reads=200000 ' + '--threads=' + str(config['threads']) #+ ' > /dev/shm/running'
+        #cmd = '/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/970/db_65536 --value_size=65536 --cache_size=0 --compression_ratio=1 --benchmarks=readrandom --use_existing_db=1 --db_num=2000000 --reads=500000 ' + '--threads=' + str(config['threads']) #+ ' > /dev/shm/running'
+        #cmd = '/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/970/db_65536 --value_size=65536 --cache_size=0 --compression_ratio=1 --benchmarks=readrandom_warmup,readrandom --use_existing_db=1 --db_num=2000000 --reads=500000 ' + '--threads=' + str(config['threads']) #+ ' > /dev/shm/running'
+        cmd = '/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/970/db_65536 --value_size=65536 --cache_size=0 --compression_ratio=1 --benchmarks=readrandom_warmup,readrandom,readrandom_1,readrandom --use_existing_db=1 --db_num=2000000 --reads=300000 ' + '--threads=' + str(config['threads']) #+ ' > /dev/shm/running'
         
         
         #shcmd(cmd)
