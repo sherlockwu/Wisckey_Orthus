@@ -173,10 +173,14 @@ void * monitor_func(void *vargp) {
   int ret;
 
   std::vector<uint64_t> stats_optane, stats_flash, last_stats_optane, last_stats_flash;
-  float last_throughput, detected_throughput;
+  float last_throughput, detected_throughput, optane_read_throughput, optane_write_throughput, flash_read_throughput;
   int last_action, this_action;
+  
+  // init state
   last_throughput = -1;
-  last_action = -1;
+  last_action = -2;
+  load_admit_ratio = 100;
+  data_admit_ratio = 100;
 
   while(true) {
     if (flag_monitor) {
@@ -190,34 +194,39 @@ void * monitor_func(void *vargp) {
       parse_counters(optane_buf, stats_optane);
       parse_counters(flash_buf, stats_flash);
 
-      /*for (int j = 0; j < stats_optane.size(); j++)
-        std::cout << stats_optane[j] << " ";
-      std::cout << std::endl;
-      for (int j = 0; j < stats_flash.size(); j++)
-        std::cout << stats_flash[j] << " ";
-      std::cout << std::endl;*/
- 
       if (last_stats_flash.size()!=15) {  // first second
         last_stats_flash = stats_flash;
         last_stats_optane = stats_optane;
         continue;
       }
       
-      
-      // TODO detected Optane and Flash throughput
-      std::cout << "Optane read throughput: " << (stats_optane[2] - last_stats_optane[2]) / (2.0 * (stats_optane[9] - last_stats_optane[9])) << "\n";
-      std::cout << "Flash read throughput: " << (stats_flash[2] - last_stats_flash[2]) / (2.0 * (stats_flash[9] - last_stats_flash[9])) << "\n";
+      int optane_ticks, flash_ticks;
+      optane_ticks = stats_optane[9] - last_stats_optane[9];
+      flash_ticks = stats_flash[9] - last_stats_flash[9];
+
+      // detected Optane and Flash throughput
+      std::cout << "  Optane read throughput: " << (stats_optane[2] - last_stats_optane[2]) / (2.0 * optane_ticks) << ";";
+      std::cout << "  Optane write throughput: " << (stats_optane[6] - last_stats_optane[6]) / (2.0 * optane_ticks) << ";";
+      std::cout << "  Flash read throughput: " << (stats_flash[2] - last_stats_flash[2]) / (2.0 * flash_ticks) << ";";
+
 
       detected_throughput = 0.0;
-      if (stats_optane[9] - last_stats_optane[9] > 0)
-        detected_throughput += (stats_optane[2] - last_stats_optane[2]) / (2.0 * (stats_optane[9] - last_stats_optane[9]));
-      if (stats_flash[9] - last_stats_flash[9] > 0)
-        detected_throughput += (stats_flash[2] - last_stats_flash[2]) / (2.0 * (stats_flash[9] - last_stats_flash[9]));
-      std::cout << "Overall throughput observed: " << detected_throughput << "\n";
+      if (optane_ticks > 0) {
+        detected_throughput += (stats_optane[2] - last_stats_optane[2]) / (2.0 * optane_ticks);
+      }	
+      if (flash_ticks > 0) {
+        detected_throughput += (stats_flash[2] - last_stats_flash[2]) / (2.0 * flash_ticks);
+      }
+      std::cout << "  Overall throughput observed: " << detected_throughput << "\n";
 
-      // TODO compare to last throughput
+      //TODO reset the cache scheduler
+      if (optane_ticks == 0 || (stats_optane[2] - last_stats_optane[2]) / (2.0 * optane_ticks) < 0.5 * 2500) {
+        load_admit_ratio = 100;
+        data_admit_ratio = 100;
+        goto next_loop;
+      }
+      // compare to last throughput
 
-      //std::cout << "time: " << stats_optane[9] << std::endl;
       if (detected_throughput > last_throughput) {
         this_action = last_action;
       } else {
@@ -225,7 +234,7 @@ void * monitor_func(void *vargp) {
       }
       
       if (this_action > 0) {
-        if (load_admit_ratio < 100) {
+        if (flag_tune_load_admit && load_admit_ratio < 100) {
 	  load_admit_ratio = (load_admit_ratio + this_action > 100)?100:load_admit_ratio + this_action;
 	} else {
 	  data_admit_ratio = (data_admit_ratio + this_action > 100)?100:data_admit_ratio + this_action;
@@ -233,18 +242,18 @@ void * monitor_func(void *vargp) {
       } else {
         if (data_admit_ratio > 0) {
 	  data_admit_ratio = (data_admit_ratio + this_action < 0)?0:data_admit_ratio + this_action;
-	} else {
+	} else if (flag_tune_load_admit) {
 	  load_admit_ratio = (load_admit_ratio + this_action < 0)?0:load_admit_ratio + this_action;
 	}
-      } 
+      }
 	      
-
+     next_loop:
       last_stats_flash = stats_flash;
       last_stats_optane = stats_optane;
       last_throughput = detected_throughput;      
       last_action = this_action;
-      std::cout << "Data admit ratio: " << data_admit_ratio << " Load admit ratio: " << load_admit_ratio << "\n";
-      usleep(500000);
+      std::cout << "  Data admit ratio: " << data_admit_ratio << " Load admit ratio: " << load_admit_ratio << "\n";
+      usleep(100000);
     } else {
       usleep(1000000);
     }

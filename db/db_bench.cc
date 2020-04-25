@@ -520,20 +520,24 @@ class Benchmark {
       } else if (name == Slice("readreverse")) {
         method = &Benchmark::ReadReverse;
       } else if (name == Slice("readrandom")) {
-	num_threads = num_threads / threads_ratio;
-	threads_ratio *= 2;
+	//num_threads = num_threads / threads_ratio;
+	//threads_ratio *= 2;
 	flag_monitor = true;
-	flag_tune_load_admit = false;
+	flag_tune_load_admit = true;
         method = &Benchmark::ReadRandom;
       } else if (name == Slice("readrandom_1")) {
-	num_threads = 1;
-        method = &Benchmark::ReadRandom;
+	flag_monitor = true;
+	reads_ = 1000000;
+	flag_tune_load_admit = true;
+	
+        //num_threads = 1;
+	num_threads = 24;
+        method = &Benchmark::ReadRandomChangeWorkset;
       } else if (name == Slice("readrandom_warmup")) {
         std::cout << "====== This is to warm up for random reads\n";
 	num_threads = 32;
-	reads_ = 500000;
+	reads_ = 300000;
         method = &Benchmark::ReadRandom;
-        std::cout << "This is to warm up for random reads" << num_ << "\n";
       } else if (name == Slice("readmissing")) {
         method = &Benchmark::ReadMissing;
       } else if (name == Slice("seekrandom")) {
@@ -909,6 +913,29 @@ class Benchmark {
       //Kan: for skewed accesses
       //const int k = thread->rand.Next() % (FLAGS_db_num / 2);
       const int k = thread->rand.Next() % (FLAGS_db_num / 3);
+      //const int k = thread->rand.Next() % FLAGS_num;
+      snprintf(key, sizeof(key), "%016d", k);
+
+      if (db_->Get(options, key, &value).ok()) {
+        found++;
+        thread->stats.AddBytes(value.length());
+      }
+      thread->stats.FinishedSingleOp();
+    }
+    char msg[100];
+    snprintf(msg, sizeof(msg), "(%d of %d found)", found, num_);
+    thread->stats.AddMessage(msg);
+  }
+  
+  void ReadRandomChangeWorkset(ThreadState* thread) {
+    ReadOptions options;
+    std::string value;
+    int found = 0;
+    int64_t bytes = 0;
+    for (int i = 0; i < reads_; i++) {
+      char key[100];
+
+      const int k = FLAGS_db_num / 3 + thread->rand.Next() % (FLAGS_db_num / 3);
       //const int k = thread->rand.Next() % FLAGS_num;
       snprintf(key, sizeof(key), "%016d", k);
 
