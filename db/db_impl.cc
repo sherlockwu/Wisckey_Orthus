@@ -225,8 +225,10 @@ void * monitor_func(void *vargp) {
         data_admit_ratio = 100;
         goto next_loop;
       }
-      // compare to last throughput
 
+      // TODO no tuning here! 
+      goto next_loop;
+      // compare to last throughput
       if (detected_throughput > last_throughput) {
         this_action = last_action;
       } else {

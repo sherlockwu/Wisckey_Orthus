@@ -64,6 +64,8 @@ static const char* FLAGS_benchmarks =
     "snappycomp,"
     "snappyuncomp,"
     "acquireload,"
+    // Kan: for benchmark
+    "ycsb,"
     ;
 
 // Number of key/values to place in database
@@ -519,10 +521,13 @@ class Benchmark {
         method = &Benchmark::ReadSequential;
       } else if (name == Slice("readreverse")) {
         method = &Benchmark::ReadReverse;
+      } else if (name == Slice("ycsb")) {
+	reads_ = reads_ / num_threads;
+	flag_monitor = false;
+	flag_tune_load_admit = true;
+        method = &Benchmark::YCSB;
       } else if (name == Slice("readrandom")) {
-	//num_threads = num_threads / threads_ratio;
-	//threads_ratio *= 2;
-	flag_monitor = true;
+	flag_monitor = false;
 	flag_tune_load_admit = true;
         method = &Benchmark::ReadRandom;
       } else if (name == Slice("readrandom_1")) {
@@ -772,14 +777,9 @@ class Benchmark {
     //Kan: for persist cache
     //options.use_persist_cache = false;
     //options.persist_block_cache = NULL;
+    
     options.use_persist_cache = true;
-    //options.persist_block_cache = NewPersistLRUCache(((size_t)28)*1024*1024*1024);
-    options.persist_block_cache = NewPersistLRUCache(((size_t)46)*1024*1024*1024);
-    
-    
-    //options.persist_block_cache = NewPersistLRUCache(((size_t)92)*1024*1024*1024);
-    //options.persist_block_cache = NewPersistLRUCache(((size_t)110)*1024*1024*1024);
-    
+    options.persist_block_cache = NewPersistLRUCache(((size_t)25)*1024*1024*1024);
     
     //options.persist_vlog_cache = NewPersistLRUCache(((size_t)2)*1024*1024*1024);  // need to setup the db_impl code to separate lsm and vlog cache
 
@@ -899,6 +899,35 @@ class Benchmark {
     thread->stats.AddBytes(bytes);
   }
 
+  void YCSB(ThreadState* thread) {
+    
+    ReadOptions options;
+    std::string value;
+    int found = 0;
+    int64_t bytes = 0;
+    // init the zipfian random generator
+    double g_zipfian_theta = 0.5;
+    ZipfianRandom zipfian_rng(FLAGS_db_num, g_zipfian_theta, 1237 + thread->tid); 
+    for (int i = 0; i < reads_; i++) {
+      char key[100];
+
+      //Kan: for zipfian accesses
+      //const int k = thread->rand.Next() % (FLAGS_db_num / 3);
+      const int k = zipfian_rng.next() % (FLAGS_db_num);
+      //std::cout << "key: " << k << "\n";
+      snprintf(key, sizeof(key), "%016d", k);
+
+      if (db_->Get(options, key, &value).ok()) {
+        found++;
+        thread->stats.AddBytes(value.length());
+      }
+      thread->stats.FinishedSingleOp();
+    }
+    char msg[100];
+    snprintf(msg, sizeof(msg), "(%d of %d found)", found, num_);
+    thread->stats.AddMessage(msg);
+  }
+  
   void ReadRandom(ThreadState* thread) {
     ReadOptions options;
     std::string value;
@@ -911,8 +940,8 @@ class Benchmark {
       //const int k = thread->rand.Next() % FLAGS_db_num;
       
       //Kan: for skewed accesses
-      //const int k = thread->rand.Next() % (FLAGS_db_num / 2);
-      const int k = thread->rand.Next() % (FLAGS_db_num / 3);
+      const int k = thread->rand.Next() % (FLAGS_db_num / 2);
+      //const int k = thread->rand.Next() % (FLAGS_db_num / 3);
       //const int k = thread->rand.Next() % FLAGS_num;
       snprintf(key, sizeof(key), "%016d", k);
 
