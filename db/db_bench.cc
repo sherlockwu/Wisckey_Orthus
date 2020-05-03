@@ -65,7 +65,8 @@ static const char* FLAGS_benchmarks =
     "snappyuncomp,"
     "acquireload,"
     // Kan: for benchmark
-    "ycsb,"
+    "ycsb,"  // it includes a warmup phase
+    "ycsb_warmup,"
     ;
 
 // Number of key/values to place in database
@@ -115,6 +116,10 @@ static bool FLAGS_use_existing_db = false;
 
 // Use the db with the following name.
 static const char* FLAGS_db = NULL;
+
+
+int num_threads_measure = 1;
+
 
 namespace leveldb {
 
@@ -220,6 +225,11 @@ class Stats {
 
   void AddMessage(Slice msg) {
     AppendWithSpace(&message_, msg);
+  }
+
+  void ClearStats() {
+    last_done_ = done_ = 0;
+    next_report_ = 10000;
   }
 
   void FinishedSingleOp() {
@@ -522,9 +532,19 @@ class Benchmark {
       } else if (name == Slice("readreverse")) {
         method = &Benchmark::ReadReverse;
       } else if (name == Slice("ycsb")) {
+	num_threads_measure = num_threads;
+	num_threads = 32;
 	reads_ = reads_ / num_threads;
+	
 	flag_monitor = false;
 	flag_tune_load_admit = true;
+        method = &Benchmark::YCSB;
+      } else if (name == Slice("ycsb_warmup")) {
+        std::cout << "====== This is to warm up for YCSB\n";
+	flag_monitor = false;
+	flag_tune_load_admit = true;
+	
+	reads_ = 500000;
         method = &Benchmark::YCSB;
       } else if (name == Slice("readrandom")) {
 	flag_monitor = false;
@@ -775,11 +795,12 @@ class Benchmark {
     options.filter_policy = filter_policy_;
     
     //Kan: for persist cache
-    //options.use_persist_cache = false;
-    //options.persist_block_cache = NULL;
+    options.use_persist_cache = false;
+    options.persist_block_cache = NULL;
     
-    options.use_persist_cache = true;
-    options.persist_block_cache = NewPersistLRUCache(((size_t)25)*1024*1024*1024);
+    //options.use_persist_cache = true;
+    //options.persist_block_cache = NewPersistLRUCache(((size_t)34)*1024*1024*1024);
+    //options.persist_block_cache = NewPersistLRUCache(((size_t)25)*1024*1024*1024);
     
     //options.persist_vlog_cache = NewPersistLRUCache(((size_t)2)*1024*1024*1024);  // need to setup the db_impl code to separate lsm and vlog cache
 
@@ -906,8 +927,11 @@ class Benchmark {
     int found = 0;
     int64_t bytes = 0;
     // init the zipfian random generator
-    double g_zipfian_theta = 0.5;
+    double g_zipfian_theta = 0.9;
     ZipfianRandom zipfian_rng(FLAGS_db_num, g_zipfian_theta, 1237 + thread->tid); 
+    
+
+    // warmup phase
     for (int i = 0; i < reads_; i++) {
       char key[100];
 
@@ -923,6 +947,32 @@ class Benchmark {
       }
       thread->stats.FinishedSingleOp();
     }
+    
+    if (thread->tid >= num_threads_measure) {
+      std::cout << "Thread " << thread->tid << " finished warming up\n";
+      return; 
+    }
+    thread->stats.ClearStats();
+
+    // TO test classic cache or tuned cache
+    flag_monitor = false;
+    // measurement phase
+    for (int i = 0; i < (reads_*32/num_threads_measure/4); i++) {
+      char key[100];
+
+      //Kan: for zipfian accesses
+      //const int k = thread->rand.Next() % (FLAGS_db_num / 3);
+      const int k = zipfian_rng.next() % (FLAGS_db_num);
+      //std::cout << "key: " << k << "\n";
+      snprintf(key, sizeof(key), "%016d", k);
+
+      if (db_->Get(options, key, &value).ok()) {
+        found++;
+        thread->stats.AddBytes(value.length());
+      }
+      thread->stats.FinishedSingleOp();
+    }
+    
     char msg[100];
     snprintf(msg, sizeof(msg), "(%d of %d found)", found, num_);
     thread->stats.AddMessage(msg);

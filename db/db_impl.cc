@@ -176,15 +176,18 @@ void * monitor_func(void *vargp) {
   float last_throughput, detected_throughput, optane_read_throughput, optane_write_throughput, flash_read_throughput;
   int last_action, this_action;
   
+  int steps = 0;
   // init state
   last_throughput = -1;
-  last_action = -2;
+  last_action = -5;
   load_admit_ratio = 100;
   data_admit_ratio = 100;
 
   while(true) {
     if (flag_monitor) {
       
+      steps += 1;
+
       //monitor the load of Optane SSD and Flash SSD
       ret = pread(fd_optane, optane_buf, 1024, 0);
       assert(ret > 0);
@@ -205,10 +208,6 @@ void * monitor_func(void *vargp) {
       flash_ticks = stats_flash[9] - last_stats_flash[9];
 
       // detected Optane and Flash throughput
-      std::cout << "  Optane read throughput: " << (stats_optane[2] - last_stats_optane[2]) / (2.0 * optane_ticks) << ";";
-      std::cout << "  Optane write throughput: " << (stats_optane[6] - last_stats_optane[6]) / (2.0 * optane_ticks) << ";";
-      std::cout << "  Flash read throughput: " << (stats_flash[2] - last_stats_flash[2]) / (2.0 * flash_ticks) << ";";
-
 
       detected_throughput = 0.0;
       if (optane_ticks > 0) {
@@ -217,17 +216,22 @@ void * monitor_func(void *vargp) {
       if (flash_ticks > 0) {
         detected_throughput += (stats_flash[2] - last_stats_flash[2]) / (2.0 * flash_ticks);
       }
-      std::cout << "  Overall throughput observed: " << detected_throughput << "\n";
+      
+      if (steps % 50 == 0) {
+        std::cout << "  Optane read throughput: " << (stats_optane[2] - last_stats_optane[2]) / (2.0 * optane_ticks) << ";";
+        std::cout << "  Optane write throughput: " << (stats_optane[6] - last_stats_optane[6]) / (2.0 * optane_ticks) << ";";
+        std::cout << "  Flash read throughput: " << (stats_flash[2] - last_stats_flash[2]) / (2.0 * flash_ticks) << ";";
+        std::cout << "  Overall throughput observed: " << detected_throughput << "\n";
+      }
 
       //TODO reset the cache scheduler
-      if (optane_ticks == 0 || (stats_optane[2] - last_stats_optane[2]) / (2.0 * optane_ticks) < 0.5 * 2500) {
+      //if (optane_ticks == 0 || (stats_optane[2] - last_stats_optane[2]) / (2.0 * optane_ticks) < 0.5 * 2500) {
+      if (optane_ticks == 0) {
         load_admit_ratio = 100;
         data_admit_ratio = 100;
         goto next_loop;
       }
 
-      // TODO no tuning here! 
-      goto next_loop;
       // compare to last throughput
       if (detected_throughput > last_throughput) {
         this_action = last_action;
@@ -254,8 +258,10 @@ void * monitor_func(void *vargp) {
       last_stats_optane = stats_optane;
       last_throughput = detected_throughput;      
       last_action = this_action;
-      std::cout << "  Data admit ratio: " << data_admit_ratio << " Load admit ratio: " << load_admit_ratio << "\n";
-      usleep(100000);
+      if (steps % 50 == 0) {
+        std::cout << "  Data admit ratio: " << data_admit_ratio << " Load admit ratio: " << load_admit_ratio << "\n";
+      } 
+      usleep(10000);
     } else {
       usleep(1000000);
     }
