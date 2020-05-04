@@ -138,7 +138,16 @@ uint64_t perf_counter()
 }
 
 
-void parse_counters(char * string_to_parse, std::vector<uint64_t> & parsed_elements) {
+
+int fd_optane, fd_flash;
+char * optane_buf;
+char * flash_buf;
+
+void get_counters(int fd, char * string_to_parse, std::vector<uint64_t> & parsed_elements) {
+  
+  int ret = pread(fd, string_to_parse, 1024, 0);
+  assert(ret > 0);
+  
   std::string s;
   std::stringstream ss(string_to_parse);
   
@@ -152,116 +161,160 @@ void parse_counters(char * string_to_parse, std::vector<uint64_t> & parsed_eleme
   return;
 }
 
+
+float check_throughput(bool flag_print=true) {
+  // store old counters
+  std::vector<uint64_t> stats_optane, stats_flash, last_stats_optane, last_stats_flash;
+  get_counters(fd_optane, optane_buf, last_stats_optane);
+  get_counters(fd_flash, flash_buf, last_stats_flash);
+  
+  usleep(10000);
+  // get new counters
+  get_counters(fd_optane, optane_buf, stats_optane);
+  get_counters(fd_flash, flash_buf, stats_flash);
+      
+  
+  int optane_ticks = stats_optane[9] - last_stats_optane[9];
+  int flash_ticks = stats_flash[9] - last_stats_flash[9];
+
+  float detected_throughput = 0.0;
+  if (optane_ticks > 0) 
+    detected_throughput += (stats_optane[2] - last_stats_optane[2]) / (2.0 * optane_ticks);
+  if (flash_ticks > 0)
+    detected_throughput += (stats_flash[2] - last_stats_flash[2]) / (2.0 * flash_ticks);
+
+  if (flag_print) {
+    std::cout << "  Data admit ratio: " << data_admit_ratio << " ; Load admit ratio: " << load_admit_ratio << "\n";
+    std::cout << "  Optane read throughput: " << (stats_optane[2] - last_stats_optane[2]) / (2.0 * optane_ticks) << ";";
+    std::cout << "  Optane write throughput: " << (stats_optane[6] - last_stats_optane[6]) / (2.0 * optane_ticks) << ";";
+    std::cout << "  Flash read throughput: " << (stats_flash[2] - last_stats_flash[2]) / (2.0 * flash_ticks) << ";";
+    std::cout << "  Overall throughput observed: " << detected_throughput << "\n";
+  }
+
+  return detected_throughput;
+}
+
+
 void * monitor_func(void *vargp) {
   // create a monitor file on Optane SSD to detect
-  int fd_optane = open("/sys/block/nvme1n1/stat", O_RDONLY);
+  Cache * cache_ptr = (Cache *) vargp;
+	
+  fd_optane = open("/sys/block/nvme1n1/stat", O_RDONLY);
   if (fd_optane < 0) {
     std::cout << "unable to open file" << fd_optane << " " << errno << std::endl;
     exit(1);
   }
   
-  int fd_flash = open("/sys/block/nvme0n1/stat", O_RDONLY);
+  fd_flash = open("/sys/block/nvme0n1/stat", O_RDONLY);
   if (fd_flash < 0) {
     std::cout << "unable to open file" << fd_flash << " " << errno << std::endl;
     exit(1);
   }
   
-  char * optane_buf = (char *) malloc(sizeof(char) * 1024);
-  char * flash_buf = (char *) malloc(sizeof(char) * 1024);
+  optane_buf = (char *) malloc(sizeof(char) * 1024);
+  flash_buf = (char *) malloc(sizeof(char) * 1024);
   
-  
-  int ret;
 
-  std::vector<uint64_t> stats_optane, stats_flash, last_stats_optane, last_stats_flash;
-  float last_throughput, detected_throughput, optane_read_throughput, optane_write_throughput, flash_read_throughput;
-  int last_action, this_action;
+  int step = 10;
   
-  int steps = 0;
-  // init state
-  last_throughput = -1;
-  last_action = -5;
-  load_admit_ratio = 100;
-  data_admit_ratio = 100;
-
   while(true) {
     if (flag_monitor) {
+     
+     reoptimize:
+      // start to optimize for a workload
+      std::cout << "================ Re optimize for a new workload\n";
+      load_admit_ratio = data_admit_ratio = 100;
       
-      steps += 1;
-
-      //monitor the load of Optane SSD and Flash SSD
-      ret = pread(fd_optane, optane_buf, 1024, 0);
-      assert(ret > 0);
-      ret = pread(fd_flash, flash_buf, 1024, 0);
-      assert(ret > 0);
+      std::vector<uint64_t> stats_optane, stats_flash, last_stats_optane, last_stats_flash;
+      float last_throughput, detected_throughput, optane_read_throughput, optane_write_throughput, flash_read_throughput;
+      float detect_miss_ratio, last_miss_ratio;
+      last_miss_ratio = -10;
+      detect_miss_ratio = 110;
       
-      parse_counters(optane_buf, stats_optane);
-      parse_counters(flash_buf, stats_flash);
-
-      if (last_stats_flash.size()!=15) {  // first second
-        last_stats_flash = stats_flash;
-        last_stats_optane = stats_optane;
-        continue;
-      }
-      
-      int optane_ticks, flash_ticks;
-      optane_ticks = stats_optane[9] - last_stats_optane[9];
-      flash_ticks = stats_flash[9] - last_stats_flash[9];
-
-      // detected Optane and Flash throughput
-
-      detected_throughput = 0.0;
-      if (optane_ticks > 0) {
-        detected_throughput += (stats_optane[2] - last_stats_optane[2]) / (2.0 * optane_ticks);
-      }	
-      if (flash_ticks > 0) {
-        detected_throughput += (stats_flash[2] - last_stats_flash[2]) / (2.0 * flash_ticks);
-      }
-      
-      if (steps % 50 == 0) {
-        std::cout << "  Optane read throughput: " << (stats_optane[2] - last_stats_optane[2]) / (2.0 * optane_ticks) << ";";
-        std::cout << "  Optane write throughput: " << (stats_optane[6] - last_stats_optane[6]) / (2.0 * optane_ticks) << ";";
-        std::cout << "  Flash read throughput: " << (stats_flash[2] - last_stats_flash[2]) / (2.0 * flash_ticks) << ";";
-        std::cout << "  Overall throughput observed: " << detected_throughput << "\n";
+      // detect whether cache is stable
+      while ( !( detect_miss_ratio >= last_miss_ratio - 0.5 && detect_miss_ratio <= last_miss_ratio + 0.5) ) {
+	usleep(1000000);
+	last_miss_ratio = detect_miss_ratio;
+	detect_miss_ratio = cache_ptr->check_miss_ratio();
+	std::cout << "detect miss ratio: " << detect_miss_ratio << std::endl;
       }
 
-      //TODO reset the cache scheduler
-      //if (optane_ticks == 0 || (stats_optane[2] - last_stats_optane[2]) / (2.0 * optane_ticks) < 0.5 * 2500) {
-      if (optane_ticks == 0) {
-        load_admit_ratio = 100;
-        data_admit_ratio = 100;
-        goto next_loop;
-      }
-
-      // compare to last throughput
-      if (detected_throughput > last_throughput) {
-        this_action = last_action;
-      } else {
-        this_action = -1 * last_action;
-      }
+      std::cout << "================ Max L1 gets stable\n";
       
-      if (this_action > 0) {
-        if (flag_tune_load_admit && load_admit_ratio < 100) {
-	  load_admit_ratio = (load_admit_ratio + this_action > 100)?100:load_admit_ratio + this_action;
+      // it's time to optimize Max(L1 + L2) based on Max(L1)
+      float basic_miss_ratio = detect_miss_ratio; 
+      int ratio1, ratio2, ratio3;   // indicating a window eg. [45, 50, 55]
+      float tp1, tp2, tp3;
+
+      for (int iteration = 0; ; iteration++) {
+	int * to_change_ratio = iteration%2==0?&data_admit_ratio:&load_admit_ratio;
+	
+        ratio1 = *to_change_ratio - step;
+        ratio2 = *to_change_ratio;
+        ratio3 = *to_change_ratio + step;
+       
+	if (false && iteration % 10  == 0) {
+	  std::cout << "After iteration " << iteration << " : " << data_admit_ratio << " " << load_admit_ratio << std::endl;
+	  tp2 = check_throughput(true);
 	} else {
-	  data_admit_ratio = (data_admit_ratio + this_action > 100)?100:data_admit_ratio + this_action;
+          tp2 = check_throughput();
 	}
-      } else {
-        if (data_admit_ratio > 0) {
-	  data_admit_ratio = (data_admit_ratio + this_action < 0)?0:data_admit_ratio + this_action;
-	} else if (flag_tune_load_admit) {
-	  load_admit_ratio = (load_admit_ratio + this_action < 0)?0:load_admit_ratio + this_action;
+
+	if (ratio1 < 0) {
+	  tp1 = -10;
+	} else {
+	  *to_change_ratio = ratio1;
+          tp1 = check_throughput();
 	}
+	
+	if (ratio3 > 100) {
+	  tp3 = -10;
+	} else {
+	  *to_change_ratio = ratio3;
+          tp3 = check_throughput();
+	}
+	*to_change_ratio = ratio2;
+
+        while (true) {
+            // detect whether workload has changed -> reoptimize
+	    detect_miss_ratio = cache_ptr->check_miss_ratio();
+	    if ( !( detect_miss_ratio >= basic_miss_ratio - 5 && detect_miss_ratio <= basic_miss_ratio +5) ) 
+                goto reoptimize;
+
+            float max_tp = std::max(tp1, std::max(tp2, tp3));
+            if (tp2 == max_tp) {
+                *to_change_ratio = ratio2;
+                break;
+            }
+
+            if (tp1 == max_tp) {
+		if (ratio1 == 0) {
+                  *to_change_ratio = ratio1;
+                  break;
+		}
+                ratio3 = ratio2; tp3 = tp2;
+                ratio2 = ratio1; tp2 = tp1;                
+                ratio1 = ratio1 - step;           
+	        *to_change_ratio = ratio1;
+                tp1 = check_throughput();
+                continue;
+            }
+
+            if (tp3 == max_tp) {
+		if (ratio3 == 100) {
+                  *to_change_ratio = ratio3;
+                  break;
+		}
+                ratio1 = ratio2; tp1 = tp2;
+                ratio2 = ratio3; tp2 = tp3;
+                ratio3 = ratio3 + step;          
+	        *to_change_ratio = ratio3;
+                tp3 = check_throughput();
+                continue;
+            }
+        }
+
       }
-	      
-     next_loop:
-      last_stats_flash = stats_flash;
-      last_stats_optane = stats_optane;
-      last_throughput = detected_throughput;      
-      last_action = this_action;
-      if (steps % 50 == 0) {
-        std::cout << "  Data admit ratio: " << data_admit_ratio << " Load admit ratio: " << load_admit_ratio << "\n";
-      } 
-      usleep(10000);
     } else {
       usleep(1000000);
     }
@@ -326,11 +379,10 @@ DBImpl::DBImpl(const Options& raw_options, const std::string& dbname)
     vlog_cache_id = persist_block_cache->NewId();
   }
   
-  // TODO start a thread to monitor the load of Optane SSD
+  //start a thread to monitor the load of Optane SSD
   pthread_t monitor_thread; 
-  pthread_create(&monitor_thread, NULL, monitor_func, NULL);
+  pthread_create(&monitor_thread, NULL, monitor_func, (void*)(persist_block_cache));
 
-  //usleep(1000000000000);
 }
 
 DBImpl::~DBImpl() {
@@ -1567,7 +1619,7 @@ Status DBImpl::ReadVlog(uint64_t offset, size_t n, Slice* result, char* scratch)
   // Kan: add block cache logic
   Status s;
   Cache::Handle* cache_handle = NULL;
-  if (true && persist_block_cache != NULL) { // not pinned into DRAM, && (fastrand()%100) < 50
+  if (persist_block_cache != NULL) { // not pinned into DRAM, && (fastrand()%100) < 50
       // creat the key for cache lookup
       uint64_t start_page, end_page, in_page_offset;
       start_page = offset/4096;
