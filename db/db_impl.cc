@@ -138,6 +138,8 @@ uint64_t perf_counter()
 }
 
 
+int scheduler_step = 5;
+int scheduler_frequency = 5000;
 
 int fd_optane, fd_flash;
 char * optane_buf;
@@ -168,7 +170,8 @@ float check_throughput(bool flag_print=true) {
   get_counters(fd_optane, optane_buf, last_stats_optane);
   get_counters(fd_flash, flash_buf, last_stats_flash);
   
-  usleep(10000);
+  //usleep(5000);
+  usleep(scheduler_frequency);
   // get new counters
   get_counters(fd_optane, optane_buf, stats_optane);
   get_counters(fd_flash, flash_buf, stats_flash);
@@ -215,7 +218,7 @@ void * monitor_func(void *vargp) {
   flash_buf = (char *) malloc(sizeof(char) * 1024);
   
 
-  int step = 10;
+  int step = scheduler_step;
   
   while(true) {
     if (flag_monitor) {
@@ -288,19 +291,21 @@ void * monitor_func(void *vargp) {
             }
 
             if (tp1 == max_tp) {
+		//std::cout << "slope: " << (tp1 - tp2) / tp2 / (ratio2 - ratio1) << "\n";
 		if (ratio1 == 0) {
                   *to_change_ratio = ratio1;
                   break;
 		}
                 ratio3 = ratio2; tp3 = tp2;
-                ratio2 = ratio1; tp2 = tp1;                
-                ratio1 = ratio1 - step;           
+                ratio2 = ratio1; tp2 = tp1;
+                ratio1 = ratio1 - step;
 	        *to_change_ratio = ratio1;
                 tp1 = check_throughput();
                 continue;
             }
 
             if (tp3 == max_tp) {
+		//std::cout << "slope: " << (tp3 - tp2) / tp2 / (ratio3 - ratio2) << "\n";
 		if (ratio3 == 100) {
                   *to_change_ratio = ratio3;
                   break;

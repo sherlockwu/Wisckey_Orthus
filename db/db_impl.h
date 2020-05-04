@@ -20,6 +20,9 @@
 
 namespace leveldb {
 
+extern int scheduler_step;
+extern int scheduler_frequency;
+
 class MemTable;
 class TableCache;
 class Version;

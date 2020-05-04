@@ -31,6 +31,9 @@ with open(report_file_name, 'r')  as report_file:
             flash_read_throughput =  float(re.sub("[^0-9.]", "", line.split(';')[2]))
             overall_read_throughput =  float(re.sub("[^0-9.]", "", line.split(';')[3]))
             print optane_read_throughput, optane_write_throughput, flash_read_throughput, overall_read_throughput
+        if 'slope' in line:
+            print line.strip('\n')
+            #continue
         if 'ran for' in line:
             #continue
             for time in sorted(end_to_end_throughput):
