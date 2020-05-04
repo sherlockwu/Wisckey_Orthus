@@ -1208,6 +1208,12 @@ int main(int argc, char** argv) {
       FLAGS_bloom_bits = n;
     } else if (sscanf(argv[i], "--open_files=%d%c", &n, &junk) == 1) {
       FLAGS_open_files = n;
+    } else if (sscanf(argv[i], "--frequency=%d%c", &n, &junk) == 1) {
+      leveldb::scheduler_frequency = n;
+      std::cout << "Scheduler frequency: " << leveldb::scheduler_frequency << "\n";
+    } else if (sscanf(argv[i], "--step=%d%c", &n, &junk) == 1) {
+      leveldb::scheduler_step = n;
+      std::cout << "Scheduler step size: " << leveldb::scheduler_step << "\n";
     } else if (strncmp(argv[i], "--db=", 5) == 0) {
       FLAGS_db = argv[i] + 5;
     } else {

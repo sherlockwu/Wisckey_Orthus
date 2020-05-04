@@ -43,7 +43,7 @@ class Experiment(object):
           'type': ['no_name'],
           #'threads': [1, 4, 8, 16, 24, 32],
           #'threads': [1, 8, 16, 24, 32],
-          'threads': [32],
+          'threads': [1],
           #'threads': [1, 4, 8, 16],
           'memory': [int(1*GB)],    #'memory limit'
           'swapiness': [0],
