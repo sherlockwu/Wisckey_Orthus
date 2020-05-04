@@ -42,8 +42,8 @@ class Experiment(object):
         config = {
           'type': ['no_name'],
           #'threads': [1, 4, 8, 16, 24, 32],
-          'threads': [1, 8, 16, 24, 32],
-          #'threads': [24],
+          #'threads': [1, 8, 16, 24, 32],
+          'threads': [32],
           #'threads': [1, 4, 8, 16],
           'memory': [int(1*GB)],    #'memory limit'
           'swapiness': [0],
@@ -105,14 +105,13 @@ class Experiment(object):
         
         
         #Small: 1KB value
-        #cmd = '/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/970/db_1024 --value_size=1024 --cache_size=0 --compression_ratio=1 --benchmarks=ycsb --use_existing_db=1 --db_num=80000000 --reads=18000000 ' + '--threads=' + str(config['threads']) #+ ' > /dev/shm/running'
-        #cmd = '/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/970/db_1024 --value_size=1024 --cache_size=0 --compression_ratio=1 --benchmarks=ycsb --use_existing_db=1 --db_num=80000000 --reads=8000000 ' + '--threads=' + str(config['threads']) #+ ' > /dev/shm/running'
+        cmd = '/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/970/db_1024 --value_size=1024 --cache_size=0 --compression_ratio=1 --benchmarks=ycsb --use_existing_db=1 --db_num=80000000 --reads=18000000 ' + '--threads=' + str(config['threads']) #+ ' > /dev/shm/running'
         
         #Large: 64KB value
         #cmd = '/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/970/db_65536 --value_size=65536 --cache_size=0 --compression_ratio=1 --benchmarks=ycsb --use_existing_db=1 --db_num=1700000 --reads=5000000 ' + '--threads=' + str(config['threads']) #+ ' > /dev/shm/running'
         
         #Medium: 16KB value
-        cmd = '/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/970/db_16384 --value_size=16384 --cache_size=0 --compression_ratio=1 --benchmarks=ycsb --use_existing_db=1 --db_num=6600000 --reads=10000000 ' + '--threads=' + str(config['threads']) #+ ' > /dev/shm/running'
+        #cmd = '/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/970/db_16384 --value_size=16384 --cache_size=0 --compression_ratio=1 --benchmarks=ycsb --use_existing_db=1 --db_num=6600000 --reads=10000000 ' + '--threads=' + str(config['threads']) #+ ' > /dev/shm/running'
         
         print cmd
         p = self.cg.execute(shlex.split(cmd))

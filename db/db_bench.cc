@@ -194,7 +194,7 @@ class Stats {
   Stats() { Start(); }
 
   void Start() {
-    next_report_ = 1000;
+    next_report_ = 10000;
     last_op_finish_ = start_;
     hist_.Clear();
     done_ = 0;
@@ -258,7 +258,7 @@ class Stats {
       //if      (next_report_ < 1000)   next_report_ += 100;
       //else if (next_report_ < 5000)   next_report_ += 500;
       //else
-      if (next_report_ < 10000)  next_report_ += 1000;
+      if (next_report_ < 10000)  next_report_ += 5000;
       else if (next_report_ < 50000)  next_report_ += 5000;
       else if (next_report_ < 100000) next_report_ += 10000;
       else if (next_report_ < 500000) next_report_ += 50000;
@@ -795,11 +795,11 @@ class Benchmark {
     options.filter_policy = filter_policy_;
     
     //Kan: for persist cache
-    options.use_persist_cache = false;
-    options.persist_block_cache = NULL;
+    //options.use_persist_cache = false;
+    //options.persist_block_cache = NULL;
     
-    //options.use_persist_cache = true;
-    //options.persist_block_cache = NewPersistLRUCache(((size_t)34)*1024*1024*1024);
+    options.use_persist_cache = true;
+    options.persist_block_cache = NewPersistLRUCache(((size_t)34)*1024*1024*1024);
     //options.persist_block_cache = NewPersistLRUCache(((size_t)25)*1024*1024*1024);
     
     //options.persist_vlog_cache = NewPersistLRUCache(((size_t)2)*1024*1024*1024);  // need to setup the db_impl code to separate lsm and vlog cache
@@ -955,7 +955,8 @@ class Benchmark {
     thread->stats.ClearStats();
 
     // TO test classic cache or tuned cache
-    flag_monitor = false;
+    flag_monitor = true;
+
     // measurement phase
     for (int i = 0; i < (reads_*32/num_threads_measure/4); i++) {
       char key[100];

@@ -470,9 +470,10 @@ Cache::Handle* LRUCache::BucketLookup(const Slice& key, uint32_t hash, void * sc
   // 3. read data from the bucket
   //std::cout << "Read from cache " << shard_fd_ << ", " << bucket_id << " : " << in_bucket_offset << ", " << bucket_id * bucket_size + in_bucket_offset << " : " << object_len << std::endl;
   
-  // TODO load admission logic
+  // load admission logic
   if ((fastrand()%100) > load_admit_ratio) {
-    return NULL;
+    //return NULL;
+    return reinterpret_cast<Cache::Handle*>((void *)666); // identify this is a rejected hit
   }
   
   ssize_t r = pread(shard_fd_, scratch, object_len, bucket_id * bucket_size + in_bucket_offset);
@@ -631,6 +632,7 @@ class ShardedLRUCache : public Cache {
     return shard_[Shard(hash)].Lookup(key, hash);
   }
   virtual Handle* Lookup(const Slice& key, char * scratch) {}; // this is for persistent cache
+  virtual float check_miss_ratio() {return 100;};
   virtual void Release(Handle* handle) {
     LRUHandle* h = reinterpret_cast<LRUHandle*>(handle);
     shard_[Shard(h->hash)].Release(handle);
@@ -732,6 +734,10 @@ class ShardedBucketLRUCache : public Cache {
     if (bucket_handle == NULL) {
       cache_miss += 1;
     }
+    if ((uint64_t)((char *)bucket_handle) == 666) {
+      bucket_handle = NULL;
+    }
+
 
     if (bucket == 0 && cache_access > 1000000) {
       //std::cout << total_capacity << " Cache access: " << cache_access << ", miss: " << cache_miss << ", miss ratio: " << (double) cache_miss / cache_access * 100 << "\n";
@@ -744,6 +750,9 @@ class ShardedBucketLRUCache : public Cache {
   virtual Handle* Lookup(const Slice& key) {
     const uint32_t hash = HashSlice(key);
     return shard_[Shard(hash)].Lookup(key, hash);
+  }
+  virtual float check_miss_ratio() {
+    return (double) cache_miss / cache_access * 100;
   }
   virtual void Release(Handle* handle) {
     LRUHandle* h = reinterpret_cast<LRUHandle*>(handle);
