@@ -22,7 +22,7 @@ with open(report_file_name, 'r')  as report_file:
         if 'Data admit ratio' in line:
             data_admit_ratio =  int(re.sub("[^0-9]", "", line.split('Load')[0]))
             load_admit_ratio =  int(re.sub("[^0-9.]", "", line.split('Load')[-1]))
-            #print data_admit_ratio, load_admit_ratio
+            print data_admit_ratio, load_admit_ratio
         
         if 'Optane read throughput' in line:
             line = re.sub("-nan", "0", line)
@@ -30,7 +30,7 @@ with open(report_file_name, 'r')  as report_file:
             optane_write_throughput =  float(re.sub("[^0-9.]", "", line.split(';')[1]))
             flash_read_throughput =  float(re.sub("[^0-9.]", "", line.split(';')[2]))
             overall_read_throughput =  float(re.sub("[^0-9.]", "", line.split(';')[3]))
-            print optane_read_throughput, optane_write_throughput, flash_read_throughput, overall_read_throughput
+            #print optane_read_throughput, optane_write_throughput, flash_read_throughput, overall_read_throughput
         if 'slope' in line:
             print line.strip('\n')
             #continue

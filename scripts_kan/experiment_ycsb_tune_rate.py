@@ -21,7 +21,7 @@ GB = 1024 * MB
 class Experiment(object):
     def __init__(self):
         # config something
-        self.exp_name = 'leveldb/ycsb/16kb_zipf_09/tune_rate'
+        self.exp_name = 'leveldb/ycsb/16kb_zipf_09/frequency_figure'
         self.home_dir = '/home/kanwu/Research/'
         self.res_dir = self.home_dir + 'results/' + self.exp_name
         self.tmp_dir = '/dev/shm/'
@@ -41,8 +41,12 @@ class Experiment(object):
         config = {
           'type': ['no_name'],
           'threads': [32],
-          'frequency': [50, 500, 5000, 50000],
-          'step': [1, 2, 5, 10, 20],
+          #'frequency': [5, 50, 500, 5000, 50000],
+          #'frequency': [500, 1000, 2000, 5000],
+          'frequency': [5000],
+          #'step': [1, 2, 5, 10, 20],
+          #'step': [1, 2, 5, 10],
+          'step': [2],
           'memory': [int(1*GB)],    #'memory limit'
           'swapiness': [0],
           'readahead': [128]    # default 128KB
