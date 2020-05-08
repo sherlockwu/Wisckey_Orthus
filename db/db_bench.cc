@@ -67,6 +67,7 @@ static const char* FLAGS_benchmarks =
     // Kan: for benchmark
     "ycsb,"  // it includes a warmup phase
     "ycsb_warmup,"
+    "mixgraph,"
     ;
 
 // Number of key/values to place in database
@@ -117,6 +118,30 @@ static bool FLAGS_use_existing_db = false;
 // Use the db with the following name.
 static const char* FLAGS_db = NULL;
 
+
+//Kan: For zippydb
+//  key:
+static int FLAGS_keyrange_num = 3;
+// -keyrange_dist_a=14.18 -keyrange_dist_b=-2.917 -keyrange_dist_c=0.0164 -keyrange_dist_d=-0.08082
+static int FLAGS_keyrange_dist_a = 14.18;
+static int FLAGS_keyrange_dist_b = -2.917;
+static int FLAGS_keyrange_dist_c = 0.0164;
+static int FLAGS_keyrange_dist_d = -0.08082;
+    
+//  query type
+static double FLAGS_mix_get_ratio = 0.85;
+//static double FLAGS_mix_get_ratio = 0.00;
+static double FLAGS_mix_put_ratio = 0.14;
+//static double FLAGS_mix_put_ratio = 1.00;
+static double FLAGS_mix_seek_ratio = 0.01;
+
+//  value:
+static double FLAGS_value_k = 0.2615;
+static double FLAGS_value_sigma = 25.45;
+
+// scan:
+static double FLAGS_iter_k = 2.517;
+static double FLAGS_iter_sigma = 25.45;
 
 int num_threads_measure = 1;
 
@@ -531,6 +556,9 @@ class Benchmark {
         method = &Benchmark::ReadSequential;
       } else if (name == Slice("readreverse")) {
         method = &Benchmark::ReadReverse;
+      } else if (name == "mixgraph") {
+        method = &Benchmark::MixGraph;
+	flag_monitor = false;
       } else if (name == Slice("ycsb")) {
 	num_threads_measure = num_threads;
 	num_threads = 32;
@@ -795,12 +823,14 @@ class Benchmark {
     options.filter_policy = filter_policy_;
     
     //Kan: for persist cache
-    //options.use_persist_cache = false;
-    //options.persist_block_cache = NULL;
+    options.use_persist_cache = false;
+    options.persist_block_cache = NULL;
     
-    options.use_persist_cache = true;
-    options.persist_block_cache = NewPersistLRUCache(((size_t)34)*1024*1024*1024);
-    //options.persist_block_cache = NewPersistLRUCache(((size_t)25)*1024*1024*1024);
+    //options.use_persist_cache = true;
+    //options.persist_block_cache = NewPersistLRUCache(((size_t)34)*1024*1024*1024);
+    
+    // zippydb is so skewed, use a 1/10 cache size 
+    //options.persist_block_cache = NewPersistLRUCache(((size_t)4)*1024*1024*1024);
     
     //options.persist_vlog_cache = NewPersistLRUCache(((size_t)2)*1024*1024*1024);  // need to setup the db_impl code to separate lsm and vlog cache
 
@@ -866,7 +896,9 @@ class Benchmark {
     WriteBatch batch;
     Status s;
     int64_t bytes = 0;
+    
     for (int i = 0; i < num_; i += entries_per_batch_) {
+      std::cout << entries_per_batch_ << "\n";
       batch.Clear();
       for (int j = 0; j < entries_per_batch_; j++) {
         const int k = (seq ? i+j : (thread->rand.Next() % FLAGS_num)) + start;
@@ -920,6 +952,440 @@ class Benchmark {
     thread->stats.AddBytes(bytes);
   }
 
+  struct KeyrangeUnit {
+    int64_t keyrange_start;
+    int64_t keyrange_access;
+    int64_t keyrange_keys;
+  };
+
+  // From our observations, the prefix hotness (key-range hotness) follows
+  // the two-term-exponential distribution: f(x) = a*exp(b*x) + c*exp(d*x).
+  // However, we cannot directly use the inverse function to decide a
+  // key-range from a random distribution. To achieve it, we create a list of
+  // KeyrangeUnit, each KeyrangeUnit occupies a range of integers whose size is
+  // decided based on the hotness of the key-range. When a random value is
+  // generated based on uniform distribution, we map it to the KeyrangeUnit Vec
+  // and one KeyrangeUnit is selected. The probability of a  KeyrangeUnit being
+  // selected is the same as the hotness of this KeyrangeUnit. After that, the
+  // key can be randomly allocated to the key-range of this KeyrangeUnit, or we
+  // can based on the power distribution (y=ax^b) to generate the offset of
+  // the key in the selected key-range. In this way, we generate the keyID
+  // based on the hotness of the prefix and also the key hotness distribution.
+  class GenerateTwoTermExpKeys {
+   public:
+    int64_t keyrange_rand_max_;
+    int64_t keyrange_size_;
+    int64_t keyrange_num_;
+    bool initiated_;
+    std::vector<KeyrangeUnit> keyrange_set_;
+
+    GenerateTwoTermExpKeys() {
+      keyrange_rand_max_ = FLAGS_num;
+      initiated_ = false;
+    }
+
+    ~GenerateTwoTermExpKeys() {}
+
+    // Initiate the KeyrangeUnit vector and calculate the size of each
+    // KeyrangeUnit.
+    Status InitiateExpDistribution(int64_t total_keys, double prefix_a,
+                                   double prefix_b, double prefix_c,
+                                   double prefix_d) {
+      int64_t amplify = 0;
+      int64_t keyrange_start = 0;
+      initiated_ = true;
+      if (FLAGS_keyrange_num <= 0) {
+        keyrange_num_ = 1;
+      } else {
+        keyrange_num_ = FLAGS_keyrange_num;
+      }
+      keyrange_size_ = total_keys / keyrange_num_;
+
+      // Calculate the key-range shares size based on the input parameters
+      for (int64_t pfx = keyrange_num_; pfx >= 1; pfx--) {
+        // Step 1. Calculate the probability that this key range will be
+        // accessed in a query. It is based on the two-term expoential
+        // distribution
+        double keyrange_p = prefix_a * std::exp(prefix_b * pfx) +
+                            prefix_c * std::exp(prefix_d * pfx);
+        if (keyrange_p < std::pow(10.0, -16.0)) {
+          keyrange_p = 0.0;
+        }
+        // Step 2. Calculate the amplify
+        // In order to allocate a query to a key-range based on the random
+        // number generated for this query, we need to extend the probability
+        // of each key range from [0,1] to [0, amplify]. Amplify is calculated
+        // by 1/(smallest key-range probability). In this way, we ensure that
+        // all key-ranges are assigned with an Integer that  >=0
+        if (amplify == 0 && keyrange_p > 0) {
+          amplify = static_cast<int64_t>(std::floor(1 / keyrange_p)) + 1;
+        }
+
+        // Step 3. For each key-range, we calculate its position in the
+        // [0, amplify] range, including the start, the size (keyrange_access)
+        KeyrangeUnit p_unit;
+        p_unit.keyrange_start = keyrange_start;
+        if (0.0 >= keyrange_p) {
+          p_unit.keyrange_access = 0;
+        } else {
+          p_unit.keyrange_access =
+              static_cast<int64_t>(std::floor(amplify * keyrange_p));
+        }
+        p_unit.keyrange_keys = keyrange_size_;
+        keyrange_set_.push_back(p_unit);
+        keyrange_start += p_unit.keyrange_access;
+      }
+      keyrange_rand_max_ = keyrange_start;
+
+      // Step 4. Shuffle the key-ranges randomly
+      // Since the access probability is calculated from small to large,
+      // If we do not re-allocate them, hot key-ranges are always at the end
+      // and cold key-ranges are at the begin of the key space. Therefore, the
+      // key-ranges are shuffled and the rand seed is only decide by the
+      // key-range hotness distribution. With the same distribution parameters
+      // the shuffle results are the same.
+      //Random64 rand_loca(keyrange_rand_max_);
+      Random rand_loca(keyrange_rand_max_);
+      for (int64_t i = 0; i < FLAGS_keyrange_num; i++) {
+        int64_t pos = rand_loca.Next() % FLAGS_keyrange_num;
+        assert(i >= 0 && i < static_cast<int64_t>(keyrange_set_.size()) &&
+               pos >= 0 && pos < static_cast<int64_t>(keyrange_set_.size()));
+        std::swap(keyrange_set_[i], keyrange_set_[pos]);
+      }
+
+      // Step 5. Recalculate the prefix start postion after shuffling
+      int64_t offset = 0;
+      for (auto& p_unit : keyrange_set_) {
+        p_unit.keyrange_start = offset;
+        offset += p_unit.keyrange_access;
+      }
+
+      return Status::OK();
+    }
+
+    // Generate the Key ID according to the input ini_rand and key distribution
+    int64_t DistGetKeyID(int64_t ini_rand, double key_dist_a,
+                         double key_dist_b) {
+      //return ini_rand % FLAGS_num;
+      
+      int64_t keyrange_rand = ini_rand % keyrange_rand_max_;
+
+      // Calculate and select one key-range that contains the new key
+      int64_t start = 0, end = static_cast<int64_t>(keyrange_set_.size());
+      while (start + 1 < end) {
+        int64_t mid = start + (end - start) / 2;
+        assert(mid >= 0 && mid < static_cast<int64_t>(keyrange_set_.size()));
+        if (keyrange_rand < keyrange_set_[mid].keyrange_start) {
+          end = mid;
+        } else {
+          start = mid;
+        }
+      }
+      int64_t keyrange_id = start;
+
+      // Select one key in the key-range and compose the keyID
+      int64_t key_offset = 0, key_seed;
+      if (key_dist_a == 0.0 || key_dist_b == 0.0) {
+        key_offset = ini_rand % keyrange_size_;
+      } else {
+        double u =
+            static_cast<double>(ini_rand % keyrange_size_) / keyrange_size_;
+        key_seed = static_cast<int64_t>(
+            ceil(std::pow((u / key_dist_a), (1 / key_dist_b))));
+        //Random64 rand_key(key_seed);
+        Random rand_key(key_seed);
+        key_offset = rand_key.Next() % keyrange_size_;
+      }
+      return keyrange_size_ * keyrange_id + key_offset;
+    }
+  };
+  
+  
+
+  int get_query_type(int64_t rand_num) {
+    
+    double ratio = (rand_num % 100) / 100.0; 
+    if (ratio < FLAGS_mix_get_ratio)
+      return 0;
+    if (ratio < FLAGS_mix_get_ratio + FLAGS_mix_put_ratio)
+      return 1;
+    return 2;
+  }
+
+  int64_t ParetoCdfInversion(double u, double theta, double k, double sigma) {
+    double ret;
+    if (k == 0.0) {
+      ret = theta - sigma * std::log(u);
+    } else {
+      ret = theta + sigma * (std::pow(u, -1 * k) - 1) / k;
+    }
+    return static_cast<int64_t>(ceil(ret));
+  } 
+
+  // The social graph wokrload mixed with Get, Put, Iterator queries.
+  // The value size and iterator length follow Pareto distribution.
+  // The overall key access follow power distribution. If user models the
+  // workload based on different key-ranges (or different prefixes), user
+  // can use two-term-exponential distribution to fit the workload. User
+  // needs to decides the ratio between Get, Put, Iterator queries before
+  // starting the benchmark.
+  void MixGraph(ThreadState* thread) {
+    int64_t read = 0;  // including single gets and Next of iterators
+    int64_t gets = 0;
+    int64_t puts = 0;
+    int64_t found = 0;
+    int64_t seek = 0;
+    int64_t seek_found = 0;
+    int64_t bytes = 0;
+    const int64_t default_value_max = 1 * 1024 * 1024;
+    int64_t value_max = default_value_max;
+    //int64_t scan_len_max = FLAGS_mix_max_scan_len;
+    //int64_t scan_len_max = 1000;
+    int64_t scan_len_max = 10;
+    double write_rate = 1000000.0;
+    double read_rate = 1000000.0;
+    bool use_prefix_modeling = true;
+
+    //std::vector<double> ratio{0.85, 0.14, 0.01};  // gen 
+    //std::vector<double> ratio{FLAGS_mix_get_ratio, FLAGS_mix_put_ratio, FLAGS_mix_seek_ratio};  // gen 
+    
+    
+    ReadOptions options;
+    std::string value;
+    char key[100];
+    
+    
+    char value_buffer[default_value_max];
+    /*
+    RandomGenerator gen;
+
+    // the limit of qps initiation
+    if (FLAGS_sine_a != 0 || FLAGS_sine_d != 0) {
+      thread->shared->read_rate_limiter.reset(NewGenericRateLimiter(
+          static_cast<int64_t>(read_rate), 100000 , 10 ,
+          RateLimiter::Mode::kReadsOnly));
+      thread->shared->write_rate_limiter.reset(
+          NewGenericRateLimiter(static_cast<int64_t>(write_rate)));
+    }
+
+    gen_exp.InitiateExpDistribution(
+          FLAGS_num, FLAGS_keyrange_dist_a, FLAGS_keyrange_dist_b,
+          FLAGS_keyrange_dist_c, FLAGS_keyrange_dist_d);
+    
+    */
+    
+    //init the random key generation module for prefix modeling
+    
+    GenerateTwoTermExpKeys gen_exp;
+    gen_exp.InitiateExpDistribution(
+          FLAGS_db_num, FLAGS_keyrange_dist_a, FLAGS_keyrange_dist_b,
+          FLAGS_keyrange_dist_c, FLAGS_keyrange_dist_d);
+    
+    RandomGenerator gen;
+    WriteBatch batch;
+    Status s;
+    
+    
+    //TODO init the qps rate limiter
+
+
+    
+    for (int i = 0; i < reads_; i++) {
+      /*
+      int64_t ini_rand, rand_v, key_rand, key_seed;
+      ini_rand = GetRandomKey(&thread->rand);
+      rand_v = ini_rand % FLAGS_num;
+      double u = static_cast<double>(rand_v) / FLAGS_num;
+
+      
+      
+      int query_type = query.GetType(rand_v);
+
+      // change the qps
+      uint64_t now = FLAGS_env->NowMicros();
+      uint64_t usecs_since_last;
+      if (now > thread->stats.GetSineInterval()) {
+        usecs_since_last = now - thread->stats.GetSineInterval();
+      } else {
+        usecs_since_last = 0;
+      }
+
+      if (usecs_since_last >
+          (FLAGS_sine_mix_rate_interval_milliseconds * uint64_t{1000})) {
+        double usecs_since_start =
+            static_cast<double>(now - thread->stats.GetStart());
+        thread->stats.ResetSineInterval();
+        double mix_rate_with_noise = AddNoise(
+            SineRate(usecs_since_start / 1000000.0), FLAGS_sine_mix_rate_noise);
+        read_rate = mix_rate_with_noise * (query.ratio_[0] + query.ratio_[2]);
+        write_rate =
+            mix_rate_with_noise * query.ratio_[1] * FLAGS_mix_ave_kv_size;
+
+        thread->shared->write_rate_limiter.reset(
+            NewGenericRateLimiter(static_cast<int64_t>(write_rate)));
+        thread->shared->read_rate_limiter.reset(NewGenericRateLimiter(
+            static_cast<int64_t>(read_rate),
+            FLAGS_sine_mix_rate_interval_milliseconds * uint64_t{1000}, 10,
+            RateLimiter::Mode::kReadsOnly));
+      }
+      
+      */	    
+      // Start the query
+      
+      // generate random key
+      int64_t ini_rand, key_rand, rand_v;
+      ini_rand = thread->rand.Next();
+      key_rand = gen_exp.DistGetKeyID(ini_rand, 0.0, 0.0);
+      snprintf(key, sizeof(key), "%016d", key_rand);
+
+      rand_v = ini_rand % FLAGS_db_num;
+      double u = static_cast<double>(rand_v) / FLAGS_db_num;
+
+
+      //const int k = thread->rand.Next() % (FLAGS_db_num / 3);
+      //snprintf(key, sizeof(key), "%016d", k);
+      
+      // TODO decide what type of request it is
+      int query_type = get_query_type(ini_rand);
+      
+      // TODO change the qps
+      
+      if (query_type == 0) {
+	//std::cout << "This will be a Get\n";
+        // the Get query
+        gets++;
+        read++;
+	
+        if (db_->Get(options, key, &value).ok()) {
+          found++;
+	  thread->stats.AddBytes(value.length());
+        } else {
+	  std::cout << "Failed!\n";
+	  exit(1);
+	}
+	
+        /*
+	if (thread->shared->read_rate_limiter.get() != nullptr &&
+            read % 256 == 255) {
+          thread->shared->read_rate_limiter->Request(
+              256, Env::IO_HIGH, nullptr ,
+              RateLimiter::OpType::kRead);
+        }*/
+        //thread->stats.FinishedOps(db_with_cfh, db_with_cfh->db, 1, kRead);
+      
+        thread->stats.FinishedSingleOp();
+      } else if (query_type == 1) {
+        
+	//std::cout << "This will be a put\n";
+	// the Put query
+        puts++;
+        
+        int64_t val_size = ParetoCdfInversion(
+            u, 0.0, FLAGS_value_k, FLAGS_value_sigma);
+        if (val_size < 0) {
+          val_size = 10;
+        } else if (val_size > value_max) {
+          val_size = val_size % value_max;
+        }
+	
+	//continue;      
+	//std::cout << val_size << std::endl;
+        
+	batch.Clear();
+        batch.Put(key, gen.Generate(val_size));
+        bytes += value_size_ + strlen(key);
+        thread->stats.FinishedSingleOp();
+       
+        s = db_->Write(write_options_, &batch);
+        if (!s.ok()) {
+          fprintf(stderr, "put error: %s\n", s.ToString().c_str());
+          exit(1);
+        }
+
+	// TODO tune the write rate?
+        /*
+	if (thread->shared->write_rate_limiter) {
+          thread->shared->write_rate_limiter->Request(
+              key.size() + val_size, Env::IO_HIGH, nullptr ,
+              RateLimiter::OpType::kWrite);
+        }
+        thread->stats.FinishedOps(db_with_cfh, db_with_cfh->db, 1, kWrite);
+        */
+      
+      
+      } else if (query_type == 2) {
+	//std::cout << "This will be a Scan\n";
+	//continue;      
+        
+	/*// Seek query
+        Iterator* single_iter = nullptr;
+          single_iter = db_with_cfh->db->NewIterator(options);
+          if (single_iter != nullptr) {
+            single_iter->Seek(key);
+            seek++;
+            read++;
+            if (single_iter->Valid() && single_iter->key().compare(key) == 0) {
+              seek_found++;
+            }
+            int64_t scan_length =
+                ParetoCdfInversion(u, FLAGS_iter_theta, FLAGS_iter_k,
+                                   FLAGS_iter_sigma) %
+                scan_len_max;
+            for (int64_t j = 0; j < scan_length && single_iter->Valid(); j++) {
+              Slice value = single_iter->value();
+              memcpy(value_buffer, value.data(),
+                     std::min(value.size(), sizeof(value_buffer)));
+              bytes += single_iter->key().size() + single_iter->value().size();
+              single_iter->Next();
+              assert(single_iter->status().ok());
+            }
+          }
+          delete single_iter;
+        }
+        thread->stats.FinishedOps(db_with_cfh, db_with_cfh->db, 1, kSeek);
+        */
+    
+	
+      Iterator* iter = db_->NewIterator(ReadOptions());
+      
+      if (iter != nullptr) {
+        iter->Seek(key);
+        seek++;
+        read++;
+        if (iter->Valid() && iter->key() == key) found++;
+      
+        int64_t scan_length = ParetoCdfInversion(u, 0.0, FLAGS_iter_k, FLAGS_iter_sigma) % scan_len_max;
+	for (int j = 0; j < scan_length && iter->Valid(); j++) {
+          int64_t ksize = 0, vsize = 0;
+          ksize = iter->key().ToString().size();
+          vsize = iter->value().ToString().size();
+          bytes += ksize + vsize;
+          iter->Next();	
+	}
+        thread->stats.FinishedSingleOp();
+    }
+    delete iter;
+    thread->stats.AddBytes(bytes);
+      }
+    
+    }
+        
+    
+    char msg[256];
+    snprintf(msg, sizeof(msg), "(Gets: %ld, Puts: %ld, Seek:%ld, %d of %ld found)", gets, puts, seek, found, gets);
+
+    //snprintf(msg, sizeof(msg),
+    //         "( Gets:%" int " Puts:%" PRIu64 " Seek:%" PRIu64 " of %" PRIu64
+    //         " in %" PRIu64 " found)\n",
+    //         gets, puts, seek, found, read);
+
+    thread->stats.AddBytes(bytes);
+    thread->stats.AddMessage(msg);
+
+  }
+  
+  
+  
   void YCSB(ThreadState* thread) {
     
     ReadOptions options;
