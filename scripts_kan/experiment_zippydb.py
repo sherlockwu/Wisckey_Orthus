@@ -32,7 +32,7 @@ class Experiment(object):
         self.tools_config = {
             'clear_page_cache': True,   # whether clear page cache before each run 
             'blktrace'        : False,   # check block IOs
-            'iostat'          : False,  # check ios and cpu/io utilization
+            'iostat'          : True,  # check ios and cpu/io utilization
             'perf'            : False,  # draw flamegraph
             'sar'             : False   # check page faults
         }
@@ -42,8 +42,8 @@ class Experiment(object):
           'type': ['no_name'],
           #'threads': [1, 4, 8, 16, 24, 32],
           #'threads': [1, 8, 16, 24, 32],
+          #'threads': [4, 8, 16, 24],
           'threads': [32],
-          #'threads': [1, 4, 8, 16],
           #'memory': [int(1*GB)],    #'memory limit'
           'memory': [int(1*GB)],    #'memory limit'
           'swapiness': [0],
@@ -105,8 +105,8 @@ class Experiment(object):
         
         
         #Small: 1KB value
-        #cmd = '/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/970/db_1024 --value_size=1024 --write_buffer_size=134217728 --cache_size=0 --compression_ratio=1 --benchmarks=mixgraph --use_existing_db=1 --db_num=80000000 --reads=500000 ' + '--threads=' + str(config['threads']) #+ ' > /dev/shm/running'
-        cmd = '/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/optane/db_1024 --value_size=1024 --write_buffer_size=134217728 --cache_size=0 --compression_ratio=1 --benchmarks=mixgraph --use_existing_db=1 --db_num=80000000 --reads=500000 ' + '--threads=' + str(config['threads']) #+ ' > /dev/shm/running'
+        cmd = '/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/970/db_1024 --value_size=1024 --write_buffer_size=134217728 --cache_size=0 --compression_ratio=1 --benchmarks=mixgraph --use_existing_db=1 --db_num=80000000 --reads=2000000 ' + '--threads=' + str(config['threads']) # + ' > /dev/shm/running'
+        #cmd = '/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/optane/db_1024 --value_size=1024 --write_buffer_size=134217728 --cache_size=0 --compression_ratio=1 --benchmarks=mixgraph --use_existing_db=1 --db_num=80000000 --reads=2000000 ' + '--threads=' + str(config['threads']) + ' > /dev/shm/running'
         
         #Large: 64KB value
         #cmd = '/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/970/db_65536 --value_size=65536 --cache_size=0 --compression_ratio=1 --benchmarks=ycsb --use_existing_db=1 --db_num=1700000 --reads=5000000 ' + '--threads=' + str(config['threads']) #+ ' > /dev/shm/running'
@@ -115,8 +115,13 @@ class Experiment(object):
         #cmd = '/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/970/db_16384 --value_size=16384 --cache_size=0 --compression_ratio=1 --benchmarks=mixgraph --use_existing_db=1 --db_num=6600000 --reads=10000000 ' + '--threads=' + str(config['threads']) #+ ' > /dev/shm/running'
         
         print cmd
-        p = self.cg.execute(shlex.split(cmd))
-        p.wait()
+        
+        
+        shcmd('cgexec -g memory:charlie --sticky ' + cmd + ' &')
+        print "Hello!" 
+        shcmd('sleep 100; pkill db_bench') 
+        #p = self.cg.execute(shlex.split(cmd))
+        #p.wait()
 
     def handle_iostat_out(self, iostat_output):
         print "==== utilization statistics ===="

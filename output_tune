@@ -1,0 +1,1142 @@
+Keys:       16 bytes each
+Values:     1024 bytes each (1024 bytes after compression)
+Entries:    1000000
+RawSize:    991.8 MB (estimated)
+FileSize:   991.8 MB (estimated)
+WARNING: Snappy compression is not enabled
+------------------------------------------------
+========== here is to NewPersistLRUCache
+fadvise random works !!! 
+fadvise sequential works !!! 
+vlog size: 104166 MB, head: 109226666032, tail: 40 
+========== Here is in DB::Open, to start a thread to monitor Optane
+... finished 10000 ops, 1177.9 ops/s                              
+... finished 10000 ops, 1174.8 ops/s                              
+... finished 10000 ops, 1174.7 ops/s                              
+... finished 10000 ops, 1172.3 ops/s                              
+... finished 10000 ops, 1171.7 ops/s                              
+... finished 10000 ops, 1171.0 ops/s                              
+... finished 10000 ops, 1170.9 ops/s                              
+... finished 10000 ops, 1170.3 ops/s                              
+... finished 10000 ops, 1170.4 ops/s                              
+... finished 10000 ops, 1170.1 ops/s                              
+... finished 10000 ops, 1169.8 ops/s                              
+... finished 10000 ops, 1169.7 ops/s                              
+... finished 10000 ops, 1169.4 ops/s                              
+... finished 10000 ops, 1169.3 ops/s                              
+... finished 10000 ops, 1169.3 ops/s                              
+... finished 10000 ops, 1169.0 ops/s                              
+... finished 10000 ops, 1168.2 ops/s                              
+... finished 10000 ops, 1167.6 ops/s                              
+... finished 10000 ops, 1167.5 ops/s                              
+... finished 10000 ops, 1167.3 ops/s                              
+... finished 10000 ops, 1166.0 ops/s                              
+... finished 10000 ops, 1166.1 ops/s                              
+... finished 10000 ops, 1165.8 ops/s                              
+... finished 10000 ops, 1165.7 ops/s                              
+... finished 10000 ops, 1165.4 ops/s                              
+... finished 10000 ops, 1165.0 ops/s                              
+... finished 10000 ops, 1164.6 ops/s                              
+... finished 10000 ops, 1164.1 ops/s                              
+... finished 10000 ops, 1163.3 ops/s                              
+... finished 10000 ops, 1162.5 ops/s                              
+... finished 10000 ops, 1161.7 ops/s                              
+... finished 10000 ops, 1160.9 ops/s                              
+... finished 15000 ops, 8200.0 ops/s                              
+... finished 15000 ops, 8232.5 ops/s                              
+... finished 15000 ops, 8170.9 ops/s                              
+... finished 15000 ops, 8280.6 ops/s                              
+... finished 15000 ops, 8429.1 ops/s                              
+... finished 15000 ops, 8530.7 ops/s                              
+... finished 15000 ops, 8311.4 ops/s                              
+... finished 15000 ops, 8206.9 ops/s                              
+... finished 15000 ops, 8195.7 ops/s                              
+... finished 15000 ops, 8259.3 ops/s                              
+... finished 15000 ops, 8217.6 ops/s                              
+... finished 15000 ops, 8263.8 ops/s                              
+... finished 15000 ops, 8006.3 ops/s                              
+... finished 15000 ops, 8279.9 ops/s                              
+... finished 15000 ops, 8613.5 ops/s                              
+... finished 15000 ops, 8203.4 ops/s                              
+... finished 15000 ops, 8226.1 ops/s                              
+... finished 15000 ops, 8388.3 ops/s                              
+... finished 15000 ops, 8173.9 ops/s                              
+... finished 15000 ops, 8265.3 ops/s                              
+... finished 15000 ops, 8356.1 ops/s                              
+... finished 15000 ops, 8186.6 ops/s                              
+... finished 15000 ops, 8389.1 ops/s                              
+... finished 15000 ops, 8427.5 ops/s                              
+... finished 15000 ops, 8265.4 ops/s                              
+... finished 15000 ops, 8250.9 ops/s                              
+... finished 15000 ops, 8579.2 ops/s                              
+... finished 15000 ops, 8249.3 ops/s                              
+... finished 15000 ops, 8356.6 ops/s                              
+... finished 15000 ops, 8330.3 ops/s                              
+... finished 15000 ops, 8371.8 ops/s                              
+... finished 15000 ops, 8153.7 ops/s                              
+... finished 20000 ops, 8852.3 ops/s                              
+... finished 20000 ops, 8762.8 ops/s                              
+... finished 20000 ops, 8346.0 ops/s                              
+... finished 20000 ops, 8890.7 ops/s                              
+... finished 20000 ops, 8818.8 ops/s                              
+... finished 20000 ops, 8850.6 ops/s                              
+... finished 20000 ops, 8888.5 ops/s                              
+... finished 20000 ops, 8960.1 ops/s                              
+... finished 20000 ops, 8772.3 ops/s                              
+... finished 20000 ops, 8687.8 ops/s                              
+... finished 20000 ops, 8554.2 ops/s                              
+... finished 20000 ops, 8834.0 ops/s                              
+... finished 20000 ops, 8837.0 ops/s                              
+... finished 20000 ops, 8664.7 ops/s                              
+... finished 20000 ops, 8636.4 ops/s                              
+... finished 20000 ops, 8977.7 ops/s                              
+... finished 20000 ops, 8695.2 ops/s                              
+... finished 20000 ops, 8598.3 ops/s                              
+... finished 20000 ops, 8457.0 ops/s                              
+... finished 20000 ops, 8754.9 ops/s                              
+... finished 20000 ops, 8579.8 ops/s                              
+... finished 20000 ops, 8832.8 ops/s                              
+... finished 20000 ops, 8775.5 ops/s                              
+... finished 20000 ops, 8714.1 ops/s                              
+... finished 20000 ops, 8661.1 ops/s                              
+... finished 20000 ops, 8662.2 ops/s                              
+... finished 20000 ops, 8687.6 ops/s                              
+... finished 20000 ops, 8683.1 ops/s                              
+... finished 20000 ops, 8650.5 ops/s                              
+... finished 20000 ops, 8898.9 ops/s                              
+... finished 20000 ops, 8734.2 ops/s                              
+... finished 20000 ops, 8540.5 ops/s                              
+... finished 25000 ops, 9148.0 ops/s                              
+... finished 25000 ops, 8952.4 ops/s                              
+... finished 25000 ops, 9274.1 ops/s                              
+... finished 25000 ops, 8928.4 ops/s                              
+... finished 25000 ops, 9114.8 ops/s                              
+... finished 25000 ops, 9152.6 ops/s                              
+... finished 25000 ops, 9309.7 ops/s                              
+... finished 25000 ops, 9196.1 ops/s                              
+... finished 25000 ops, 9363.6 ops/s                              
+... finished 25000 ops, 9033.4 ops/s                              
+... finished 25000 ops, 8918.8 ops/s                              
+... finished 25000 ops, 8932.7 ops/s                              
+... finished 25000 ops, 9174.2 ops/s                              
+... finished 25000 ops, 8963.9 ops/s                              
+... finished 25000 ops, 9156.6 ops/s                              
+... finished 25000 ops, 9148.7 ops/s                              
+... finished 25000 ops, 9088.5 ops/s                              
+... finished 25000 ops, 9101.1 ops/s                              
+... finished 25000 ops, 9128.6 ops/s                              
+... finished 25000 ops, 9018.9 ops/s                              
+... finished 25000 ops, 9119.2 ops/s                              
+... finished 25000 ops, 9026.0 ops/s                              
+... finished 25000 ops, 9085.9 ops/s                              
+... finished 25000 ops, 9246.1 ops/s                              
+... finished 25000 ops, 9123.0 ops/s                              
+... finished 25000 ops, 9045.7 ops/s                              
+... finished 25000 ops, 9049.6 ops/s                              
+... finished 25000 ops, 9130.6 ops/s                              
+... finished 25000 ops, 9103.2 ops/s                              
+... finished 25000 ops, 8957.2 ops/s                              
+... finished 25000 ops, 8968.7 ops/s                              
+... finished 25000 ops, 9244.3 ops/s                              
+... finished 30000 ops, 9387.3 ops/s                              
+... finished 30000 ops, 9498.9 ops/s                              
+... finished 30000 ops, 9512.2 ops/s                              
+... finished 30000 ops, 9454.9 ops/s                              
+... finished 30000 ops, 9471.4 ops/s                              
+... finished 30000 ops, 9524.6 ops/s                              
+... finished 30000 ops, 9423.0 ops/s                              
+... finished 30000 ops, 9413.7 ops/s                              
+... finished 30000 ops, 9592.8 ops/s                              
+... finished 30000 ops, 9618.7 ops/s                              
+... finished 30000 ops, 9418.1 ops/s                              
+... finished 30000 ops, 9204.7 ops/s                              
+... finished 30000 ops, 9498.8 ops/s                              
+... finished 30000 ops, 9456.8 ops/s                              
+... finished 30000 ops, 9413.1 ops/s                              
+... finished 30000 ops, 9347.5 ops/s                              
+... finished 30000 ops, 9240.1 ops/s                              
+... finished 30000 ops, 9256.6 ops/s                              
+... finished 30000 ops, 9381.6 ops/s                              
+... finished 30000 ops, 9481.9 ops/s                              
+... finished 30000 ops, 9537.5 ops/s                              
+... finished 30000 ops, 9663.5 ops/s                              
+... finished 30000 ops, 9462.9 ops/s                              
+... finished 30000 ops, 9430.0 ops/s                              
+... finished 30000 ops, 9387.6 ops/s                              
+... finished 30000 ops, 9427.3 ops/s                              
+... finished 30000 ops, 9377.7 ops/s                              
+... finished 30000 ops, 9318.7 ops/s                              
+... finished 30000 ops, 9576.0 ops/s                              
+... finished 30000 ops, 9446.1 ops/s                              
+... finished 30000 ops, 9285.0 ops/s                              
+... finished 30000 ops, 9467.7 ops/s                              
+... finished 35000 ops, 9923.7 ops/s                              
+... finished 35000 ops, 9609.6 ops/s                              
+... finished 35000 ops, 9603.9 ops/s                              
+... finished 35000 ops, 9884.4 ops/s                              
+... finished 35000 ops, 9710.0 ops/s                              
+... finished 35000 ops, 9677.1 ops/s                              
+... finished 35000 ops, 9856.0 ops/s                              
+... finished 35000 ops, 9694.6 ops/s                              
+... finished 35000 ops, 9770.6 ops/s                              
+... finished 35000 ops, 9631.4 ops/s                              
+... finished 35000 ops, 9508.7 ops/s                              
+... finished 35000 ops, 9862.2 ops/s                              
+... finished 35000 ops, 9620.5 ops/s                              
+... finished 35000 ops, 9914.5 ops/s                              
+... finished 35000 ops, 9589.6 ops/s                              
+... finished 35000 ops, 9739.0 ops/s                              
+... finished 35000 ops, 9569.6 ops/s                              
+... finished 35000 ops, 9563.0 ops/s                              
+... finished 35000 ops, 9763.1 ops/s                              
+... finished 35000 ops, 9649.2 ops/s                              
+... finished 35000 ops, 9950.1 ops/s                              
+... finished 35000 ops, 9611.9 ops/s                              
+... finished 35000 ops, 9527.2 ops/s                              
+... finished 35000 ops, 9536.7 ops/s                              
+... finished 35000 ops, 9480.8 ops/s                              
+... finished 35000 ops, 9861.6 ops/s                              
+... finished 35000 ops, 9623.1 ops/s                              
+... finished 35000 ops, 9511.3 ops/s                              
+... finished 35000 ops, 9462.7 ops/s                              
+... finished 35000 ops, 9644.8 ops/s                              
+... finished 35000 ops, 9582.0 ops/s                              
+... finished 35000 ops, 9770.2 ops/s                              
+... finished 40000 ops, 10189.0 ops/s                              
+... finished 40000 ops, 9821.2 ops/s                              
+... finished 40000 ops, 10468.6 ops/s                              
+... finished 40000 ops, 10011.0 ops/s                              
+... finished 40000 ops, 9989.2 ops/s                              
+... finished 40000 ops, 9947.7 ops/s                              
+... finished 40000 ops, 9938.9 ops/s                              
+... finished 40000 ops, 9660.1 ops/s                              
+... finished 40000 ops, 9959.6 ops/s                              
+... finished 40000 ops, 10008.4 ops/s                              
+... finished 40000 ops, 9968.2 ops/s                              
+... finished 40000 ops, 9924.1 ops/s                              
+... finished 40000 ops, 10198.4 ops/s                              
+... finished 40000 ops, 9850.4 ops/s                              
+... finished 40000 ops, 10055.3 ops/s                              
+... finished 40000 ops, 10001.3 ops/s                              
+... finished 40000 ops, 9820.4 ops/s                              
+... finished 40000 ops, 9776.5 ops/s                              
+... finished 40000 ops, 9723.2 ops/s                              
+... finished 40000 ops, 9931.8 ops/s                              
+... finished 40000 ops, 9742.7 ops/s                              
+... finished 40000 ops, 9850.3 ops/s                              
+... finished 40000 ops, 9971.7 ops/s                              
+... finished 40000 ops, 10021.8 ops/s                              
+... finished 40000 ops, 10037.1 ops/s                              
+... finished 40000 ops, 9969.4 ops/s                              
+... finished 40000 ops, 9969.6 ops/s                              
+... finished 40000 ops, 10107.8 ops/s                              
+... finished 40000 ops, 9866.7 ops/s                              
+... finished 40000 ops, 9842.9 ops/s                              
+... finished 40000 ops, 9743.8 ops/s                              
+... finished 40000 ops, 9883.8 ops/s                              
+... finished 45000 ops, 10085.0 ops/s                              
+... finished 45000 ops, 10118.8 ops/s                              
+... finished 45000 ops, 10132.8 ops/s                              
+... finished 45000 ops, 10075.3 ops/s                              
+... finished 45000 ops, 10100.5 ops/s                              
+... finished 45000 ops, 10206.1 ops/s                              
+... finished 45000 ops, 10021.8 ops/s                              
+... finished 45000 ops, 10024.0 ops/s                              
+... finished 45000 ops, 9760.6 ops/s                              
+... finished 45000 ops, 10014.0 ops/s                              
+... finished 45000 ops, 10076.5 ops/s                              
+... finished 45000 ops, 10446.8 ops/s                              
+... finished 45000 ops, 9882.1 ops/s                              
+... finished 45000 ops, 10251.2 ops/s                              
+... finished 45000 ops, 9890.9 ops/s                              
+... finished 45000 ops, 10014.7 ops/s                              
+... finished 45000 ops, 10334.4 ops/s                              
+... finished 45000 ops, 10191.7 ops/s                              
+... finished 45000 ops, 10047.0 ops/s                              
+... finished 45000 ops, 10080.2 ops/s                              
+... finished 45000 ops, 10197.0 ops/s                              
+... finished 45000 ops, 9885.7 ops/s                              
+... finished 45000 ops, 9969.9 ops/s                              
+... finished 45000 ops, 10001.7 ops/s                              
+... finished 45000 ops, 9900.4 ops/s                              
+... finished 45000 ops, 10079.6 ops/s                              
+... finished 45000 ops, 9989.4 ops/s                              
+... finished 45000 ops, 9775.2 ops/s                              
+... finished 45000 ops, 10163.8 ops/s                              
+... finished 45000 ops, 10059.7 ops/s                              
+... finished 45000 ops, 9667.2 ops/s                              
+... finished 45000 ops, 9938.7 ops/s                              
+... finished 50000 ops, 10050.1 ops/s                              
+... finished 50000 ops, 10216.9 ops/s                              
+... finished 50000 ops, 10013.7 ops/s                              
+... finished 50000 ops, 10097.2 ops/s                              
+... finished 50000 ops, 10133.2 ops/s                              
+... finished 50000 ops, 9866.1 ops/s                              
+... finished 50000 ops, 9948.7 ops/s                              
+... finished 50000 ops, 9804.7 ops/s                              
+... finished 50000 ops, 10072.6 ops/s                              
+... finished 50000 ops, 10198.0 ops/s                              
+... finished 50000 ops, 10058.9 ops/s                              
+... finished 50000 ops, 9879.8 ops/s                              
+... finished 50000 ops, 10106.2 ops/s                              
+... finished 50000 ops, 9762.8 ops/s                              
+... finished 50000 ops, 9879.7 ops/s                              
+... finished 50000 ops, 10143.2 ops/s                              
+... finished 50000 ops, 10050.4 ops/s                              
+... finished 50000 ops, 10331.8 ops/s                              
+... finished 50000 ops, 10080.6 ops/s                              
+... finished 50000 ops, 9834.8 ops/s                              
+... finished 50000 ops, 9919.2 ops/s                              
+... finished 50000 ops, 9883.8 ops/s                              
+... finished 50000 ops, 10057.6 ops/s                              
+... finished 50000 ops, 9925.3 ops/s                              
+... finished 50000 ops, 10082.0 ops/s                              
+... finished 50000 ops, 10039.5 ops/s                              
+... finished 50000 ops, 10338.5 ops/s                              
+... finished 50000 ops, 10027.1 ops/s                              
+... finished 50000 ops, 10387.5 ops/s                              
+... finished 50000 ops, 10033.5 ops/s                              
+... finished 50000 ops, 10151.6 ops/s                              
+... finished 50000 ops, 10103.4 ops/s                              
+... finished 60000 ops, 10602.5 ops/s                              
+... finished 60000 ops, 10484.0 ops/s                              
+... finished 60000 ops, 10522.3 ops/s                              
+... finished 60000 ops, 10468.8 ops/s                              
+... finished 60000 ops, 10573.8 ops/s                              
+... finished 60000 ops, 10330.5 ops/s                              
+... finished 60000 ops, 10499.8 ops/s                              
+... finished 60000 ops, 10327.8 ops/s                              
+... finished 60000 ops, 10520.9 ops/s                              
+... finished 60000 ops, 10451.2 ops/s                              
+... finished 60000 ops, 10516.7 ops/s                              
+... finished 60000 ops, 10732.4 ops/s                              
+... finished 60000 ops, 10479.4 ops/s                              
+... finished 60000 ops, 10468.8 ops/s                              
+... finished 60000 ops, 10442.3 ops/s                              
+... finished 60000 ops, 10592.7 ops/s                              
+... finished 60000 ops, 10475.4 ops/s                              
+... finished 60000 ops, 10471.3 ops/s                              
+... finished 60000 ops, 10435.8 ops/s                              
+... finished 60000 ops, 10718.1 ops/s                              
+... finished 60000 ops, 10324.5 ops/s                              
+... finished 60000 ops, 10417.8 ops/s                              
+... finished 60000 ops, 10374.0 ops/s                              
+... finished 60000 ops, 10625.4 ops/s                              
+... finished 60000 ops, 10357.0 ops/s                              
+... finished 60000 ops, 10433.3 ops/s                              
+... finished 60000 ops, 10301.1 ops/s                              
+... finished 60000 ops, 10279.5 ops/s                              
+... finished 60000 ops, 10566.9 ops/s                              
+... finished 60000 ops, 10442.3 ops/s                              
+... finished 60000 ops, 10429.3 ops/s                              
+... finished 60000 ops, 10474.1 ops/s                              
+... finished 70000 ops, 10590.5 ops/s                              
+... finished 70000 ops, 10697.4 ops/s                              
+... finished 70000 ops, 10794.1 ops/s                              
+... finished 70000 ops, 10726.6 ops/s                              
+... finished 70000 ops, 10845.1 ops/s                              
+... finished 70000 ops, 10612.3 ops/s                              
+... finished 70000 ops, 10717.7 ops/s                              
+... finished 70000 ops, 10691.4 ops/s                              
+... finished 70000 ops, 10637.3 ops/s                              
+... finished 70000 ops, 10761.5 ops/s                              
+... finished 70000 ops, 10585.9 ops/s                              
+... finished 70000 ops, 10665.8 ops/s                              
+... finished 70000 ops, 10759.9 ops/s                              
+... finished 70000 ops, 10620.4 ops/s                              
+... finished 70000 ops, 10908.0 ops/s                              
+... finished 70000 ops, 10702.7 ops/s                              
+... finished 70000 ops, 10675.3 ops/s                              
+... finished 70000 ops, 10687.1 ops/s                              
+... finished 70000 ops, 10881.3 ops/s                              
+... finished 70000 ops, 10669.7 ops/s                              
+... finished 70000 ops, 10730.0 ops/s                              
+... finished 70000 ops, 10547.2 ops/s                              
+... finished 70000 ops, 10617.9 ops/s                              
+... finished 70000 ops, 10806.3 ops/s                              
+... finished 70000 ops, 10597.0 ops/s                              
+... finished 70000 ops, 10704.0 ops/s                              
+... finished 70000 ops, 10826.0 ops/s                              
+... finished 70000 ops, 10614.6 ops/s                              
+... finished 70000 ops, 10718.6 ops/s                              
+... finished 70000 ops, 10641.5 ops/s                              
+... finished 70000 ops, 10975.1 ops/s                              
+... finished 70000 ops, 10750.1 ops/s                              
+... finished 80000 ops, 11049.0 ops/s                              
+... finished 80000 ops, 11182.5 ops/s                              
+... finished 80000 ops, 11026.2 ops/s                              
+... finished 80000 ops, 10992.4 ops/s                              
+... finished 80000 ops, 11094.2 ops/s                              
+... finished 80000 ops, 10862.5 ops/s                              
+... finished 80000 ops, 11134.5 ops/s                              
+... finished 80000 ops, 11240.4 ops/s                              
+... finished 80000 ops, 10942.4 ops/s                              
+... finished 80000 ops, 11146.6 ops/s                              
+... finished 80000 ops, 11001.6 ops/s                              
+... finished 80000 ops, 11205.3 ops/s                              
+... finished 80000 ops, 10804.1 ops/s                              
+... finished 80000 ops, 10878.2 ops/s                              
+... finished 80000 ops, 10747.2 ops/s                              
+... finished 80000 ops, 11104.2 ops/s                              
+... finished 80000 ops, 10854.5 ops/s                              
+... finished 80000 ops, 11058.4 ops/s                              
+... finished 80000 ops, 10909.0 ops/s                              
+... finished 80000 ops, 10993.9 ops/s                              
+... finished 80000 ops, 11014.8 ops/s                              
+... finished 80000 ops, 10793.6 ops/s                              
+... finished 80000 ops, 10935.0 ops/s                              
+... finished 80000 ops, 10943.3 ops/s                              
+... finished 80000 ops, 11034.6 ops/s                              
+... finished 80000 ops, 10944.1 ops/s                              
+... finished 80000 ops, 10861.5 ops/s                              
+... finished 80000 ops, 10933.2 ops/s                              
+... finished 80000 ops, 11158.6 ops/s                              
+... finished 80000 ops, 11090.9 ops/s                              
+... finished 80000 ops, 10761.1 ops/s                              
+... finished 80000 ops, 10829.9 ops/s                              
+... finished 90000 ops, 11270.3 ops/s                              
+... finished 90000 ops, 11279.4 ops/s                              
+... finished 90000 ops, 11029.3 ops/s                              
+... finished 90000 ops, 11078.7 ops/s                              
+... finished 90000 ops, 11085.5 ops/s                              
+... finished 90000 ops, 11058.6 ops/s                              
+... finished 90000 ops, 11182.6 ops/s                              
+... finished 90000 ops, 11394.9 ops/s                              
+... finished 90000 ops, 11193.5 ops/s                              
+... finished 90000 ops, 11146.5 ops/s                              
+... finished 90000 ops, 11121.4 ops/s                              
+... finished 90000 ops, 11048.0 ops/s                              
+... finished 90000 ops, 11382.8 ops/s                              
+... finished 90000 ops, 11145.2 ops/s                              
+... finished 90000 ops, 11376.0 ops/s                              
+... finished 90000 ops, 11099.1 ops/s                              
+... finished 90000 ops, 10932.4 ops/s                              
+... finished 90000 ops, 11197.4 ops/s                              
+... finished 90000 ops, 11290.7 ops/s                              
+... finished 90000 ops, 11102.0 ops/s                              
+... finished 90000 ops, 11131.1 ops/s                              
+... finished 90000 ops, 11153.0 ops/s                              
+... finished 90000 ops, 11214.0 ops/s                              
+... finished 90000 ops, 11193.5 ops/s                              
+... finished 90000 ops, 11063.9 ops/s                              
+... finished 90000 ops, 11271.9 ops/s                              
+... finished 90000 ops, 11189.6 ops/s                              
+... finished 90000 ops, 10938.3 ops/s                              
+... finished 90000 ops, 11403.8 ops/s                              
+... finished 90000 ops, 11124.5 ops/s                              
+... finished 90000 ops, 11356.6 ops/s                              
+... finished 90000 ops, 11008.9 ops/s                              
+... finished 100000 ops, 11381.3 ops/s                              
+... finished 100000 ops, 11418.9 ops/s                              
+... finished 100000 ops, 11405.1 ops/s                              
+... finished 100000 ops, 11337.2 ops/s                              
+... finished 100000 ops, 11409.0 ops/s                              
+... finished 100000 ops, 11232.9 ops/s                              
+... finished 100000 ops, 11341.7 ops/s                              
+... finished 100000 ops, 11480.6 ops/s                              
+... finished 100000 ops, 11500.8 ops/s                              
+... finished 100000 ops, 11354.4 ops/s                              
+... finished 100000 ops, 11422.7 ops/s                              
+... finished 100000 ops, 11323.3 ops/s                              
+... finished 100000 ops, 11300.9 ops/s                              
+... finished 100000 ops, 11276.6 ops/s                              
+... finished 100000 ops, 11275.4 ops/s                              
+... finished 100000 ops, 11591.4 ops/s                              
+... finished 100000 ops, 11514.8 ops/s                              
+... finished 100000 ops, 11303.2 ops/s                              
+... finished 100000 ops, 11272.2 ops/s                              
+... finished 100000 ops, 11519.6 ops/s                              
+... finished 100000 ops, 11564.0 ops/s                              
+... finished 100000 ops, 11369.2 ops/s                              
+... finished 100000 ops, 11478.3 ops/s                              
+... finished 100000 ops, 11252.7 ops/s                              
+... finished 100000 ops, 11328.4 ops/s                              
+... finished 100000 ops, 11190.2 ops/s                              
+... finished 100000 ops, 11227.7 ops/s                              
+... finished 100000 ops, 11341.6 ops/s                              
+... finished 100000 ops, 11336.5 ops/s                              
+... finished 100000 ops, 11295.9 ops/s                              
+... finished 100000 ops, 11210.0 ops/s                              
+... finished 100000 ops, 11350.1 ops/s                              
+... finished 150000 ops, 11395.8 ops/s                              
+... finished 150000 ops, 11412.6 ops/s                              
+... finished 150000 ops, 11553.1 ops/s                              
+... finished 150000 ops, 11486.2 ops/s                              
+... finished 150000 ops, 11414.7 ops/s                              
+... finished 150000 ops, 11438.0 ops/s                              
+... finished 150000 ops, 11503.8 ops/s                              
+... finished 150000 ops, 11458.5 ops/s                              
+... finished 150000 ops, 11422.2 ops/s                              
+... finished 150000 ops, 11447.9 ops/s                              
+... finished 150000 ops, 11432.4 ops/s                              
+... finished 150000 ops, 11483.3 ops/s                              
+... finished 150000 ops, 11432.7 ops/s                              
+... finished 150000 ops, 11459.2 ops/s                              
+... finished 150000 ops, 11367.4 ops/s                              
+... finished 150000 ops, 11367.2 ops/s                              
+... finished 150000 ops, 11350.2 ops/s                              
+... finished 150000 ops, 11362.5 ops/s                              
+... finished 150000 ops, 11456.6 ops/s                              
+... finished 150000 ops, 11382.4 ops/s                              
+... finished 150000 ops, 11481.5 ops/s                              
+... finished 150000 ops, 11353.4 ops/s                              
+... finished 150000 ops, 11334.0 ops/s                              
+... finished 150000 ops, 11405.1 ops/s                              
+... finished 150000 ops, 11413.9 ops/s                              
+... finished 150000 ops, 11363.4 ops/s                              
+... finished 150000 ops, 11307.7 ops/s                              
+... finished 150000 ops, 11367.7 ops/s                              
+... finished 150000 ops, 11405.2 ops/s                              
+... finished 150000 ops, 11323.0 ops/s                              
+... finished 150000 ops, 11330.9 ops/s                              
+... finished 150000 ops, 11352.4 ops/s                              
+... finished 200000 ops, 11638.6 ops/s                              
+... finished 200000 ops, 11611.8 ops/s                              
+... finished 200000 ops, 11679.7 ops/s                              
+... finished 200000 ops, 11659.8 ops/s                              
+... finished 200000 ops, 11641.6 ops/s                              
+... finished 200000 ops, 11580.0 ops/s                              
+... finished 200000 ops, 11624.0 ops/s                              
+... finished 200000 ops, 11669.5 ops/s                              
+... finished 200000 ops, 11639.6 ops/s                              
+... finished 200000 ops, 11703.1 ops/s                              
+... finished 200000 ops, 11703.4 ops/s                              
+... finished 200000 ops, 11611.1 ops/s                              
+... finished 200000 ops, 11618.6 ops/s                              
+... finished 200000 ops, 11697.3 ops/s                              
+... finished 200000 ops, 11681.3 ops/s                              
+... finished 200000 ops, 11715.6 ops/s                              
+... finished 200000 ops, 11677.3 ops/s                              
+... finished 200000 ops, 11627.5 ops/s                              
+... finished 200000 ops, 11689.9 ops/s                              
+... finished 200000 ops, 11691.5 ops/s                              
+... finished 200000 ops, 11676.8 ops/s                              
+... finished 200000 ops, 11670.9 ops/s                              
+... finished 200000 ops, 11596.4 ops/s                              
+... finished 200000 ops, 11677.2 ops/s                              
+... finished 200000 ops, 11671.3 ops/s                              
+... finished 200000 ops, 11635.0 ops/s                              
+... finished 200000 ops, 11677.4 ops/s                              
+... finished 200000 ops, 11589.3 ops/s                              
+... finished 200000 ops, 11637.1 ops/s                              
+... finished 200000 ops, 11662.9 ops/s                              
+... finished 200000 ops, 11629.9 ops/s                              
+... finished 200000 ops, 11686.3 ops/s                              
+... finished 250000 ops, 12105.6 ops/s                              
+... finished 250000 ops, 12086.7 ops/s                              
+... finished 250000 ops, 12070.5 ops/s                              
+... finished 250000 ops, 12051.3 ops/s                              
+... finished 250000 ops, 12021.7 ops/s                              
+... finished 250000 ops, 12072.5 ops/s                              
+... finished 250000 ops, 12002.1 ops/s                              
+... finished 250000 ops, 12039.7 ops/s                              
+... finished 250000 ops, 12092.0 ops/s                              
+... finished 250000 ops, 12081.2 ops/s                              
+... finished 250000 ops, 12138.2 ops/s                              
+... finished 250000 ops, 11946.5 ops/s                              
+... finished 250000 ops, 12060.1 ops/s                              
+... finished 250000 ops, 12070.1 ops/s                              
+... finished 250000 ops, 12063.9 ops/s                              
+... finished 250000 ops, 12015.4 ops/s                              
+... finished 250000 ops, 12088.4 ops/s                              
+... finished 250000 ops, 11998.1 ops/s                              
+... finished 250000 ops, 12066.6 ops/s                              
+... finished 250000 ops, 12012.4 ops/s                              
+... finished 250000 ops, 12052.3 ops/s                              
+... finished 250000 ops, 12028.5 ops/s                              
+... finished 250000 ops, 12022.6 ops/s                              
+... finished 250000 ops, 11995.3 ops/s                              
+... finished 250000 ops, 12088.2 ops/s                              
+... finished 250000 ops, 12076.4 ops/s                              
+... finished 250000 ops, 12058.7 ops/s                              
+... finished 250000 ops, 11915.3 ops/s                              
+... finished 250000 ops, 11970.9 ops/s                              
+... finished 250000 ops, 12026.9 ops/s                              
+... finished 250000 ops, 11995.1 ops/s                              
+... finished 250000 ops, 12031.2 ops/s                              
+... finished 300000 ops, 12123.4 ops/s                              
+... finished 300000 ops, 12192.0 ops/s                              
+... finished 300000 ops, 12080.2 ops/s                              
+... finished 300000 ops, 12192.5 ops/s                              
+... finished 300000 ops, 12098.2 ops/s                              
+... finished 300000 ops, 12058.8 ops/s                              
+... finished 300000 ops, 12076.8 ops/s                              
+... finished 300000 ops, 12122.2 ops/s                              
+... finished 300000 ops, 12104.2 ops/s                              
+... finished 300000 ops, 12051.0 ops/s                              
+... finished 300000 ops, 12081.1 ops/s                              
+... finished 300000 ops, 12058.3 ops/s                              
+... finished 300000 ops, 12071.2 ops/s                              
+... finished 300000 ops, 12102.2 ops/s                              
+... finished 300000 ops, 12005.5 ops/s                              
+... finished 300000 ops, 12266.6 ops/s                              
+... finished 300000 ops, 12153.5 ops/s                              
+... finished 300000 ops, 12106.2 ops/s                              
+... finished 300000 ops, 12148.2 ops/s                              
+... finished 300000 ops, 12170.3 ops/s                              
+... finished 300000 ops, 12166.6 ops/s                              
+... finished 300000 ops, 12127.3 ops/s                              
+... finished 300000 ops, 12173.6 ops/s                              
+... finished 300000 ops, 11976.1 ops/s                              
+... finished 300000 ops, 12171.2 ops/s                              
+... finished 300000 ops, 12113.3 ops/s                              
+... finished 300000 ops, 12013.7 ops/s                              
+... finished 300000 ops, 12090.5 ops/s                              
+... finished 300000 ops, 12020.9 ops/s                              
+... finished 300000 ops, 12071.6 ops/s                              
+... finished 300000 ops, 12007.3 ops/s                              
+... finished 300000 ops, 12007.3 ops/s                              
+... finished 350000 ops, 11780.5 ops/s                              
+... finished 350000 ops, 11740.4 ops/s                              
+... finished 350000 ops, 11707.7 ops/s                              
+... finished 350000 ops, 11547.1 ops/s                              
+... finished 350000 ops, 11675.6 ops/s                              
+... finished 350000 ops, 11575.8 ops/s                              
+... finished 350000 ops, 11564.6 ops/s                              
+... finished 350000 ops, 11646.4 ops/s                              
+... finished 350000 ops, 11549.2 ops/s                              
+... finished 350000 ops, 11651.9 ops/s                              
+... finished 350000 ops, 11504.1 ops/s                              
+... finished 350000 ops, 11695.1 ops/s                              
+... finished 350000 ops, 11633.6 ops/s                              
+... finished 350000 ops, 11669.5 ops/s                              
+... finished 350000 ops, 11558.3 ops/s                              
+... finished 350000 ops, 11574.1 ops/s                              
+... finished 350000 ops, 11517.4 ops/s                              
+... finished 350000 ops, 11571.4 ops/s                              
+... finished 350000 ops, 11515.8 ops/s                              
+... finished 350000 ops, 11507.6 ops/s                              
+... finished 350000 ops, 11494.3 ops/s                              
+... finished 350000 ops, 11425.1 ops/s                              
+... finished 350000 ops, 11512.0 ops/s                              
+... finished 350000 ops, 11583.8 ops/s                              
+... finished 350000 ops, 11509.1 ops/s                              
+... finished 350000 ops, 11410.0 ops/s                              
+... finished 350000 ops, 11490.8 ops/s                              
+... finished 350000 ops, 11664.6 ops/s                              
+... finished 350000 ops, 11516.1 ops/s                              
+... finished 350000 ops, 11511.7 ops/s                              
+... finished 350000 ops, 11410.7 ops/s                              
+... finished 350000 ops, 11332.6 ops/s                              
+... finished 400000 ops, 11943.0 ops/s                              
+... finished 400000 ops, 12075.6 ops/s                              
+... finished 400000 ops, 11969.8 ops/s                              
+... finished 400000 ops, 11977.5 ops/s                              
+... finished 400000 ops, 12095.1 ops/s                              
+... finished 400000 ops, 11949.5 ops/s                              
+... finished 400000 ops, 11934.0 ops/s                              
+... finished 400000 ops, 11928.8 ops/s                              
+... finished 400000 ops, 12096.5 ops/s                              
+... finished 400000 ops, 12023.6 ops/s                              
+... finished 400000 ops, 12005.5 ops/s                              
+... finished 400000 ops, 11934.7 ops/s                              
+... finished 400000 ops, 11955.2 ops/s                              
+... finished 400000 ops, 11959.0 ops/s                              
+... finished 400000 ops, 12036.0 ops/s                              
+... finished 400000 ops, 11998.1 ops/s                              
+... finished 400000 ops, 11953.1 ops/s                              
+... finished 400000 ops, 11907.3 ops/s                              
+... finished 400000 ops, 12041.1 ops/s                              
+... finished 400000 ops, 11935.4 ops/s                              
+... finished 400000 ops, 12012.9 ops/s                              
+... finished 400000 ops, 11986.0 ops/s                              
+... finished 400000 ops, 12096.3 ops/s                              
+... finished 400000 ops, 11871.8 ops/s                              
+... finished 400000 ops, 11973.8 ops/s                              
+... finished 400000 ops, 11919.9 ops/s                              
+... finished 400000 ops, 11952.1 ops/s                              
+... finished 400000 ops, 11926.5 ops/s                              
+... finished 400000 ops, 11968.1 ops/s                              
+... finished 400000 ops, 12002.0 ops/s                              
+... finished 400000 ops, 11988.0 ops/s                              
+... finished 400000 ops, 11982.5 ops/s                              
+... finished 450000 ops, 11942.9 ops/s                              
+... finished 450000 ops, 12005.2 ops/s                              
+... finished 450000 ops, 12022.0 ops/s                              
+... finished 450000 ops, 11935.1 ops/s                              
+... finished 450000 ops, 12001.4 ops/s                              
+... finished 450000 ops, 11916.2 ops/s                              
+... finished 450000 ops, 12043.9 ops/s                              
+... finished 450000 ops, 11991.3 ops/s                              
+... finished 450000 ops, 11981.6 ops/s                              
+... finished 450000 ops, 11977.9 ops/s                              
+... finished 450000 ops, 11904.0 ops/s                              
+... finished 450000 ops, 12022.0 ops/s                              
+... finished 450000 ops, 11903.5 ops/s                              
+... finished 450000 ops, 11899.2 ops/s                              
+... finished 450000 ops, 11912.6 ops/s                              
+... finished 450000 ops, 11875.6 ops/s                              
+... finished 450000 ops, 11872.2 ops/s                              
+... finished 450000 ops, 11900.9 ops/s                              
+... finished 450000 ops, 11915.9 ops/s                              
+... finished 450000 ops, 11937.3 ops/s                              
+... finished 450000 ops, 11880.2 ops/s                              
+... finished 450000 ops, 11924.1 ops/s                              
+... finished 450000 ops, 11907.2 ops/s                              
+... finished 450000 ops, 11866.3 ops/s                              
+... finished 450000 ops, 11908.4 ops/s                              
+... finished 450000 ops, 11963.7 ops/s                              
+... finished 450000 ops, 11867.0 ops/s                              
+... finished 450000 ops, 11851.6 ops/s                              
+... finished 450000 ops, 11829.5 ops/s                              
+... finished 450000 ops, 11940.9 ops/s                              
+... finished 450000 ops, 11992.8 ops/s                              
+... finished 450000 ops, 11897.9 ops/s                              
+... finished 500000 ops, 11950.7 ops/s                              
+... finished 500000 ops, 11868.3 ops/s                              
+... finished 500000 ops, 11943.8 ops/s                              
+... finished 500000 ops, 11835.3 ops/s                              
+... finished 500000 ops, 11789.3 ops/s                              
+... finished 500000 ops, 11924.3 ops/s                              
+... finished 500000 ops, 11869.5 ops/s                              
+... finished 500000 ops, 11903.9 ops/s                              
+... finished 500000 ops, 11925.7 ops/s                              
+... finished 500000 ops, 11891.0 ops/s                              
+... finished 500000 ops, 11833.7 ops/s                              
+... finished 500000 ops, 11964.1 ops/s                              
+... finished 500000 ops, 11905.9 ops/s                              
+... finished 500000 ops, 11866.0 ops/s                              
+... finished 500000 ops, 11908.3 ops/s                              
+... finished 500000 ops, 11854.8 ops/s                              
+... finished 500000 ops, 11847.7 ops/s                              
+... finished 500000 ops, 11887.3 ops/s                              
+... finished 500000 ops, 11840.4 ops/s                              
+... finished 500000 ops, 11880.8 ops/s                              
+... finished 500000 ops, 11820.9 ops/s                              
+... finished 500000 ops, 11922.0 ops/s                              
+... finished 500000 ops, 11856.1 ops/s                              
+... finished 500000 ops, 11898.2 ops/s                              
+... finished 500000 ops, 11902.2 ops/s                              
+... finished 500000 ops, 11876.6 ops/s                              
+... finished 500000 ops, 11883.3 ops/s                              
+... finished 500000 ops, 11845.9 ops/s                              
+... finished 500000 ops, 11887.7 ops/s                              
+... finished 500000 ops, 11826.8 ops/s                              
+... finished 500000 ops, 11897.3 ops/s                              
+... finished 500000 ops, 11819.3 ops/s                              
+562500 : 24 93750
+562500 : 24 93750
+562500 : 24 93750
+562500 : 24 93750
+Thread 29 finished warming up
+562500 : 24 93750
+562500 : 24 93750
+Thread 28 finished warming up
+562500 : 24 93750
+562500 : 24 93750
+562500 : 24 93750
+562500 : 24 93750
+562500 : 24 93750
+Thread 26 finished warming up
+Thread 25 finished warming up
+Thread 30 finished warming up
+Thread 24 finished warming up
+562500 : 24 93750
+Thread 27 finished warming up
+562500 : 24 93750
+562500 : 24 93750
+562500 : 24 93750
+562500 : 24 93750
+562500 : 24 93750
+562500 : 24 93750
+562500 : 24 93750
+562500 : 24 93750
+Thread 31 finished warming up
+562500 : 24 93750
+562500 : 24 93750
+562500 : 24 93750
+562500 : 24 93750
+
+
+================ Re optimize for a new workload
+detect miss ratio: 215.618
+detect miss ratio: 215.613
+================ Max L1 gets stable
+After iteration 0 : 100 100
+  Data admit ratio: 100 ; Load admit ratio: 100
+  Optane read throughput: 632.8;  Optane write throughput: 174.4;  Flash read throughput: 118.4;  Overall throughput observed: 751.2
+... finished 10000 ops, 1626.5 ops/s                              
+... finished 10000 ops, 1618.7 ops/s                              
+... finished 10000 ops, 1619.5 ops/s                              
+... finished 10000 ops, 1613.4 ops/s                              
+... finished 10000 ops, 1621.9 ops/s                              
+... finished 10000 ops, 1628.3 ops/s                              
+... finished 10000 ops, 1610.1 ops/s                              
+... finished 10000 ops, 1607.0 ops/s                              
+... finished 10000 ops, 1613.8 ops/s                              
+... finished 10000 ops, 1603.4 ops/s                              
+... finished 10000 ops, 1601.4 ops/s                              
+... finished 10000 ops, 1603.4 ops/s                              
+... finished 10000 ops, 1603.9 ops/s                              
+... finished 10000 ops, 1591.3 ops/s                              
+... finished 10000 ops, 1593.8 ops/s                              
+... finished 10000 ops, 1607.5 ops/s                              
+... finished 10000 ops, 1593.7 ops/s                              
+... finished 10000 ops, 1593.4 ops/s                              
+... finished 10000 ops, 1596.7 ops/s                              
+... finished 10000 ops, 1597.4 ops/s                              
+... finished 10000 ops, 1599.2 ops/s                              
+... finished 10000 ops, 1597.4 ops/s                              
+... finished 10000 ops, 1599.8 ops/s                              
+... finished 10000 ops, 1599.1 ops/s                              
+... finished 15000 ops, 9569.1 ops/s                              
+... finished 15000 ops, 9721.2 ops/s                              
+... finished 15000 ops, 9431.2 ops/s                              
+... finished 15000 ops, 9574.3 ops/s                              
+... finished 15000 ops, 9394.5 ops/s                              
+... finished 15000 ops, 9305.6 ops/s                              
+... finished 15000 ops, 10223.4 ops/s                              
+... finished 15000 ops, 9694.7 ops/s                              
+... finished 15000 ops, 9560.9 ops/s                              
+... finished 15000 ops, 9849.1 ops/s                              
+... finished 15000 ops, 9647.1 ops/s                              
+... finished 15000 ops, 9655.8 ops/s                              
+... finished 15000 ops, 9675.0 ops/s                              
+... finished 15000 ops, 9759.7 ops/s                              
+... finished 15000 ops, 9801.4 ops/s                              
+... finished 15000 ops, 9445.3 ops/s                              
+... finished 15000 ops, 9565.5 ops/s                              
+... finished 15000 ops, 9462.8 ops/s                              
+... finished 15000 ops, 9618.5 ops/s                              
+... finished 15000 ops, 9450.6 ops/s                              
+... finished 15000 ops, 9777.4 ops/s                              
+... finished 15000 ops, 9541.5 ops/s                              
+... finished 15000 ops, 9452.5 ops/s                              
+... finished 15000 ops, 9381.8 ops/s                              
+... finished 20000 ops, 9611.4 ops/s                              
+... finished 20000 ops, 9674.7 ops/s                              
+... finished 20000 ops, 9879.1 ops/s                              
+... finished 20000 ops, 9474.6 ops/s                              
+... finished 20000 ops, 9217.3 ops/s                              
+... finished 20000 ops, 9691.9 ops/s                              
+... finished 20000 ops, 9438.5 ops/s                              
+... finished 20000 ops, 10239.8 ops/s                              
+... finished 20000 ops, 10149.5 ops/s                              
+... finished 20000 ops, 10105.7 ops/s                              
+... finished 20000 ops, 10155.0 ops/s                              
+... finished 20000 ops, 10022.5 ops/s                              
+... finished 20000 ops, 10175.9 ops/s                              
+... finished 20000 ops, 10053.9 ops/s                              
+... finished 20000 ops, 9956.7 ops/s                              
+... finished 20000 ops, 10115.2 ops/s                              
+... finished 20000 ops, 10190.7 ops/s                              
+... finished 20000 ops, 9917.9 ops/s                              
+... finished 20000 ops, 10119.7 ops/s                              
+... finished 20000 ops, 10304.6 ops/s                              
+... finished 20000 ops, 9972.2 ops/s                              
+... finished 20000 ops, 10171.9 ops/s                              
+... finished 20000 ops, 10181.6 ops/s                              
+... finished 20000 ops, 9970.7 ops/s                              
+... finished 25000 ops, 10750.2 ops/s                              
+... finished 25000 ops, 10456.1 ops/s                              
+... finished 25000 ops, 10589.0 ops/s                              
+... finished 25000 ops, 10612.0 ops/s                              
+... finished 25000 ops, 10422.4 ops/s                              
+... finished 25000 ops, 10405.7 ops/s                              
+... finished 25000 ops, 10533.4 ops/s                              
+... finished 25000 ops, 10435.1 ops/s                              
+... finished 25000 ops, 10459.9 ops/s                              
+... finished 25000 ops, 10687.8 ops/s                              
+... finished 25000 ops, 10100.7 ops/s                              
+... finished 25000 ops, 9831.1 ops/s                              
+... finished 25000 ops, 9752.9 ops/s                              
+After iteration 100 : 60 80
+... finished 25000 ops, 9987.2 ops/s                              
+  Data admit ratio: 60 ; Load admit ratio: 80
+  Optane read throughput: 481.6;  Optane write throughput: 204.8;  Flash read throughput: 287.2;  Overall throughput observed: 768.8
+... finished 25000 ops, 10114.9 ops/s                              
+... finished 25000 ops, 9961.6 ops/s                              
+... finished 25000 ops, 9891.2 ops/s                              
+... finished 25000 ops, 9857.7 ops/s                              
+... finished 25000 ops, 9896.3 ops/s                              
+... finished 25000 ops, 9810.0 ops/s                              
+... finished 25000 ops, 9765.0 ops/s                              
+... finished 25000 ops, 9731.4 ops/s                              
+... finished 25000 ops, 9784.6 ops/s                              
+... finished 25000 ops, 9975.8 ops/s                              
+... finished 30000 ops, 9437.6 ops/s                              
+... finished 30000 ops, 9603.9 ops/s                              
+... finished 30000 ops, 9594.2 ops/s                              
+... finished 30000 ops, 9454.5 ops/s                              
+... finished 30000 ops, 9474.6 ops/s                              
+... finished 30000 ops, 9599.8 ops/s                              
+... finished 30000 ops, 9425.2 ops/s                              
+... finished 30000 ops, 9262.4 ops/s                              
+... finished 30000 ops, 9431.1 ops/s                              
+... finished 30000 ops, 10188.7 ops/s                              
+... finished 30000 ops, 8802.8 ops/s                              
+... finished 30000 ops, 9133.2 ops/s                              
+... finished 30000 ops, 9569.5 ops/s                              
+... finished 30000 ops, 9733.1 ops/s                              
+... finished 30000 ops, 9378.1 ops/s                              
+... finished 30000 ops, 9505.1 ops/s                              
+... finished 30000 ops, 9606.7 ops/s                              
+... finished 30000 ops, 9398.3 ops/s                              
+... finished 30000 ops, 9548.1 ops/s                              
+... finished 30000 ops, 9496.9 ops/s                              
+... finished 30000 ops, 9347.5 ops/s                              
+... finished 30000 ops, 9741.8 ops/s                              
+... finished 30000 ops, 9621.4 ops/s                              
+... finished 30000 ops, 9712.7 ops/s                              
+... finished 35000 ops, 9410.3 ops/s                              
+... finished 35000 ops, 9437.6 ops/s                              
+... finished 35000 ops, 9327.8 ops/s                              
+... finished 35000 ops, 9260.9 ops/s                              
+... finished 35000 ops, 9375.2 ops/s                              
+... finished 35000 ops, 9421.2 ops/s                              
+... finished 35000 ops, 9519.9 ops/s                              
+... finished 35000 ops, 9334.7 ops/s                              
+... finished 35000 ops, 9315.8 ops/s                              
+... finished 35000 ops, 9265.3 ops/s                              
+... finished 35000 ops, 9857.0 ops/s                              
+... finished 35000 ops, 9732.1 ops/s                              
+... finished 35000 ops, 10110.9 ops/s                              
+... finished 35000 ops, 9768.1 ops/s                              
+... finished 35000 ops, 9641.4 ops/s                              
+... finished 35000 ops, 9637.9 ops/s                              
+... finished 35000 ops, 9610.6 ops/s                              
+... finished 35000 ops, 9574.5 ops/s                              
+... finished 35000 ops, 9503.8 ops/s                              
+... finished 35000 ops, 9586.8 ops/s                              
+... finished 35000 ops, 9486.2 ops/s                              
+... finished 35000 ops, 9719.7 ops/s                              
+... finished 35000 ops, 9376.0 ops/s                              
+... finished 35000 ops, 9298.7 ops/s                              
+... finished 40000 ops, 9378.7 ops/s                              
+... finished 40000 ops, 9432.6 ops/s                              
+... finished 40000 ops, 9241.6 ops/s                              
+... finished 40000 ops, 9219.0 ops/s                              
+... finished 40000 ops, 9241.6 ops/s                              
+... finished 40000 ops, 9151.2 ops/s                              
+... finished 40000 ops, 9484.0 ops/s                              
+... finished 40000 ops, 9874.0 ops/s                              
+... finished 40000 ops, 9330.6 ops/s                              
+... finished 40000 ops, 9315.3 ops/s                              
+... finished 40000 ops, 9768.7 ops/s                              
+... finished 40000 ops, 9415.1 ops/s                              
+... finished 40000 ops, 9807.1 ops/s                              
+... finished 40000 ops, 9261.7 ops/s                              
+... finished 40000 ops, 9522.8 ops/s                              
+... finished 40000 ops, 9444.6 ops/s                              
+... finished 40000 ops, 9597.1 ops/s                              
+... finished 40000 ops, 9052.8 ops/s                              
+... finished 40000 ops, 8686.2 ops/s                              
+... finished 40000 ops, 8904.2 ops/s                              
+... finished 40000 ops, 8920.4 ops/s                              
+... finished 40000 ops, 8835.0 ops/s                              
+... finished 40000 ops, 8848.3 ops/s                              
+... finished 40000 ops, 8880.5 ops/s                              
+... finished 45000 ops, 8668.9 ops/s                              
+After iteration 200 : 90 45
+  Data admit ratio: 90 ; Load admit ratio: 45
+  Optane read throughput: 430.4;  Optane write throughput: 560.8;  Flash read throughput: 454.4;  Overall throughput observed: 884.8
+... finished 45000 ops, 8730.0 ops/s                              
+... finished 45000 ops, 8537.2 ops/s                              
+... finished 45000 ops, 8792.1 ops/s                              
+... finished 45000 ops, 8468.1 ops/s                              
+... finished 45000 ops, 8637.2 ops/s                              
+... finished 45000 ops, 8413.2 ops/s                              
+... finished 45000 ops, 8810.0 ops/s                              
+... finished 45000 ops, 8673.4 ops/s                              
+... finished 45000 ops, 8549.4 ops/s                              
+... finished 45000 ops, 8915.8 ops/s                              
+... finished 45000 ops, 8503.4 ops/s                              
+... finished 45000 ops, 7992.1 ops/s                              
+... finished 45000 ops, 8218.4 ops/s                              
+... finished 45000 ops, 8257.8 ops/s                              
+... finished 45000 ops, 7945.1 ops/s                              
+... finished 45000 ops, 7874.5 ops/s                              
+... finished 45000 ops, 8336.9 ops/s                              
+... finished 45000 ops, 8359.1 ops/s                              
+... finished 45000 ops, 8250.1 ops/s                              
+... finished 45000 ops, 8348.7 ops/s                              
+... finished 45000 ops, 8322.3 ops/s                              
+... finished 45000 ops, 8295.1 ops/s                              
+... finished 45000 ops, 8160.0 ops/s                              
+... finished 50000 ops, 8354.8 ops/s                              
+... finished 50000 ops, 8458.3 ops/s                              
+... finished 50000 ops, 8450.6 ops/s                              
+... finished 50000 ops, 7982.9 ops/s                              
+... finished 50000 ops, 8027.6 ops/s                              
+... finished 50000 ops, 7997.8 ops/s                              
+... finished 50000 ops, 8287.6 ops/s                              
+... finished 50000 ops, 7866.5 ops/s                              
+... finished 50000 ops, 8210.0 ops/s                              
+... finished 50000 ops, 8054.6 ops/s                              
+... finished 50000 ops, 8038.3 ops/s                              
+... finished 50000 ops, 7965.6 ops/s                              
+... finished 50000 ops, 8738.4 ops/s                              
+... finished 50000 ops, 8473.8 ops/s                              
+... finished 50000 ops, 8509.1 ops/s                              
+... finished 50000 ops, 8822.6 ops/s                              
+... finished 50000 ops, 8671.3 ops/s                              
+... finished 50000 ops, 8637.6 ops/s                              
+... finished 50000 ops, 8877.9 ops/s                              
+... finished 50000 ops, 8500.1 ops/s                              
+... finished 50000 ops, 8621.8 ops/s                              
+... finished 50000 ops, 8733.0 ops/s                              
+... finished 50000 ops, 8352.3 ops/s                              
+... finished 50000 ops, 8404.9 ops/s                              
+... finished 60000 ops, 9386.4 ops/s                              
+... finished 60000 ops, 9232.2 ops/s                              
+... finished 60000 ops, 9091.3 ops/s                              
+... finished 60000 ops, 9564.1 ops/s                              
+... finished 60000 ops, 9463.3 ops/s                              
+... finished 60000 ops, 9424.2 ops/s                              
+... finished 60000 ops, 9410.1 ops/s                              
+... finished 60000 ops, 9238.5 ops/s                              
+... finished 60000 ops, 9377.7 ops/s                              
+... finished 60000 ops, 9612.5 ops/s                              
+... finished 60000 ops, 9505.2 ops/s                              
+... finished 60000 ops, 9462.9 ops/s                              
+... finished 60000 ops, 9331.6 ops/s                              
+... finished 60000 ops, 9293.4 ops/s                              
+... finished 60000 ops, 9132.6 ops/s                              
+... finished 60000 ops, 9283.6 ops/s                              
+... finished 60000 ops, 9110.7 ops/s                              
+After iteration 300 : 85 30
+  Data admit ratio: 85 ; Load admit ratio: 30
+  Optane read throughput: 289.333;  Optane write throughput: 526.667;  Flash read throughput: 490;  Overall throughput observed: 779.333
+... finished 60000 ops, 9458.3 ops/s                              
+... finished 60000 ops, 9541.3 ops/s                              
+... finished 60000 ops, 9533.8 ops/s                              
+... finished 60000 ops, 9109.6 ops/s                              
+... finished 60000 ops, 9388.3 ops/s                              
+... finished 60000 ops, 9541.4 ops/s                              
+... finished 60000 ops, 9288.3 ops/s                              
+... finished 70000 ops, 8737.4 ops/s                              
+... finished 70000 ops, 8695.9 ops/s                              
+... finished 70000 ops, 8983.2 ops/s                              
+... finished 70000 ops, 8654.5 ops/s                              
+... finished 70000 ops, 8970.8 ops/s                              
+... finished 70000 ops, 8576.4 ops/s                              
+... finished 70000 ops, 8698.2 ops/s                              
+... finished 70000 ops, 8623.2 ops/s                              
+... finished 70000 ops, 8542.7 ops/s                              
+... finished 70000 ops, 8663.1 ops/s                              
+... finished 70000 ops, 8879.8 ops/s                              
+... finished 70000 ops, 8617.8 ops/s                              
+... finished 70000 ops, 8425.6 ops/s                              
+... finished 70000 ops, 8801.7 ops/s                              
+... finished 70000 ops, 8743.0 ops/s                              
+... finished 70000 ops, 8671.1 ops/s                              
+... finished 70000 ops, 8463.4 ops/s                              
+... finished 70000 ops, 8682.0 ops/s                              
+... finished 70000 ops, 8808.2 ops/s                              
+... finished 70000 ops, 8626.2 ops/s                              
+... finished 70000 ops, 8551.0 ops/s                              
+... finished 70000 ops, 8419.6 ops/s                              
+... finished 70000 ops, 8372.6 ops/s                              
+... finished 70000 ops, 8471.4 ops/s                              
+After iteration 400 : 85 25
+  Data admit ratio: 85 ; Load admit ratio: 25
+  Optane read throughput: 297.6;  Optane write throughput: 566.4;  Flash read throughput: 516;  Overall throughput observed: 813.6
+... finished 80000 ops, 8550.6 ops/s                              
+... finished 80000 ops, 8825.5 ops/s                              
+... finished 80000 ops, 8544.7 ops/s                              
+... finished 80000 ops, 8544.3 ops/s                              
+... finished 80000 ops, 8936.2 ops/s                              
+... finished 80000 ops, 8551.0 ops/s                              
+... finished 80000 ops, 8557.2 ops/s                              
+... finished 80000 ops, 8576.1 ops/s                              
+... finished 80000 ops, 8637.2 ops/s                              
+... finished 80000 ops, 8717.1 ops/s                              
+... finished 80000 ops, 8614.8 ops/s                              
+... finished 80000 ops, 8539.0 ops/s                              
+... finished 80000 ops, 8641.7 ops/s                              
+... finished 80000 ops, 8564.5 ops/s                              
+... finished 80000 ops, 8858.1 ops/s                              
+... finished 80000 ops, 8536.6 ops/s                              
+... finished 80000 ops, 8738.8 ops/s                              
+... finished 80000 ops, 8443.7 ops/s                              
+... finished 80000 ops, 8768.5 ops/s                              
+... finished 80000 ops, 8801.9 ops/s                              
+... finished 80000 ops, 8476.0 ops/s                              
+... finished 80000 ops, 8800.6 ops/s                              
+... finished 80000 ops, 8532.8 ops/s                              
+... finished 80000 ops, 8481.3 ops/s                              
+... finished 90000 ops, 8654.8 ops/s                              
+... finished 90000 ops, 8753.4 ops/s                              
+... finished 90000 ops, 8620.2 ops/s                              
+... finished 90000 ops, 8899.7 ops/s                              
+... finished 90000 ops, 8749.2 ops/s                              
+... finished 90000 ops, 8647.7 ops/s                              
+... finished 90000 ops, 8675.9 ops/s                              
+... finished 90000 ops, 8871.2 ops/s                              
+... finished 90000 ops, 8757.6 ops/s                              
+... finished 90000 ops, 8585.7 ops/s                              
+... finished 90000 ops, 8541.2 ops/s                              
+... finished 90000 ops, 8650.0 ops/s                              
+... finished 90000 ops, 8472.4 ops/s                              
+... finished 90000 ops, 8798.7 ops/s                              
+... finished 90000 ops, 8729.8 ops/s                              
+... finished 90000 ops, 8684.5 ops/s                              
+... finished 90000 ops, 8774.2 ops/s                              
+... finished 90000 ops, 8892.4 ops/s                              
+... finished 90000 ops, 8590.6 ops/s                              
+... finished 90000 ops, 8588.2 ops/s                              
+... finished 90000 ops, 8584.4 ops/s                              
+... finished 90000 ops, 8801.9 ops/s                              
+... finished 90000 ops, 8585.1 ops/s                              
+... finished 90000 ops, 8698.0 ops/s                              
+After iteration 500 : 100 75
+  Data admit ratio: 100 ; Load admit ratio: 75
+  Optane read throughput: 405.6;  Optane write throughput: 275.2;  Flash read throughput: 228.8;  Overall throughput observed: 634.4
+ran for 66.7707 s, fetched 19584920576 B
+=========== Rate:  279.7 MB/s
+ycsb         : 6750000 ops;   78921.276 ops/s;    304.101 micros/op;  279.7 MB/s (609398 of 1000000 found);  2052.678
+Kan!!!!  279.7 MB/s (609398 of 1000000 found) 2052.68
+
+                 Compactions
+Level  Files Size(MB) Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  2        2       64         0        0         0
+  3       17      947         0        0         0
+  4       17      947         0        0         0
+
+wait: 0.881, vlog: 1.945, log: 0.000, mem: 3.514 
+
+index: 0.051, meta: 0.000, block: 475.689
+
+gc quits ! 
+flush mem_ at end 
+vlog writer fsync: 0.000 
+========================= overall  1  experiments =============================
+==================== results in  /home/kanwu/Research/results/leveldb/ycsb/F/test/  ============================
+                ********* Configured with **********
+{'type': 'no_name', 'threads': 24, 'swapiness': 0, 'readahead': 128, 'memory': 1073741824}
+Doing: echo 128 > /sys/class/block/nvme0n1/queue/read_ahead_kb
+Returned 0 echo 128 > /sys/class/block/nvme0n1/queue/read_ahead_kb
+Doing: echo 128 > /sys/class/block/nvme1n1/queue/read_ahead_kb
+Returned 0 echo 128 > /sys/class/block/nvme1n1/queue/read_ahead_kb
+Doing: cgcreate -g memory:charlie
+Returned 0 cgcreate -g memory:charlie
+Doing: sync; echo 3 > /proc/sys/vm/drop_caches; sleep 1
+Returned 0 sync; echo 3 > /proc/sys/vm/drop_caches; sleep 1
+Doing: pkill iostat
+Returned 1 pkill iostat
+Doing: iostat -mx 1 /dev/nvme0n1 /dev/nvme1n1  > /dev/shm//iostat.out &
+Returned 0 iostat -mx 1 /dev/nvme0n1 /dev/nvme1n1  > /dev/shm//iostat.out &
+Doing: sudo pkill blkparse
+Returned 1 sudo pkill blkparse
+Doing: sudo pkill blktrace
+Returned 1 sudo pkill blktrace
+              *********** start running ***********
+/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/970/db_1024 --value_size=1024 --cache_size=0 --compression_ratio=1 --benchmarks=ycsb --use_existing_db=1 --db_num=80000000 --reads=18000000 --write_buffer_size=134217728 --threads=24
+['cgexec', '-g', 'memory:charlie', '--sticky', '/home/kanwu/Research/739-wisckey/db_bench', '--db=/mnt/970/db_1024', '--value_size=1024', '--cache_size=0', '--compression_ratio=1', '--benchmarks=ycsb', '--use_existing_db=1', '--db_num=80000000', '--reads=18000000', '--write_buffer_size=134217728', '--threads=24']
+              **************** done ***************
+Doing: sleep 1; sync; sleep 1
+Returned 0 sleep 1; sync; sleep 1
+Doing: pkill iostat; sleep 1
+Returned 0 pkill iostat; sleep 1
+Doing: sync; sleep 1
+Returned 0 sync; sleep 1
+Doing: cp /dev/shm//running /home/kanwu/Research/results/leveldb/ycsb/F/test//15-28-24_20200509/running
+Returned 0 cp /dev/shm//running /home/kanwu/Research/results/leveldb/ycsb/F/test//15-28-24_20200509/running
+Doing: cp /dev/shm//iostat.out /home/kanwu/Research/results/leveldb/ycsb/F/test//15-28-24_20200509/iostat.out
+Returned 0 cp /dev/shm//iostat.out /home/kanwu/Research/results/leveldb/ycsb/F/test//15-28-24_20200509/iostat.out
+==== utilization statistics ====
+iowait  system  user  idle
+42.8301492537 18.6835820896 19.401641791 19.0843283582
+1235.07145161 478.10983871
+=================================
