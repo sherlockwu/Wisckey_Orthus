@@ -1,0 +1,11 @@
+========================= overall  1  experiments =============================
+==================== results in  /home/kanwu/Research/results/leveldb/ycsb/16kb_zipf_09/tune_cache  ============================
+                ********* Configured with **********
+{'type': 'no_name', 'threads': 24, 'swapiness': 0, 'readahead': 128, 'memory': 1073741824}
+Doing: echo 128 > /sys/class/block/nvme0n1/queue/read_ahead_kb
+Returned 0 echo 128 > /sys/class/block/nvme0n1/queue/read_ahead_kb
+Doing: echo 128 > /sys/class/block/nvme1n1/queue/read_ahead_kb
+Returned 0 echo 128 > /sys/class/block/nvme1n1/queue/read_ahead_kb
+Doing: cgcreate -g memory:charlie
+Returned 0 cgcreate -g memory:charlie
+Doing: sync; echo 3 > /proc/sys/vm/drop_caches; sleep 1

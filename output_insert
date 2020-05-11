@@ -1,0 +1,34 @@
+Keys:       16 bytes each
+Values:     64 bytes each (64 bytes after compression)
+Entries:    1000
+RawSize:    0.1 MB (estimated)
+FileSize:   0.1 MB (estimated)
+WARNING: Optimization is disabled: benchmarks unnecessarily slow
+WARNING: Assertions are enabled; benchmarks unnecessarily slow
+WARNING: Snappy compression is not enabled
+------------------------------------------------
+fadvise random works !!! 
+fadvise sequential works !!! 
+vlog size: 0 MB, head: 178064, tail: 40 
+gc quits ! 
+flush mem_ at end 
+vlog writer fsync: 0.000 
+fadvise random works !!! 
+fadvise sequential works !!! 
+vlog size: 0 MB, head: 178064, tail: 40 
+ran for 0.011317 s, fetched 80000 B
+=========== Rate:    6.7 MB/s
+fillseq      : 1000 ops;   88362.640 ops/s;     11.317 micros/op;    6.7 MB/s;     0.011
+Kan!!!!    6.7 MB/s 0.011317
+
+                 Compactions
+Level  Files Size(MB) Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+
+wait: 0.000, vlog: 0.000, log: 0.000, mem: 0.001 
+
+index: 0.000, meta: 0.000, block: 0.000
+
+gc quits ! 
+flush mem_ at end 
+vlog writer fsync: 0.000 
