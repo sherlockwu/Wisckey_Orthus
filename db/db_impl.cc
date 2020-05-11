@@ -235,6 +235,7 @@ void * monitor_func(void *vargp) {
       detect_miss_ratio = 110;
       
       // detect whether cache is stable
+      //while ( !( detect_miss_ratio >= last_miss_ratio - 0.25 && detect_miss_ratio <= last_miss_ratio + 0.25) ){// || detect_miss_ratio >= 15.0) {
       while ( !( detect_miss_ratio >= last_miss_ratio - 0.25 && detect_miss_ratio <= last_miss_ratio + 0.25) ){// || detect_miss_ratio >= 15.0) {
 	//usleep(1000000);
 	usleep(1000000);
@@ -257,7 +258,8 @@ void * monitor_func(void *vargp) {
         ratio2 = *to_change_ratio;
         ratio3 = *to_change_ratio + step;
        
-	if (true && iteration % 20  == 0) {
+	//if (true && iteration % 20  == 0) {
+	if (true && iteration % 5  == 0) {   // 5 * 4 * frequency = 100 ms
 	  std::cout << "After iteration " << iteration << " : " << data_admit_ratio << " " << load_admit_ratio << std::endl;
 	  tp2 = check_throughput(true);
 	} else {

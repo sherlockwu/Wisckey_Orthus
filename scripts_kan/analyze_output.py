@@ -10,10 +10,13 @@ with open(report_file_name, 'r')  as report_file:
         if 'miss' in line:
             continue
         # parse throughput vs time
-        if '... finished' in line:
+        #if '... finished' in line:
+        if '...' in line and 'finished' in line:
             #throughput_num =  line.split('ops,')[-1].replace('ops\/s', '')
-            throughput_timing =  int(re.sub("[^0-9]", "", line.split('ops,')[0]))
-            throughput_num =  float(re.sub("[^0-9.]", "", line.split('ops,')[-1]))
+            #throughput_timing =  int(re.sub("[^0-9]", "", line.split('ops,')[0]))
+            #throughput_num =  float(re.sub("[^0-9.]", "", line.split('ops,')[-1]))
+            throughput_timing =  int(re.sub("[^0-9]", "", line.split('ms,')[0]))
+            throughput_num =  float(re.sub("[^0-9.]", "", line.split('ms,')[-1]))
             if (throughput_timing not in end_to_end_throughput):
                 end_to_end_throughput[throughput_timing] = throughput_num
             else:
@@ -35,7 +38,7 @@ with open(report_file_name, 'r')  as report_file:
             print line.strip('\n')
             #continue
         if 'ran for' in line:
-            #continue
+            continue
             for time in sorted(end_to_end_throughput):
                 print time, end_to_end_throughput[time]
             end_to_end_throughput = dict()

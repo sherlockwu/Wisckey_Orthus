@@ -153,6 +153,7 @@ static double FLAGS_sine_c = 0;
 static double FLAGS_sine_d = 4;
 //static uint64_t FLAGS_sine_mix_rate_interval_milliseconds = 5000;
 static uint64_t FLAGS_sine_mix_rate_interval_milliseconds = 1000;
+static uint64_t throughput_report_interval = 100; // 100 ms report once
 
 
 
@@ -309,7 +310,7 @@ class Stats {
     }
 
     if (usecs_since_last >
-        (FLAGS_sine_mix_rate_interval_milliseconds * uint64_t{1000})) {
+        (throughput_report_interval * uint64_t{1000})) {
       
       double micros = now - last_op_finish_;
       int last_finished = done_ - last_done_;
@@ -317,8 +318,10 @@ class Stats {
       last_done_ = done_;
 
       double speed = last_finished / micros * 1000000;
-      fprintf(stdout, "... thread %d finished %d ops, %.1f ops/s%30s\n", tid, done_, speed, "");
-    
+      //fprintf(stdout, "... thread %d finished %d ops, %.1f ops/s%30s\n", tid, done_, speed, "");
+      if (tid == 0)
+        //fprintf(stdout, "... %d threads finished %d ops, %.1f ops/s%30s\n", FLAGS_threads, done_ * FLAGS_threads, speed * FLAGS_threads, "");
+        fprintf(stdout, "... %d threads finished at time %ld ms, %.1f ops/s%30s\n", FLAGS_threads, now/ 1000, speed * FLAGS_threads, "");
     }
     return ;
     if (done_ >= next_report_) {
@@ -634,16 +637,11 @@ class Benchmark {
 	reads_ = 500000;
         method = &Benchmark::YCSB;
       } else if (name == Slice("readrandom")) {
-	flag_monitor = false;
+	flag_monitor = true;
 	//flag_tune_load_admit = true;
         method = &Benchmark::ReadRandom;
       } else if (name == Slice("readrandom_1")) {
-	flag_monitor = false;
-	//reads_ = 1000000;
-	//flag_tune_load_admit = true;
-	
-        //num_threads = 1;
-	//num_threads = 24;
+	flag_monitor = true;
         method = &Benchmark::ReadRandomChangeWorkset;
       } else if (name == Slice("readrandom_warmup")) {
         std::cout << "====== This is to warm up for random reads\n";
@@ -886,6 +884,7 @@ class Benchmark {
     //options.persist_block_cache = NULL;
     
     options.use_persist_cache = true;
+    //options.persist_block_cache = NewPersistLRUCache(((size_t)34)*1024*1024*1024);
     options.persist_block_cache = NewPersistLRUCache(((size_t)34)*1024*1024*1024);
     
     // zippydb is so skewed, use a 1/10 cache size 
@@ -1679,6 +1678,8 @@ class Benchmark {
     for (int i = 0; i < reads_; i++) {
       char key[100];
 
+      //const int k = FLAGS_db_num / 6 + thread->rand.Next() % (FLAGS_db_num / 3);
+      //const int k = FLAGS_db_num / 9 + thread->rand.Next() % (FLAGS_db_num / 3);
       const int k = FLAGS_db_num / 3 + thread->rand.Next() % (FLAGS_db_num / 3);
       //const int k = thread->rand.Next() % FLAGS_num;
       snprintf(key, sizeof(key), "%016d", k);
