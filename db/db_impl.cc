@@ -235,9 +235,9 @@ void * monitor_func(void *vargp) {
       detect_miss_ratio = 110;
       
       // detect whether cache is stable
-      while ( !( detect_miss_ratio >= last_miss_ratio - 1 && detect_miss_ratio <= last_miss_ratio + 1) ) {
+      while ( !( detect_miss_ratio >= last_miss_ratio - 0.25 && detect_miss_ratio <= last_miss_ratio + 0.25) ){// || detect_miss_ratio >= 15.0) {
 	//usleep(1000000);
-	usleep(100000);
+	usleep(1000000);
 	last_miss_ratio = detect_miss_ratio;
 	detect_miss_ratio = cache_ptr->check_miss_ratio();
 	std::cout << "detect miss ratio: " << detect_miss_ratio << std::endl;
@@ -257,12 +257,15 @@ void * monitor_func(void *vargp) {
         ratio2 = *to_change_ratio;
         ratio3 = *to_change_ratio + step;
        
-	if (true && iteration % 100  == 0) {
+	if (true && iteration % 20  == 0) {
 	  std::cout << "After iteration " << iteration << " : " << data_admit_ratio << " " << load_admit_ratio << std::endl;
 	  tp2 = check_throughput(true);
 	} else {
           tp2 = check_throughput();
 	}
+	
+	//if (iteration % 2 == 0)
+	//  continue;
 
 	if (ratio1 < 0) {
 	  tp1 = -10;
@@ -282,7 +285,7 @@ void * monitor_func(void *vargp) {
         while (true) {
             // detect whether workload has changed -> reoptimize
 	    detect_miss_ratio = cache_ptr->check_miss_ratio();
-	    if ( true && !( detect_miss_ratio >= basic_miss_ratio - 5 && detect_miss_ratio <= basic_miss_ratio +5) )  {
+	    if ( true && !( detect_miss_ratio >= basic_miss_ratio - 10 && detect_miss_ratio <= basic_miss_ratio + 10) )  {
 	      std::cout <<  "detect miss ratio: " << detect_miss_ratio << ", basic miss ratio: " << basic_miss_ratio << std::endl;  
               goto reoptimize;
             }

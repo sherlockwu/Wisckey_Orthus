@@ -739,7 +739,7 @@ class ShardedBucketLRUCache : public Cache {
     }
 
 
-    if (bucket == 0 && cache_access == 1000000) {
+    if (bucket == 0 && cache_access > 1000000) {
       //std::cout << total_capacity << " Cache access: " << cache_access << ", miss: " << cache_miss << ", miss ratio: " << (double) cache_miss / cache_access * 100 << "\n";
       std::cout << "====== miss ratio: " << (double) cache_miss / cache_access * 100 << "\n";
       cache_access = 0;

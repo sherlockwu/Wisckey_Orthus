@@ -296,11 +296,31 @@ class Stats {
       last_op_finish_ = now;
     }
 
-    double now = Env::Default()->NowMicros();
     
     done_++;
+      
+     
+    uint64_t now = Env::Default()->NowMicros();
+    uint64_t usecs_since_last;
+    if (now > last_op_finish_) {
+      usecs_since_last = now - last_op_finish_;
+    } else {
+      usecs_since_last = 0;
+    }
 
-    //return ;
+    if (usecs_since_last >
+        (FLAGS_sine_mix_rate_interval_milliseconds * uint64_t{1000})) {
+      
+      double micros = now - last_op_finish_;
+      int last_finished = done_ - last_done_;
+      last_op_finish_ = now;
+      last_done_ = done_;
+
+      double speed = last_finished / micros * 1000000;
+      fprintf(stdout, "... thread %d finished %d ops, %.1f ops/s%30s\n", tid, done_, speed, "");
+    
+    }
+    return ;
     if (done_ >= next_report_) {
       double now = Env::Default()->NowMicros();
       double micros = now - last_op_finish_;
@@ -615,15 +635,15 @@ class Benchmark {
         method = &Benchmark::YCSB;
       } else if (name == Slice("readrandom")) {
 	flag_monitor = false;
-	flag_tune_load_admit = true;
+	//flag_tune_load_admit = true;
         method = &Benchmark::ReadRandom;
       } else if (name == Slice("readrandom_1")) {
-	flag_monitor = true;
-	reads_ = 1000000;
-	flag_tune_load_admit = true;
+	flag_monitor = false;
+	//reads_ = 1000000;
+	//flag_tune_load_admit = true;
 	
         //num_threads = 1;
-	num_threads = 24;
+	//num_threads = 24;
         method = &Benchmark::ReadRandomChangeWorkset;
       } else if (name == Slice("readrandom_warmup")) {
         std::cout << "====== This is to warm up for random reads\n";
@@ -1505,14 +1525,50 @@ class Benchmark {
     thread->stats.ClearStats();
 
     // TO test classic cache or tuned cache
-    flag_monitor = false;
+    flag_monitor = true;
     
     double read_ratio = 0.5;
     double scan_ratio = 0.0;
     double write_ratio = 0.5;
-    bool rmw = false;    // whether the write is read modify write
+    bool rmw = true;    // whether the write is read modify write
 
     // measurement phase
+    // handle write speically
+    if (false && write_ratio == 0.5 && thread->tid == 0) {
+      while (true) {
+        {
+          MutexLock l(&thread->shared->mu);
+          if (thread->shared->num_done + 1 >= thread->shared->num_initialized) {
+            // Other threads have finished
+            break;
+          }
+        }
+
+        //const int k = thread->rand.Next() % FLAGS_num;
+        const int k = zipfian_rng.next() % (FLAGS_db_num);
+        char key[100];
+        snprintf(key, sizeof(key), "%016d", k);
+        
+	
+	if (rmw) {
+	  db_->Get(options, key, &value);
+	}
+	
+	s = db_->Put(write_options_, key, gen.Generate(value_size_));
+	
+	if (!s.ok()) {
+          fprintf(stderr, "put error: %s\n", s.ToString().c_str());
+          exit(1);
+        }
+        //
+        thread->stats.AddBytes(value.length());
+        thread->stats.FinishedSingleOp();
+      }
+    
+      return;
+    }
+    
+    
     //for (int i = 0; i < (reads_*32/num_threads_measure/4); i++) {
     std::cout << reads_ << " : " << num_threads_measure << " " << (reads_*32/num_threads_measure/8) << std::endl;
     for (int i = 0; i < (reads_*32/num_threads_measure/8); i++) {
@@ -1525,12 +1581,9 @@ class Benchmark {
 
       //TODO decide operation type
       double query_ratio = 0.0;
-	      
-      if (write_ratio == 0.5 && thread->tid == 0) {
-        //query_ratio = (thread->rand.Next() % 100) / 100.0;
-        query_ratio = 1.0;
-      }
-      //query_ratio = (thread->rand.Next() % 100) / 100.0;
+      
+      if (true || write_ratio != 0.5)
+        query_ratio = (thread->rand.Next() % 100) / 100.0;
 
       if (query_ratio < read_ratio) {
 	//std::cout << "This is to do Get, thread " << thread->tid << "\n";
@@ -1542,6 +1595,24 @@ class Benchmark {
         thread->stats.FinishedSingleOp();
       } else if (query_ratio < read_ratio + scan_ratio) {
         // TODO scan
+        Iterator* iter = db_->NewIterator(options);
+	//continue;      
+      
+        if (iter != nullptr) {
+          iter->Seek(key);
+          if (iter->Valid() && iter->key() == key) found++;
+      
+          int64_t scan_length = 10;
+	  for (int j = 0; j < scan_length && iter->Valid(); j++) {
+            int64_t ksize = 0, vsize = 0;
+            ksize = iter->key().ToString().size();
+            vsize = iter->value().ToString().size();
+            bytes += ksize + vsize;
+            iter->Next();	
+	  }
+          thread->stats.FinishedSingleOp();
+        }
+        delete iter;
       } else {
 	// put
 	//std::cout << "This is to do Put, thread " << thread->tid << "\n";
@@ -1553,18 +1624,9 @@ class Benchmark {
 	if (rmw) {
 	  db_->Get(options, key, &value);
 	}
-        
 	
 	s = db_->Put(write_options_, key, gen.Generate(value_size_));
 	
-	
-	/*batch.Clear();
-        batch.Put(key, gen.Generate(value_size_));
-        bytes += value_size_ + strlen(key);
-        
-        
-	s = db_->Write(write_options_, &batch);
-        */
 	if (!s.ok()) {
           fprintf(stderr, "put error: %s\n", s.ToString().c_str());
           exit(1);
@@ -1593,7 +1655,7 @@ class Benchmark {
       //const int k = thread->rand.Next() % FLAGS_db_num;
       
       //Kan: for skewed accesses
-      const int k = thread->rand.Next() % (FLAGS_db_num / 2);
+      const int k = thread->rand.Next() % (FLAGS_db_num / 3);
       //const int k = thread->rand.Next() % (FLAGS_db_num / 3);
       //const int k = thread->rand.Next() % FLAGS_num;
       snprintf(key, sizeof(key), "%016d", k);
@@ -1833,6 +1895,5 @@ int main(int argc, char** argv) {
 
   leveldb::Benchmark benchmark;
   benchmark.Run();
-
   return 0;
 }

@@ -118,7 +118,6 @@ class Experiment(object):
         
         
         shcmd('cgexec -g memory:charlie --sticky ' + cmd + ' &')
-        print "Hello!" 
         shcmd('sleep 100; pkill db_bench') 
         #p = self.cg.execute(shlex.split(cmd))
         #p.wait()

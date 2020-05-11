@@ -34,7 +34,7 @@ class Experiment(object):
         self.tools_config = {
             'clear_page_cache': True,   # whether clear page cache before each run 
             'blktrace'        : False,   # check block IOs
-            'iostat'          : False,  # check ios and cpu/io utilization
+            'iostat'          : True,  # check ios and cpu/io utilization
             'perf'            : False,  # draw flamegraph
             'sar'             : False   # check page faults
         }
@@ -43,9 +43,9 @@ class Experiment(object):
         config = {
           'type': ['randomread'],
           #'threads': [1, 4, 8, 16, 24, 32],
-          'threads': [24],
+          'threads': [32],
           #'threads': [1, 4, 8, 16],
-          'memory': [4*GB],    #'memory limit'
+          'memory': [2*GB],    #'memory limit'
           'swapiness': [0],
           #'readahead': [128, 0, 16]    # default 128KB
           'readahead': [128]    # default 128KB
@@ -113,8 +113,9 @@ class Experiment(object):
         #Large: 64KB value
         #cmd = '/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/970/db_65536 --value_size=65536 --cache_size=0 --compression_ratio=1 --benchmarks=readrandom --use_existing_db=1 --db_num=2000000 --reads=500000 ' + '--threads=' + str(config['threads']) #+ ' > /dev/shm/running'
         #cmd = '/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/970/db_65536 --value_size=65536 --cache_size=0 --compression_ratio=1 --benchmarks=readrandom_warmup,readrandom --use_existing_db=1 --db_num=2000000 --reads=500000 ' + '--threads=' + str(config['threads']) #+ ' > /dev/shm/running'
-        cmd = '/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/970/db_65536 --value_size=65536 --cache_size=0 --compression_ratio=1 --benchmarks=readrandom_warmup,readrandom,readrandom_1,readrandom --use_existing_db=1 --db_num=2000000 --reads=300000 ' + '--threads=' + str(config['threads']) #+ ' > /dev/shm/running'
+        #cmd = '/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/970/db_65536 --value_size=65536 --cache_size=0 --compression_ratio=1 --benchmarks=readrandom_warmup,readrandom,readrandom_1,readrandom --use_existing_db=1 --db_num=2000000 --reads=300000 ' + '--threads=' + str(config['threads']) #+ ' > /dev/shm/running'
         
+        cmd = '/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/970/db_16384 --value_size=16384 --cache_size=0 --compression_ratio=1 --benchmarks=readrandom,readrandom_1 --use_existing_db=1 --db_num=6600000 --reads=300000 ' + '--threads=' + str(config['threads']) #+ ' > /dev/shm/running'
         
         #shcmd(cmd)
         print cmd
