@@ -124,7 +124,7 @@ int num_threads_measure = 1;
 
 // Kan: For zippydb
 //  key:
-static int FLAGS_keyrange_num = 1;
+static int FLAGS_keyrange_num = 3;
 // -keyrange_dist_a=14.18 -keyrange_dist_b=-2.917 -keyrange_dist_c=0.0164 -keyrange_dist_d=-0.08082
 static int FLAGS_keyrange_dist_a = 14.18;
 static int FLAGS_keyrange_dist_b = -2.917;
@@ -133,6 +133,7 @@ static int FLAGS_keyrange_dist_d = -0.08082;
     
 //  query type
 static double FLAGS_mix_get_ratio = 0.85;
+//static double FLAGS_mix_get_ratio = 1.00;
 static double FLAGS_mix_put_ratio = 0.14;
 static double FLAGS_mix_seek_ratio = 0.01;
 
@@ -145,16 +146,18 @@ static double FLAGS_iter_k = 2.517;
 static double FLAGS_iter_sigma = 25.45;
 
 // QPS: -sine_a=1000 -sine_b=0.000073 -sine_d=4500
+//      FLAGS_sine_a*sin((FLAGS_sine_b*x) + FLAGS_sine_c) + FLAGS_sine_d;
 //static double FLAGS_sine_a = 1000;
-static double FLAGS_sine_a = 4;
+static double FLAGS_sine_a = 10;
 static double FLAGS_sine_b = 0.000073;
 static double FLAGS_sine_c = 0;
 //static double FLAGS_sine_d = 4500;
-static double FLAGS_sine_d = 4;
+static double FLAGS_sine_d = 22;
 //static uint64_t FLAGS_sine_mix_rate_interval_milliseconds = 5000;
 static uint64_t FLAGS_sine_mix_rate_interval_milliseconds = 1000;
 static uint64_t throughput_report_interval = 100; // 100 ms report once
 
+int running_threads = 32;
 
 
 
@@ -319,9 +322,11 @@ class Stats {
 
       double speed = last_finished / micros * 1000000;
       //fprintf(stdout, "... thread %d finished %d ops, %.1f ops/s%30s\n", tid, done_, speed, "");
-      if (tid == 0)
-        //fprintf(stdout, "... %d threads finished %d ops, %.1f ops/s%30s\n", FLAGS_threads, done_ * FLAGS_threads, speed * FLAGS_threads, "");
-        fprintf(stdout, "... %d threads finished at time %ld ms, %.1f ops/s%30s\n", FLAGS_threads, now/ 1000, speed * FLAGS_threads, "");
+      
+      if (tid == 0) {
+        //fprintf(stdout, "... %d threads finished at time %ld ms, %.1f ops/s%30s\n", FLAGS_threads, now/ 1000, speed * FLAGS_threads, "");
+        fprintf(stdout, "... %d threads finished %d ops, at time %ld ms, %.1f ops/s%30s\n", running_threads, done_, now/ 1000, speed * (int) running_threads, "");
+      }
     }
     return ;
     if (done_ >= next_report_) {
@@ -1252,7 +1257,24 @@ class Benchmark {
     double mix_rate_with_noise = 32;
 
 
+    // warmup phase
+    for (int i = 0; i < 200000; i++) {
+      int64_t ini_rand, key_rand, rand_v;
+      ini_rand = thread->rand.Next();
+      key_rand = gen_exp.DistGetKeyID(ini_rand, 0.0, 0.0);
+      snprintf(key, sizeof(key), "%016d", key_rand);
+
+      if (db_->Get(options, key, &value).ok()) {
+        found++;
+	thread->stats.AddBytes(value.length());
+      } 
+      thread->stats.FinishedSingleOp();
+    }
+
+    std::cout << "==== thread" << thread->tid << " warming up finished\n";
     
+    flag_monitor = false;
+
     //for (int i = 0; i < reads_; i++) {
     while (true) {
       /*
@@ -1308,10 +1330,14 @@ class Benchmark {
       if (usecs_since_last >
           (FLAGS_sine_mix_rate_interval_milliseconds * uint64_t{1000})) {
     
-        double usecs_since_start = static_cast<double>(now - thread->stats.GetStart());
+	double usecs_since_start = static_cast<double>(now - thread->stats.GetStart());
          thread->stats.ResetSineInterval();
 	//double mix_rate_with_noise = SineRate(usecs_since_start / 1000000.0);
-        mix_rate_with_noise = SineRate(usecs_since_start / 1000.0);
+        //mix_rate_with_noise = SineRate(usecs_since_start / 1000.0);
+        mix_rate_with_noise = SineRate(usecs_since_start / 500.0);
+        //mix_rate_with_noise = 32;
+	if (thread -> tid == 0)
+          std::cout << "=== interval " << usecs_since_start << " " << mix_rate_with_noise << "\n";
         //std::cout << usecs_since_start << " " << mix_rate_with_noise << "\n";
 
 
@@ -1323,10 +1349,11 @@ class Benchmark {
         //  }
         //    thread->stats.Report(name);
 	//}
-	int last_finished = thread->stats.CheckInterval();
-        std::cout << "... thread " << thread->tid << " last interval: " << (double) last_finished / usecs_since_last * 1000000 << "ops/s\n";	
+	//int last_finished = thread->stats.CheckInterval();
+        //std::cout << "... thread " << thread->tid << " last interval: " << (double) last_finished / usecs_since_last * 1000000 << "ops/s\n";	
       }
 
+      running_threads = mix_rate_with_noise;
       if (thread->tid >= mix_rate_with_noise) {
         //std::cout << "thread " << thread->tid << "continue\n";
         continue;
@@ -1392,13 +1419,14 @@ class Benchmark {
 	batch.Clear();
         batch.Put(key, gen.Generate(val_size));
         bytes += value_size_ + strlen(key);
-        thread->stats.FinishedSingleOp();
        
         s = db_->Write(write_options_, &batch);
         if (!s.ok()) {
           fprintf(stderr, "put error: %s\n", s.ToString().c_str());
           exit(1);
         }
+        
+	thread->stats.FinishedSingleOp();
 
 	// TODO tune the write rate?
         /*

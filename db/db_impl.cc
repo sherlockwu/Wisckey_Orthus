@@ -287,7 +287,7 @@ void * monitor_func(void *vargp) {
         while (true) {
             // detect whether workload has changed -> reoptimize
 	    detect_miss_ratio = cache_ptr->check_miss_ratio();
-	    if ( true && !( detect_miss_ratio >= basic_miss_ratio - 10 && detect_miss_ratio <= basic_miss_ratio + 10) )  {
+	    if ( true && !( detect_miss_ratio <= basic_miss_ratio + 10) )  {
 	      std::cout <<  "detect miss ratio: " << detect_miss_ratio << ", basic miss ratio: " << basic_miss_ratio << std::endl;  
               goto reoptimize;
             }

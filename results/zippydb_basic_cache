@@ -1,0 +1,1367 @@
+Keys:       16 bytes each
+Values:     1024 bytes each (1024 bytes after compression)
+Entries:    1000000
+RawSize:    991.8 MB (estimated)
+FileSize:   991.8 MB (estimated)
+WARNING: Snappy compression is not enabled
+------------------------------------------------
+========== here is to NewPersistLRUCache
+fadvise random works !!! 
+fadvise sequential works !!! 
+vlog size: 104166 MB, head: 109226666032, tail: 40 
+========== Here is in DB::Open, to start a thread to monitor Optane
+====== miss ratio: 224.496
+... 32 threads finished 353 ops, at time 1589241836416 ms, 112848.3 ops/s                              
+... 32 threads finished 788 ops, at time 1589241836516 ms, 139198.6 ops/s                              
+... 32 threads finished 1243 ops, at time 1589241836616 ms, 145518.5 ops/s                              
+... 32 threads finished 1716 ops, at time 1589241836716 ms, 151202.7 ops/s                              
+... 32 threads finished 2224 ops, at time 1589241836816 ms, 162452.8 ops/s                              
+... 32 threads finished 2745 ops, at time 1589241836916 ms, 166530.2 ops/s                              
+... 32 threads finished 3287 ops, at time 1589241837016 ms, 173424.4 ops/s                              
+... 32 threads finished 3858 ops, at time 1589241837117 ms, 182208.0 ops/s                              
+... 32 threads finished 4448 ops, at time 1589241837217 ms, 188479.6 ops/s                              
+... 32 threads finished 5067 ops, at time 1589241837317 ms, 197907.8 ops/s                              
+... 32 threads finished 5701 ops, at time 1589241837417 ms, 202469.0 ops/s                              
+... 32 threads finished 6333 ops, at time 1589241837517 ms, 202151.1 ops/s                              
+... 32 threads finished 6947 ops, at time 1589241837617 ms, 196279.8 ops/s                              
+... 32 threads finished 7558 ops, at time 1589241837717 ms, 195299.3 ops/s                              
+... 32 threads finished 8166 ops, at time 1589241837818 ms, 194412.2 ops/s                              
+... 32 threads finished 8778 ops, at time 1589241837918 ms, 195667.8 ops/s                              
+... 32 threads finished 9381 ops, at time 1589241838018 ms, 192931.1 ops/s                              
+... 32 threads finished 9984 ops, at time 1589241838118 ms, 192684.5 ops/s                              
+... 32 threads finished 10594 ops, at time 1589241838218 ms, 194658.8 ops/s                              
+... 32 threads finished 11171 ops, at time 1589241838318 ms, 184549.6 ops/s                              
+... 32 threads finished 11804 ops, at time 1589241838418 ms, 202398.1 ops/s                              
+... 32 threads finished 12440 ops, at time 1589241838518 ms, 203444.7 ops/s                              
+... 32 threads finished 13072 ops, at time 1589241838618 ms, 202128.8 ops/s                              
+... 32 threads finished 13718 ops, at time 1589241838718 ms, 206571.3 ops/s                              
+... 32 threads finished 14370 ops, at time 1589241838818 ms, 208537.8 ops/s                              
+... 32 threads finished 15009 ops, at time 1589241838918 ms, 204465.7 ops/s                              
+====== miss ratio: ====== miss ratio: ====== miss ratio: 69.7701
+69.7701
+====== miss ratio: 69.77
+====== miss ratio: -nan
+100
+... 32 threads finished 15660 ops, at time 1589241839019 ms, 208132.7 ops/s                              
+... 32 threads finished 16311 ops, at time 1589241839119 ms, 208297.1 ops/s                              
+... 32 threads finished 16962 ops, at time 1589241839219 ms, 207711.4 ops/s                              
+... 32 threads finished 17631 ops, at time 1589241839319 ms, 213932.4 ops/s                              
+... 32 threads finished 18293 ops, at time 1589241839419 ms, 211740.5 ops/s                              
+... 32 threads finished 18971 ops, at time 1589241839519 ms, 216782.2 ops/s                              
+... 32 threads finished 19644 ops, at time 1589241839619 ms, 215248.1 ops/s                              
+... 32 threads finished 20298 ops, at time 1589241839719 ms, 208991.6 ops/s                              
+... 32 threads finished 20959 ops, at time 1589241839819 ms, 211268.6 ops/s                              
+... 32 threads finished 21652 ops, at time 1589241839919 ms, 221733.4 ops/s                              
+... 32 threads finished 22292 ops, at time 1589241840019 ms, 204648.6 ops/s                              
+... 32 threads finished 22972 ops, at time 1589241840119 ms, 217519.5 ops/s                              
+... 32 threads finished 23654 ops, at time 1589241840220 ms, 218104.8 ops/s                              
+... 32 threads finished 24337 ops, at time 1589241840320 ms, 218162.9 ops/s                              
+... 32 threads finished 24987 ops, at time 1589241840420 ms, 207794.3 ops/s                              
+... 32 threads finished 25640 ops, at time 1589241840520 ms, 208834.7 ops/s                              
+... 32 threads finished 26278 ops, at time 1589241840620 ms, 204092.6 ops/s                              
+... 32 threads finished 26947 ops, at time 1589241840720 ms, 214069.3 ops/s                              
+... 32 threads finished 27630 ops, at time 1589241840820 ms, 218387.5 ops/s                              
+... 32 threads finished 28327 ops, at time 1589241840920 ms, 222741.5 ops/s                              
+... 32 threads finished 29027 ops, at time 1589241841020 ms, 223941.8 ops/s                              
+... 32 threads finished 29731 ops, at time 1589241841120 ms, 225228.2 ops/s                              
+... 32 threads finished 30435 ops, at time 1589241841220 ms, 225144.9 ops/s                              
+... 32 threads finished 31135 ops, at time 1589241841320 ms, 223856.7 ops/s                              
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 52.1395
+52.1395
+====== miss ratio: 52.1395-nan
+
+====== miss ratio: -nan
+-nan
+... 32 threads finished 31816 ops, at time 1589241841420 ms, 217889.5 ops/s                              
+... 32 threads finished 32069 ops, at time 1589241841522 ms, 79934.4 ops/s                              
+... 32 threads finished 32097 ops, at time 1589241841623 ms, 8815.9 ops/s                              
+... 32 threads finished 32124 ops, at time 1589241841725 ms, 8522.8 ops/s                              
+... 32 threads finished 32145 ops, at time 1589241841831 ms, 6304.4 ops/s                              
+... 32 threads finished 32159 ops, at time 1589241841933 ms, 4389.3 ops/s                              
+... 32 threads finished 32514 ops, at time 1589241842033 ms, 113553.4 ops/s                              
+... 32 threads finished 33203 ops, at time 1589241842133 ms, 220341.2 ops/s                              
+... 32 threads finished 33885 ops, at time 1589241842233 ms, 218233.5 ops/s                              
+... 32 threads finished 34583 ops, at time 1589241842333 ms, 223188.1 ops/s                              
+... 32 threads finished 35264 ops, at time 1589241842434 ms, 217543.6 ops/s                              
+... 32 threads finished 35946 ops, at time 1589241842534 ms, 217913.1 ops/s                              
+... 32 threads finished 36635 ops, at time 1589241842634 ms, 220323.6 ops/s                              
+... 32 threads finished 37335 ops, at time 1589241842734 ms, 223722.6 ops/s                              
+... 32 threads finished 38010 ops, at time 1589241842834 ms, 215991.4 ops/s                              
+... 32 threads finished 38728 ops, at time 1589241842934 ms, 229374.7 ops/s                              
+... 32 threads finished 39392 ops, at time 1589241843034 ms, 212312.3 ops/s                              
+... 32 threads finished 40092 ops, at time 1589241843134 ms, 223935.1 ops/s                              
+... 32 threads finished 40798 ops, at time 1589241843234 ms, 225365.6 ops/s                              
+... 32 threads finished 41489 ops, at time 1589241843335 ms, 220837.3 ops/s                              
+... 32 threads finished 42191 ops, at time 1589241843435 ms, 224390.9 ops/s                              
+... 32 threads finished 42870 ops, at time 1589241843535 ms, 216993.6 ops/s                              
+... 32 threads finished 43555 ops, at time 1589241843635 ms, 218884.8 ops/s                              
+... 32 threads finished 44252 ops, at time 1589241843735 ms, 222946.4 ops/s                              
+... 32 threads finished 44957 ops, at time 1589241843835 ms, 225394.9 ops/s                              
+... 32 threads finished 45653 ops, at time 1589241843935 ms, 222517.5 ops/s                              
+... 32 threads finished 46354 ops, at time 1589241844035 ms, 224040.0 ops/s                              
+====== miss ratio: ====== miss ratio: ====== miss ratio: 48.0887
+48.0887====== miss ratio: 48.0886
+====== miss ratio: 
+-nan
+0
+====== miss ratio: -nan
+... 32 threads finished 47075 ops, at time 1589241844135 ms, 230664.6 ops/s                              
+... 32 threads finished 47770 ops, at time 1589241844235 ms, 222164.5 ops/s                              
+... 32 threads finished 48465 ops, at time 1589241844336 ms, 222104.6 ops/s                              
+... 32 threads finished 49152 ops, at time 1589241844436 ms, 219504.2 ops/s                              
+... 32 threads finished 49862 ops, at time 1589241844536 ms, 226943.6 ops/s                              
+... 32 threads finished 50580 ops, at time 1589241844636 ms, 229452.5 ops/s                              
+... 32 threads finished 51256 ops, at time 1589241844736 ms, 216235.7 ops/s                              
+... 32 threads finished 51932 ops, at time 1589241844836 ms, 216281.1 ops/s                              
+... 32 threads finished 52643 ops, at time 1589241844936 ms, 227317.7 ops/s                              
+... 32 threads finished 53341 ops, at time 1589241845036 ms, 223348.8 ops/s                              
+... 32 threads finished 54040 ops, at time 1589241845136 ms, 223650.9 ops/s                              
+... 32 threads finished 54756 ops, at time 1589241845236 ms, 228471.1 ops/s                              
+... 32 threads finished 55471 ops, at time 1589241845336 ms, 228740.5 ops/s                              
+... 32 threads finished 56189 ops, at time 1589241845436 ms, 229737.0 ops/s                              
+... 32 threads finished 56910 ops, at time 1589241845536 ms, 230660.0 ops/s                              
+... 32 threads finished 57581 ops, at time 1589241845637 ms, 214709.3 ops/s                              
+... 32 threads finished 58290 ops, at time 1589241845737 ms, 226807.4 ops/s                              
+... 32 threads finished 59000 ops, at time 1589241845837 ms, 226968.5 ops/s                              
+... 32 threads finished 59682 ops, at time 1589241845937 ms, 218030.7 ops/s                              
+... 32 threads finished 60339 ops, at time 1589241846037 ms, 210040.5 ops/s                              
+... 32 threads finished 60950 ops, at time 1589241846137 ms, 195473.1 ops/s                              
+... 32 threads finished 61633 ops, at time 1589241846237 ms, 218418.0 ops/s                              
+... 32 threads finished 62306 ops, at time 1589241846337 ms, 214829.4 ops/s                              
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 45.470345.4703
+
+45.4703
+-nan====== miss ratio: 
+-nan
+... 32 threads finished 63013 ops, at time 1589241846437 ms, 226136.0 ops/s                              
+... 32 threads finished 63723 ops, at time 1589241846537 ms, 226968.5 ops/s                              
+... 32 threads finished 64439 ops, at time 1589241846637 ms, 228978.0 ops/s                              
+... 32 threads finished 65157 ops, at time 1589241846737 ms, 229585.5 ops/s                              
+... 32 threads finished 65866 ops, at time 1589241846838 ms, 226669.2 ops/s                              
+... 32 threads finished 66584 ops, at time 1589241846938 ms, 229418.2 ops/s                              
+... 32 threads finished 67303 ops, at time 1589241847038 ms, 229799.6 ops/s                              
+... 32 threads finished 67643 ops, at time 1589241847138 ms, 108131.7 ops/s                              
+... 32 threads finished 67772 ops, at time 1589241847238 ms, 41262.3 ops/s                              
+... 32 threads finished 68505 ops, at time 1589241847339 ms, 234405.3 ops/s                              
+... 32 threads finished 69202 ops, at time 1589241847439 ms, 222815.0 ops/s                              
+... 32 threads finished 69910 ops, at time 1589241847539 ms, 226302.0 ops/s                              
+... 32 threads finished 70625 ops, at time 1589241847639 ms, 228610.3 ops/s                              
+... 32 threads finished 71344 ops, at time 1589241847739 ms, 229891.5 ops/s                              
+... 32 threads finished 72055 ops, at time 1589241847839 ms, 227394.9 ops/s                              
+... 32 threads finished 72791 ops, at time 1589241847939 ms, 235498.8 ops/s                              
+... 32 threads finished 73510 ops, at time 1589241848039 ms, 230027.1 ops/s                              
+... 32 threads finished 74203 ops, at time 1589241848139 ms, 221536.2 ops/s                              
+... 32 threads finished 74930 ops, at time 1589241848239 ms, 232635.3 ops/s                              
+... 32 threads finished 75638 ops, at time 1589241848339 ms, 226347.2 ops/s                              
+... 32 threads finished 76359 ops, at time 1589241848439 ms, 230436.6 ops/s                              
+... 32 threads finished 77080 ops, at time 1589241848539 ms, 230551.7 ops/s                              
+... 32 threads finished 77792 ops, at time 1589241848640 ms, 227398.8 ops/s                              
+====== miss ratio: ====== miss ratio: ====== miss ratio: 43.0806
+====== miss ratio: 43.0805
+43.0806
+====== miss ratio: -nan
+-nan
+====== miss ratio: ====== miss ratio: ====== miss ratio: 0
+0
+====== miss ratio: 0
+====== miss ratio: -nan
+====== miss ratio: 100
+====== miss ratio: 100
+====== miss ratio: ====== miss ratio: -nan
+====== miss ratio: 100
+====== miss ratio: 100
+====== miss ratio: 100
+====== miss ratio: ====== miss ratio: ====== miss ratio: 0
+====== miss ratio: 0
+0
+====== miss ratio: 0
+-nan
+100
+-nan
+... 32 threads finished 78512 ops, at time 1589241848740 ms, 230094.0 ops/s                              
+... 32 threads finished 79222 ops, at time 1589241848840 ms, 226975.3 ops/s                              
+... 32 threads finished 79950 ops, at time 1589241848940 ms, 232750.5 ops/s                              
+... 32 threads finished 80664 ops, at time 1589241849040 ms, 228388.6 ops/s                              
+... 32 threads finished 81376 ops, at time 1589241849140 ms, 227819.5 ops/s                              
+... 32 threads finished 82089 ops, at time 1589241849240 ms, 228153.2 ops/s                              
+... 32 threads finished 82827 ops, at time 1589241849340 ms, 236034.9 ops/s                              
+... 32 threads finished 83548 ops, at time 1589241849440 ms, 230487.2 ops/s                              
+... 32 threads finished 84253 ops, at time 1589241849540 ms, 225579.7 ops/s                              
+... 32 threads finished 84963 ops, at time 1589241849640 ms, 227097.8 ops/s                              
+... 32 threads finished 85687 ops, at time 1589241849740 ms, 231640.6 ops/s                              
+... 32 threads finished 86430 ops, at time 1589241849840 ms, 237683.9 ops/s                              
+... 32 threads finished 87150 ops, at time 1589241849940 ms, 229928.6 ops/s                              
+... 32 threads finished 87902 ops, at time 1589241850041 ms, 240296.4 ops/s                              
+... 32 threads finished 88617 ops, at time 1589241850141 ms, 228566.9 ops/s                              
+... 32 threads finished 89336 ops, at time 1589241850241 ms, 229751.5 ops/s                              
+... 32 threads finished 90070 ops, at time 1589241850341 ms, 234727.4 ops/s                              
+... 32 threads finished 90800 ops, at time 1589241850441 ms, 233532.3 ops/s                              
+... 32 threads finished 91520 ops, at time 1589241850541 ms, 230296.4 ops/s                              
+... 32 threads finished 92217 ops, at time 1589241850641 ms, 222803.8 ops/s                              
+... 32 threads finished 92950 ops, at time 1589241850741 ms, 234306.9 ops/s                              
+... 32 threads finished 93671 ops, at time 1589241850841 ms, 230388.2 ops/s                              
+====== miss ratio: ====== miss ratio: ====== miss ratio: 41.0142
+====== miss ratio: 41.014241.0141
+
+====== miss ratio: ====== miss ratio: -nan
+-nan
+====== miss ratio: 50
+100
+... 32 threads finished 94421 ops, at time 1589241850942 ms, 239384.8 ops/s                              
+... 32 threads finished 95141 ops, at time 1589241851042 ms, 230179.0 ops/s                              
+... 32 threads finished 95862 ops, at time 1589241851142 ms, 230703.9 ops/s                              
+... 32 threads finished 96608 ops, at time 1589241851242 ms, 238364.8 ops/s                              
+... 32 threads finished 97327 ops, at time 1589241851342 ms, 229962.7 ops/s                              
+... 32 threads finished 98060 ops, at time 1589241851442 ms, 234344.4 ops/s                              
+... 32 threads finished 98773 ops, at time 1589241851542 ms, 228139.5 ops/s                              
+... 32 threads finished 99495 ops, at time 1589241851642 ms, 230984.6 ops/s                              
+... 32 threads finished 100223 ops, at time 1589241851742 ms, 232901.8 ops/s                              
+... 32 threads finished 100944 ops, at time 1589241851842 ms, 230478.0 ops/s                              
+... 32 threads finished 101689 ops, at time 1589241851942 ms, 238152.3 ops/s                              
+... 32 threads finished 102449 ops, at time 1589241852042 ms, 242986.2 ops/s                              
+... 32 threads finished 103189 ops, at time 1589241852142 ms, 236584.7 ops/s                              
+... 32 threads finished 103930 ops, at time 1589241852242 ms, 237022.8 ops/s                              
+... 32 threads finished 104672 ops, at time 1589241852342 ms, 237411.5 ops/s                              
+... 32 threads finished 105411 ops, at time 1589241852442 ms, 236406.7 ops/s                              
+... 32 threads finished 106144 ops, at time 1589241852543 ms, 234143.2 ops/s                              
+... 32 threads finished 106859 ops, at time 1589241852643 ms, 228738.2 ops/s                              
+... 32 threads finished 107548 ops, at time 1589241852743 ms, 220409.5 ops/s                              
+... 32 threads finished 108256 ops, at time 1589241852843 ms, 226553.2 ops/s                              
+... 32 threads finished 108986 ops, at time 1589241852943 ms, 233378.3 ops/s                              
+====== miss ratio: ====== miss ratio: ====== miss ratio: 39.0814
+39.081539.0815
+
+... 32 threads finished 109724 ops, at time 1589241853043 ms, 236115.1 ops/s                              
+... 32 threads finished 110469 ops, at time 1589241853143 ms, 238295.2 ops/s                              
+... 32 threads finished 111200 ops, at time 1589241853243 ms, 233642.0 ops/s                              
+... 32 threads finished 111942 ops, at time 1589241853343 ms, 237250.2 ops/s                              
+... 32 threads finished 112673 ops, at time 1589241853443 ms, 233730.7 ops/s                              
+... 32 threads finished 113412 ops, at time 1589241853543 ms, 236000.9 ops/s                              
+... 32 threads finished 114156 ops, at time 1589241853643 ms, 237930.1 ops/s                              
+... 32 threads finished 114892 ops, at time 1589241853744 ms, 235312.9 ops/s                              
+... 32 threads finished 115619 ops, at time 1589241853844 ms, 232361.2 ops/s                              
+... 32 threads finished 116350 ops, at time 1589241853944 ms, 233856.9 ops/s                              
+... 32 threads finished 117113 ops, at time 1589241854044 ms, 244142.9 ops/s                              
+... 32 threads finished 117864 ops, at time 1589241854144 ms, 239905.0 ops/s                              
+... 32 threads finished 118606 ops, at time 1589241854244 ms, 237292.9 ops/s                              
+... 32 threads finished 119344 ops, at time 1589241854344 ms, 235672.2 ops/s                              
+... 32 threads finished 120089 ops, at time 1589241854444 ms, 238190.4 ops/s                              
+... 32 threads finished 120822 ops, at time 1589241854544 ms, 234323.3 ops/s                              
+... 32 threads finished 121528 ops, at time 1589241854644 ms, 225696.6 ops/s                              
+... 32 threads finished 122270 ops, at time 1589241854744 ms, 237319.0 ops/s                              
+... 32 threads finished 123012 ops, at time 1589241854845 ms, 237333.2 ops/s                              
+... 32 threads finished 123769 ops, at time 1589241854945 ms, 242039.1 ops/s                              
+... 32 threads finished 124513 ops, at time 1589241855045 ms, 237861.2 ops/s                              
+====== miss ratio: ====== miss ratio: 37.3524
+37.3524
+====== miss ratio: ====== miss ratio: ====== miss ratio: 45.454542.8571
+
+====== miss ratio: ====== miss ratio: 0
+====== miss ratio: 25
+-nan
+====== miss ratio: ====== miss ratio: 100
+====== miss ratio: ====== miss ratio: 0
+100====== miss ratio: 
+50
+====== miss ratio: 100
+====== miss ratio: -nan-nan
+
+====== miss ratio: 100
+====== miss ratio: 100
+0
+====== miss ratio: 50
+... 32 threads finished 125247 ops, at time 1589241855145 ms, 234706.3 ops/s                              
+... 32 threads finished 126001 ops, at time 1589241855245 ms, 241231.8 ops/s                              
+... 32 threads finished 126716 ops, at time 1589241855345 ms, 228681.1 ops/s                              
+... 32 threads finished 127459 ops, at time 1589241855445 ms, 237736.2 ops/s                              
+... 32 threads finished 128183 ops, at time 1589241855545 ms, 231093.0 ops/s                              
+... 32 threads finished 128947 ops, at time 1589241855645 ms, 244453.1 ops/s                              
+... 32 threads finished 129712 ops, at time 1589241855745 ms, 244482.2 ops/s                              
+... 32 threads finished 130449 ops, at time 1589241855845 ms, 235595.0 ops/s                              
+... 32 threads finished 131181 ops, at time 1589241855945 ms, 234190.8 ops/s                              
+... 32 threads finished 131948 ops, at time 1589241856045 ms, 245371.3 ops/s                              
+... 32 threads finished 132692 ops, at time 1589241856145 ms, 237849.3 ops/s                              
+... 32 threads finished 133429 ops, at time 1589241856245 ms, 235821.1 ops/s                              
+... 32 threads finished 134172 ops, at time 1589241856346 ms, 237738.6 ops/s                              
+... 32 threads finished 134949 ops, at time 1589241856446 ms, 248436.3 ops/s                              
+... 32 threads finished 135707 ops, at time 1589241856546 ms, 242477.6 ops/s                              
+... 32 threads finished 136453 ops, at time 1589241856646 ms, 238402.9 ops/s                              
+... 32 threads finished 137225 ops, at time 1589241856746 ms, 246933.8 ops/s                              
+... 32 threads finished 137967 ops, at time 1589241856846 ms, 237254.9 ops/s                              
+... 32 threads finished 138717 ops, at time 1589241856946 ms, 239892.0 ops/s                              
+... 32 threads finished 139477 ops, at time 1589241857046 ms, 243153.8 ops/s                              
+... 32 threads finished 140215 ops, at time 1589241857146 ms, 235905.2 ops/s                              
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 35.717635.7175
+====== miss ratio: 
+35.7176
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: -nan35.7176
+66.6667-nan
+
+
+50
+====== miss ratio: 50
+0
+... 32 threads finished 140963 ops, at time 1589241857246 ms, 239238.0 ops/s                              
+... 32 threads finished 141685 ops, at time 1589241857346 ms, 230943.0 ops/s                              
+... 32 threads finished 142333 ops, at time 1589241857449 ms, 202095.4 ops/s                              
+... 32 threads finished 142916 ops, at time 1589241857553 ms, 179341.5 ops/s                              
+... 32 threads finished 143513 ops, at time 1589241857653 ms, 191017.1 ops/s                              
+... 32 threads finished 143979 ops, at time 1589241857754 ms, 147522.3 ops/s                              
+... 32 threads finished 144523 ops, at time 1589241857854 ms, 174071.3 ops/s                              
+... 32 threads finished 145129 ops, at time 1589241857954 ms, 193819.2 ops/s                              
+... 32 threads finished 145872 ops, at time 1589241858054 ms, 237584.2 ops/s                              
+... 32 threads finished 146574 ops, at time 1589241858154 ms, 224570.4 ops/s                              
+... 32 threads finished 147302 ops, at time 1589241858254 ms, 232953.0 ops/s                              
+... 32 threads finished 148034 ops, at time 1589241858354 ms, 234195.5 ops/s                              
+... 32 threads finished 148781 ops, at time 1589241858454 ms, 238846.5 ops/s                              
+... 32 threads finished 149522 ops, at time 1589241858554 ms, 236750.7 ops/s                              
+... 32 threads finished 150245 ops, at time 1589241858654 ms, 231110.4 ops/s                              
+... 32 threads finished 150973 ops, at time 1589241858754 ms, 232773.8 ops/s                              
+... 32 threads finished 151725 ops, at time 1589241858854 ms, 240587.1 ops/s                              
+... 32 threads finished 152416 ops, at time 1589241858955 ms, 221084.6 ops/s                              
+... 32 threads finished 153164 ops, at time 1589241859055 ms, 239137.6 ops/s                              
+... 32 threads finished 153865 ops, at time 1589241859155 ms, 224172.0 ops/s                              
+... 32 threads finished 154614 ops, at time 1589241859255 ms, 239294.7 ops/s                              
+... 32 threads finished 155386 ops, at time 1589241859355 ms, 246628.1 ops/s                              
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 34.1899
+34.1899
+====== miss ratio: -nan-nan
+
+0
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 33.3333
+33.3333
+100====== miss ratio: ====== miss ratio: 100====== miss ratio: ====== miss ratio: 50
+00
+
+
+0
+
+50
+====== miss ratio: 50
+... 32 threads finished 156135 ops, at time 1589241859455 ms, 239620.1 ops/s                              
+... 32 threads finished 156876 ops, at time 1589241859555 ms, 237058.4 ops/s                              
+... 32 threads finished 157629 ops, at time 1589241859655 ms, 240810.7 ops/s                              
+... 32 threads finished 158389 ops, at time 1589241859755 ms, 243078.5 ops/s                              
+... 32 threads finished 159122 ops, at time 1589241859855 ms, 234503.7 ops/s                              
+... 32 threads finished 159869 ops, at time 1589241859955 ms, 238720.1 ops/s                              
+... 32 threads finished 160629 ops, at time 1589241860055 ms, 242976.5 ops/s                              
+... 32 threads finished 161381 ops, at time 1589241860155 ms, 240524.5 ops/s                              
+... 32 threads finished 162150 ops, at time 1589241860256 ms, 245895.6 ops/s                              
+... 32 threads finished 162909 ops, at time 1589241860356 ms, 242593.7 ops/s                              
+... 32 threads finished 163661 ops, at time 1589241860456 ms, 240426.0 ops/s                              
+... 32 threads finished 164425 ops, at time 1589241860556 ms, 244382.2 ops/s                              
+... 32 threads finished 165181 ops, at time 1589241860656 ms, 241745.9 ops/s                              
+... 32 threads finished 165953 ops, at time 1589241860756 ms, 246847.5 ops/s                              
+... 32 threads finished 166683 ops, at time 1589241860856 ms, 233588.3 ops/s                              
+... 32 threads finished 167443 ops, at time 1589241860956 ms, 243027.5 ops/s                              
+... 32 threads finished 168202 ops, at time 1589241861056 ms, 242586.5 ops/s                              
+... 32 threads finished 168952 ops, at time 1589241861156 ms, 239930.4 ops/s                              
+... 32 threads finished 169700 ops, at time 1589241861256 ms, 239023.0 ops/s                              
+... 32 threads finished 170453 ops, at time 1589241861356 ms, 240933.5 ops/s                              
+... 32 threads finished 171199 ops, at time 1589241861456 ms, 238619.8 ops/s                              
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 32.765232.7652
+
+====== miss ratio: -nan
+====== miss ratio: 0
+0
+32.7652
+... 32 threads finished 171954 ops, at time 1589241861557 ms, 241103.3 ops/s                              
+... 32 threads finished 172686 ops, at time 1589241861657 ms, 234204.9 ops/s                              
+... 32 threads finished 173459 ops, at time 1589241861757 ms, 246753.0 ops/s                              
+... 32 threads finished 174198 ops, at time 1589241861857 ms, 236338.2 ops/s                              
+... 32 threads finished 174964 ops, at time 1589241861957 ms, 244743.1 ops/s                              
+... 32 threads finished 175716 ops, at time 1589241862057 ms, 240346.8 ops/s                              
+... 32 threads finished 176473 ops, at time 1589241862157 ms, 241867.5 ops/s                              
+... 32 threads finished 177209 ops, at time 1589241862258 ms, 234984.2 ops/s                              
+... 32 threads finished 177988 ops, at time 1589241862358 ms, 249023.5 ops/s                              
+... 32 threads finished 178742 ops, at time 1589241862458 ms, 241173.9 ops/s                              
+... 32 threads finished 179485 ops, at time 1589241862558 ms, 237529.6 ops/s                              
+... 32 threads finished 180238 ops, at time 1589241862658 ms, 240707.3 ops/s                              
+... 32 threads finished 181008 ops, at time 1589241862758 ms, 246011.3 ops/s                              
+... 32 threads finished 181723 ops, at time 1589241862858 ms, 228779.4 ops/s                              
+... 32 threads finished 182450 ops, at time 1589241862958 ms, 232537.7 ops/s                              
+... 32 threads finished 183219 ops, at time 1589241863058 ms, 245745.8 ops/s                              
+... 32 threads finished 183995 ops, at time 1589241863158 ms, 248176.1 ops/s                              
+... 32 threads finished 184742 ops, at time 1589241863258 ms, 238992.2 ops/s                              
+... 32 threads finished 185520 ops, at time 1589241863358 ms, 248721.2 ops/s                              
+... 32 threads finished 186288 ops, at time 1589241863459 ms, 245519.4 ops/s                              
+... 32 threads finished 187041 ops, at time 1589241863559 ms, 240858.8 ops/s                              
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 31.410431.4106
+
+31.4107
+31.4107
+... 32 threads finished 187801 ops, at time 1589241863659 ms, 242903.7 ops/s                              
+... 32 threads finished 188554 ops, at time 1589241863759 ms, 240935.9 ops/s                              
+... 32 threads finished 189300 ops, at time 1589241863859 ms, 238348.2 ops/s                              
+... 32 threads finished 190042 ops, at time 1589241863959 ms, 237437.6 ops/s                              
+... 32 threads finished 190799 ops, at time 1589241864059 ms, 242087.5 ops/s                              
+... 32 threads finished 191554 ops, at time 1589241864159 ms, 241573.4 ops/s                              
+... 32 threads finished 192307 ops, at time 1589241864259 ms, 240584.7 ops/s                              
+... 32 threads finished 193063 ops, at time 1589241864359 ms, 241593.8 ops/s                              
+... 32 threads finished 193860 ops, at time 1589241864459 ms, 255006.8 ops/s                              
+... 32 threads finished 194607 ops, at time 1589241864559 ms, 238775.0 ops/s                              
+... 32 threads finished 195340 ops, at time 1589241864659 ms, 234438.1 ops/s                              
+... 32 threads finished 196063 ops, at time 1589241864759 ms, 231311.4 ops/s                              
+... 32 threads finished 196818 ops, at time 1589241864859 ms, 241575.8 ops/s                              
+... 32 threads finished 197582 ops, at time 1589241864960 ms, 244230.9 ops/s                              
+... 32 threads finished 198339 ops, at time 1589241865060 ms, 242220.6 ops/s                              
+==== thread11 warming up finished
+==== thread18 warming up finished
+==== thread20 warming up finished
+... 30 threads finished 199084 ops, at time 1589241865160 ms, 223421.8 ops/s                              
+==== thread2 warming up finished
+==== thread25 warming up finished
+==== thread27 warming up finished
+==== thread30 warming up finished
+==== thread6 warming up finished
+==== thread26 warming up finished
+==== thread5 warming up finished
+==== thread16 warming up finished
+==== thread29 warming up finished
+==== thread14 warming up finished
+==== thread19 warming up finished
+==== thread9 warming up finished
+==== thread31 warming up finished
+==== thread15 warming up finished
+==== thread12 warming up finished
+==== thread10 warming up finished
+==== thread21 warming up finished
+==== thread28 warming up finished
+==== thread7 warming up finished
+==== thread17 warming up finished
+==== thread8 warming up finished
+==== thread24 warming up finished
+==== thread4 warming up finished
+==== thread23 warming up finished
+==== thread3 warming up finished
+... 30 threads finished 199833 ops, at time 1589241865260 ms, 224605.7 ops/s                              
+==== thread13 warming up finished
+==== thread0 warming up finished
+=== interval 2.89622e+07 30.5593
+==== thread22 warming up finished
+==== thread1 warming up finished
+... 30 threads finished 200695 ops, at time 1589241865360 ms, 258333.9 ops/s                              
+... 30 threads finished 201570 ops, at time 1589241865460 ms, 262479.0 ops/s                              
+... 30 threads finished 202450 ops, at time 1589241865560 ms, 263607.2 ops/s                              
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 30.114230.1142
+
+30.1142
+30.1142
+... 30 threads finished 203336 ops, at time 1589241865660 ms, 265454.9 ops/s                              
+... 30 threads finished 204230 ops, at time 1589241865760 ms, 268007.0 ops/s                              
+... 30 threads finished 205156 ops, at time 1589241865860 ms, 277386.7 ops/s                              
+... 30 threads finished 206048 ops, at time 1589241865960 ms, 267143.2 ops/s                              
+... 30 threads finished 206916 ops, at time 1589241866060 ms, 260269.9 ops/s                              
+... 30 threads finished 207791 ops, at time 1589241866160 ms, 262452.8 ops/s                              
+... 30 threads finished 208662 ops, at time 1589241866260 ms, 261255.6 ops/s                              
+=== interval 2.99622e+07 30.1594
+... 30 threads finished 209511 ops, at time 1589241866360 ms, 254603.3 ops/s                              
+... 30 threads finished 210401 ops, at time 1589241866461 ms, 266893.2 ops/s                              
+... 30 threads finished 211320 ops, at time 1589241866561 ms, 275504.4 ops/s                              
+... 30 threads finished 212192 ops, at time 1589241866661 ms, 261349.1 ops/s                              
+... 30 threads finished 213074 ops, at time 1589241866761 ms, 264259.1 ops/s                              
+... 30 threads finished 213934 ops, at time 1589241866861 ms, 257405.4 ops/s                              
+... 30 threads finished 214811 ops, at time 1589241866961 ms, 263005.3 ops/s                              
+... 30 threads finished 215688 ops, at time 1589241867061 ms, 263055.3 ops/s                              
+... 30 threads finished 216545 ops, at time 1589241867161 ms, 257048.6 ops/s                              
+... 29 threads finished 217423 ops, at time 1589241867261 ms, 254441.9 ops/s                              
+=== interval 3.09624e+07 29.7159
+... 29 threads finished 218306 ops, at time 1589241867361 ms, 255857.6 ops/s                              
+... 29 threads finished 219207 ops, at time 1589241867461 ms, 261196.0 ops/s                              
+... 29 threads finished 220131 ops, at time 1589241867561 ms, 267665.6 ops/s                              
+... 29 threads finished 221052 ops, at time 1589241867661 ms, 267068.6 ops/s                              
+====== miss ratio: ====== miss ratio: ====== miss ratio: 28.5691
+28.5692
+28.5692
+... 29 threads finished 221908 ops, at time 1589241867762 ms, 248036.6 ops/s                              
+... 29 threads finished 222798 ops, at time 1589241867862 ms, 257932.3 ops/s                              
+... 29 threads finished 223683 ops, at time 1589241867962 ms, 256263.0 ops/s                              
+... 29 threads finished 224586 ops, at time 1589241868062 ms, 261162.3 ops/s                              
+... 29 threads finished 225483 ops, at time 1589241868162 ms, 260039.0 ops/s                              
+... 29 threads finished 226390 ops, at time 1589241868262 ms, 262998.4 ops/s                              
+=== interval 3.19624e+07 29.2314
+... 29 threads finished 227289 ops, at time 1589241868362 ms, 260486.0 ops/s                              
+... 29 threads finished 228177 ops, at time 1589241868462 ms, 257393.9 ops/s                              
+... 29 threads finished 229074 ops, at time 1589241868562 ms, 259427.0 ops/s                              
+... 29 threads finished 229973 ops, at time 1589241868663 ms, 260506.8 ops/s                              
+... 29 threads finished 230909 ops, at time 1589241868763 ms, 271399.3 ops/s                              
+... 29 threads finished 231795 ops, at time 1589241868863 ms, 256253.2 ops/s                              
+... 29 threads finished 232730 ops, at time 1589241868963 ms, 271014.5 ops/s                              
+... 29 threads finished 233616 ops, at time 1589241869063 ms, 256845.0 ops/s                              
+... 29 threads finished 234495 ops, at time 1589241869163 ms, 254864.1 ops/s                              
+... 28 threads finished 235431 ops, at time 1589241869263 ms, 261962.1 ops/s                              
+=== interval 3.29624e+07 28.7084
+... 28 threads finished 236347 ops, at time 1589241869363 ms, 256021.7 ops/s                              
+... 28 threads finished 237227 ops, at time 1589241869463 ms, 245989.2 ops/s                              
+... 28 threads finished 238189 ops, at time 1589241869563 ms, 268940.5 ops/s                              
+... 28 threads finished 239108 ops, at time 1589241869664 ms, 257206.8 ops/s                              
+... 28 threads finished 240040 ops, at time 1589241869764 ms, 260892.2 ops/s                              
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 27.451927.4519
+
+====== miss ratio: ====== miss ratio: -nan
+====== miss ratio: -nan
+100
+100
+27.452
+... 28 threads finished 240944 ops, at time 1589241869864 ms, 252975.8 ops/s                              
+... 28 threads finished 241894 ops, at time 1589241869964 ms, 265715.7 ops/s                              
+... 28 threads finished 242820 ops, at time 1589241870064 ms, 258904.6 ops/s                              
+... 28 threads finished 243754 ops, at time 1589241870164 ms, 261055.3 ops/s                              
+... 28 threads finished 244694 ops, at time 1589241870264 ms, 263102.7 ops/s                              
+=== interval 3.39625e+07 28.1496
+... 28 threads finished 245588 ops, at time 1589241870364 ms, 250162.4 ops/s                              
+... 28 threads finished 246529 ops, at time 1589241870464 ms, 263401.0 ops/s                              
+... 28 threads finished 247463 ops, at time 1589241870564 ms, 261371.0 ops/s                              
+... 28 threads finished 248394 ops, at time 1589241870664 ms, 260599.2 ops/s                              
+... 28 threads finished 249338 ops, at time 1589241870764 ms, 264317.4 ops/s                              
+... 28 threads finished 250249 ops, at time 1589241870864 ms, 255057.0 ops/s                              
+... 28 threads finished 251160 ops, at time 1589241870964 ms, 254843.0 ops/s                              
+... 28 threads finished 252103 ops, at time 1589241871065 ms, 263644.5 ops/s                              
+... 28 threads finished 253049 ops, at time 1589241871165 ms, 264517.6 ops/s                              
+... 27 threads finished 253955 ops, at time 1589241871265 ms, 244426.9 ops/s                              
+=== interval 3.49626e+07 27.558
+... 27 threads finished 254914 ops, at time 1589241871365 ms, 258751.5 ops/s                              
+... 27 threads finished 255844 ops, at time 1589241871465 ms, 250746.4 ops/s                              
+... 27 threads finished 256806 ops, at time 1589241871565 ms, 259467.6 ops/s                              
+... 27 threads finished 257727 ops, at time 1589241871665 ms, 248637.7 ops/s                              
+... 27 threads finished 258674 ops, at time 1589241871765 ms, 255245.9 ops/s                              
+... 27 threads finished 259631 ops, at time 1589241871865 ms, 258384.8 ops/s                              
+====== miss ratio: ====== miss ratio: 26.395
+26.395
+... 27 threads finished 260582 ops, at time 1589241871965 ms, 256593.0 ops/s                              
+... 27 threads finished 261522 ops, at time 1589241872065 ms, 253612.3 ops/s                              
+... 27 threads finished 262476 ops, at time 1589241872166 ms, 257135.2 ops/s                              
+... 26 threads finished 263423 ops, at time 1589241872266 ms, 245942.1 ops/s                              
+=== interval 3.59627e+07 26.9368
+... 26 threads finished 264354 ops, at time 1589241872366 ms, 241695.0 ops/s                              
+... 26 threads finished 265279 ops, at time 1589241872466 ms, 240317.4 ops/s                              
+... 26 threads finished 266198 ops, at time 1589241872566 ms, 238844.5 ops/s                              
+... 26 threads finished 267122 ops, at time 1589241872666 ms, 239839.5 ops/s                              
+... 26 threads finished 268056 ops, at time 1589241872766 ms, 242607.1 ops/s                              
+... 26 threads finished 269014 ops, at time 1589241872866 ms, 248729.3 ops/s                              
+... 26 threads finished 269985 ops, at time 1589241872966 ms, 252112.1 ops/s                              
+... 26 threads finished 270924 ops, at time 1589241873067 ms, 244010.7 ops/s                              
+... 26 threads finished 271876 ops, at time 1589241873167 ms, 247485.4 ops/s                              
+... 26 threads finished 272854 ops, at time 1589241873267 ms, 254122.4 ops/s                              
+=== interval 3.69627e+07 26.2893
+... 26 threads finished 273837 ops, at time 1589241873367 ms, 255424.2 ops/s                              
+... 26 threads finished 274816 ops, at time 1589241873467 ms, 254059.8 ops/s                              
+... 26 threads finished 275824 ops, at time 1589241873567 ms, 261776.3 ops/s                              
+... 26 threads finished 276827 ops, at time 1589241873667 ms, 260644.5 ops/s                              
+... 26 threads finished 277820 ops, at time 1589241873767 ms, 258164.5 ops/s                              
+... 26 threads finished 278809 ops, at time 1589241873867 ms, 257011.5 ops/s                              
+... 26 threads finished 279794 ops, at time 1589241873967 ms, 256077.0 ops/s                              
+... 26 threads finished 280771 ops, at time 1589241874067 ms, 253987.0 ops/s                              
+====== miss ratio: ====== miss ratio: 25.409325.4093
+
+... 26 threads finished 281722 ops, at time 1589241874167 ms, 247232.8 ops/s                              
+... 25 threads finished 282732 ops, at time 1589241874267 ms, 252247.8 ops/s                              
+=== interval 3.79628e+07 25.619
+... 25 threads finished 283742 ops, at time 1589241874367 ms, 252441.9 ops/s                              
+... 25 threads finished 284745 ops, at time 1589241874467 ms, 250629.7 ops/s                              
+... 25 threads finished 285769 ops, at time 1589241874567 ms, 255856.7 ops/s                              
+... 25 threads finished 286784 ops, at time 1589241874667 ms, 253516.8 ops/s                              
+... 25 threads finished 287771 ops, at time 1589241874767 ms, 246604.5 ops/s                              
+... 25 threads finished 288798 ops, at time 1589241874868 ms, 256603.7 ops/s                              
+... 25 threads finished 289795 ops, at time 1589241874968 ms, 249060.7 ops/s                              
+... 25 threads finished 290752 ops, at time 1589241875068 ms, 238989.5 ops/s                              
+... 25 threads finished 291761 ops, at time 1589241875168 ms, 252118.9 ops/s                              
+... 24 threads finished 292758 ops, at time 1589241875268 ms, 239103.1 ops/s                              
+=== interval 3.89628e+07 24.9294
+... 24 threads finished 293753 ops, at time 1589241875368 ms, 238788.1 ops/s                              
+... 24 threads finished 294733 ops, at time 1589241875468 ms, 235185.9 ops/s                              
+... 24 threads finished 295736 ops, at time 1589241875568 ms, 240640.6 ops/s                              
+... 24 threads finished 296730 ops, at time 1589241875668 ms, 238369.3 ops/s                              
+... 24 threads finished 297748 ops, at time 1589241875768 ms, 244283.4 ops/s                              
+... 24 threads finished 298730 ops, at time 1589241875868 ms, 235529.3 ops/s                              
+... 25 threads finished 299732 ops, at time 1589241875968 ms, 250407.3 ops/s                              
+... 24 threads finished 300736 ops, at time 1589241876068 ms, 240856.4 ops/s                              
+... 24 threads finished 301766 ops, at time 1589241876168 ms, 246933.3 ops/s                              
+... 24 threads finished 302825 ops, at time 1589241876268 ms, 253667.9 ops/s                              
+====== miss ratio: ====== miss ratio: ====== miss ratio: 24.4637
+24.4637====== miss ratio: 
+0
+====== miss ratio: ====== miss ratio: 500
+
+0
+=== interval 3.9963e+07 24.2241
+... 24 threads finished 303852 ops, at time 1589241876369 ms, 246204.3 ops/s                              
+... 24 threads finished 304888 ops, at time 1589241876469 ms, 248374.2 ops/s                              
+... 24 threads finished 305961 ops, at time 1589241876569 ms, 257085.5 ops/s                              
+... 24 threads finished 306959 ops, at time 1589241876669 ms, 239330.9 ops/s                              
+... 24 threads finished 307998 ops, at time 1589241876769 ms, 249173.1 ops/s                              
+... 24 threads finished 309052 ops, at time 1589241876869 ms, 252805.8 ops/s                              
+... 24 threads finished 310059 ops, at time 1589241876969 ms, 241660.7 ops/s                              
+... 24 threads finished 311067 ops, at time 1589241877069 ms, 241733.9 ops/s                              
+... 24 threads finished 312060 ops, at time 1589241877169 ms, 238222.3 ops/s                              
+... 23 threads finished 313106 ops, at time 1589241877269 ms, 240313.3 ops/s                              
+=== interval 4.09631e+07 23.5071
+... 23 threads finished 314140 ops, at time 1589241877369 ms, 237689.3 ops/s                              
+... 23 threads finished 315229 ops, at time 1589241877469 ms, 250074.9 ops/s                              
+... 23 threads finished 316290 ops, at time 1589241877570 ms, 243776.5 ops/s                              
+... 23 threads finished 317308 ops, at time 1589241877670 ms, 234039.4 ops/s                              
+... 23 threads finished 318353 ops, at time 1589241877770 ms, 240268.3 ops/s                              
+... 23 threads finished 319408 ops, at time 1589241877870 ms, 242521.5 ops/s                              
+... 23 threads finished 320484 ops, at time 1589241877970 ms, 247344.0 ops/s                              
+... 23 threads finished 321524 ops, at time 1589241878070 ms, 239128.3 ops/s                              
+... 23 threads finished 322593 ops, at time 1589241878170 ms, 245776.6 ops/s                              
+... 22 threads finished 323657 ops, at time 1589241878270 ms, 233825.1 ops/s                              
+=== interval 4.19632e+07 22.782
+... 22 threads finished 324741 ops, at time 1589241878370 ms, 238427.5 ops/s                              
+... 22 threads finished 325869 ops, at time 1589241878470 ms, 248115.3 ops/s                              
+====== miss ratio: ====== miss ratio: ====== miss ratio: 23.4649
+====== miss ratio: 23.465
+23.4651
+-nan
+... 22 threads finished 326935 ops, at time 1589241878570 ms, 234449.7 ops/s                              
+... 22 threads finished 328017 ops, at time 1589241878670 ms, 237759.4 ops/s                              
+... 22 threads finished 329115 ops, at time 1589241878770 ms, 241089.9 ops/s                              
+... 22 threads finished 330174 ops, at time 1589241878870 ms, 232642.7 ops/s                              
+... 22 threads finished 331279 ops, at time 1589241878971 ms, 243036.8 ops/s                              
+... 22 threads finished 332384 ops, at time 1589241879071 ms, 243051.4 ops/s                              
+... 22 threads finished 333466 ops, at time 1589241879171 ms, 237557.8 ops/s                              
+... 22 threads finished 334511 ops, at time 1589241879271 ms, 229716.2 ops/s                              
+=== interval 4.29633e+07 22.0527
+... 22 threads finished 335633 ops, at time 1589241879371 ms, 246615.6 ops/s                              
+... 22 threads finished 336736 ops, at time 1589241879471 ms, 242652.7 ops/s                              
+... 22 threads finished 337771 ops, at time 1589241879571 ms, 227361.2 ops/s                              
+... 22 threads finished 338884 ops, at time 1589241879671 ms, 244842.9 ops/s                              
+... 22 threads finished 339921 ops, at time 1589241879771 ms, 228032.8 ops/s                              
+... 22 threads finished 341025 ops, at time 1589241879871 ms, 242797.4 ops/s                              
+... 22 threads finished 342097 ops, at time 1589241879971 ms, 235627.9 ops/s                              
+... 22 threads finished 343209 ops, at time 1589241880071 ms, 243995.9 ops/s                              
+... 22 threads finished 344283 ops, at time 1589241880172 ms, 236095.8 ops/s                              
+... 21 threads finished 345408 ops, at time 1589241880272 ms, 236174.4 ops/s                              
+=== interval 4.39633e+07 21.3232
+... 21 threads finished 346511 ops, at time 1589241880372 ms, 231611.5 ops/s                              
+... 21 threads finished 347618 ops, at time 1589241880472 ms, 232247.0 ops/s                              
+... 21 threads finished 348709 ops, at time 1589241880572 ms, 229084.8 ops/s                              
+... 21 threads finished 349850 ops, at time 1589241880672 ms, 239270.2 ops/s                              
+... 21 threads finished 351001 ops, at time 1589241880772 ms, 241562.6 ops/s                              
+====== miss ratio: ====== miss ratio: ====== miss ratio: 22.5616
+22.5617
+22.5617
+... 21 threads finished 352095 ops, at time 1589241880872 ms, 229551.8 ops/s                              
+... 21 threads finished 353222 ops, at time 1589241880972 ms, 236313.2 ops/s                              
+... 21 threads finished 354340 ops, at time 1589241881072 ms, 234538.4 ops/s                              
+... 21 threads finished 355467 ops, at time 1589241881172 ms, 236235.3 ops/s                              
+... 21 threads finished 356612 ops, at time 1589241881273 ms, 240284.2 ops/s                              
+=== interval 4.49634e+07 20.5973
+... 20 threads finished 357779 ops, at time 1589241881373 ms, 233299.7 ops/s                              
+... 20 threads finished 358919 ops, at time 1589241881473 ms, 227965.8 ops/s                              
+... 20 threads finished 360088 ops, at time 1589241881573 ms, 233736.9 ops/s                              
+... 20 threads finished 361211 ops, at time 1589241881673 ms, 224499.0 ops/s                              
+... 20 threads finished 362360 ops, at time 1589241881773 ms, 229767.8 ops/s                              
+... 20 threads finished 363509 ops, at time 1589241881873 ms, 229797.7 ops/s                              
+... 20 threads finished 364646 ops, at time 1589241881973 ms, 227390.9 ops/s                              
+... 20 threads finished 365805 ops, at time 1589241882073 ms, 231686.5 ops/s                              
+... 20 threads finished 366904 ops, at time 1589241882173 ms, 219451.1 ops/s                              
+... 19 threads finished 368001 ops, at time 1589241882273 ms, 208142.8 ops/s                              
+=== interval 4.59634e+07 19.8789
+... 19 threads finished 369179 ops, at time 1589241882373 ms, 223817.8 ops/s                              
+... 19 threads finished 370327 ops, at time 1589241882473 ms, 218109.1 ops/s                              
+... 19 threads finished 371469 ops, at time 1589241882573 ms, 216878.1 ops/s                              
+... 19 threads finished 372623 ops, at time 1589241882673 ms, 219051.9 ops/s                              
+... 19 threads finished 373804 ops, at time 1589241882773 ms, 224259.9 ops/s                              
+... 19 threads finished 374990 ops, at time 1589241882873 ms, 225042.9 ops/s                              
+... 19 threads finished 376162 ops, at time 1589241882973 ms, 222395.3 ops/s                              
+... 19 threads finished 377300 ops, at time 1589241883074 ms, 216153.0 ops/s                              
+... 19 threads finished 378456 ops, at time 1589241883174 ms, 219365.8 ops/s                              
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 21.7835
+21.7835
+21.7834
+-nan
+... 19 threads finished 379457 ops, at time 1589241883281 ms, 177227.6 ops/s                              
+=== interval 4.69641e+07 19.1713
+... 19 threads finished 380575 ops, at time 1589241883381 ms, 212258.7 ops/s                              
+... 19 threads finished 381695 ops, at time 1589241883481 ms, 212634.1 ops/s                              
+... 19 threads finished 382790 ops, at time 1589241883581 ms, 207981.4 ops/s                              
+... 19 threads finished 383915 ops, at time 1589241883681 ms, 213624.0 ops/s                              
+... 19 threads finished 385033 ops, at time 1589241883781 ms, 212332.9 ops/s                              
+... 19 threads finished 386143 ops, at time 1589241883881 ms, 210887.3 ops/s                              
+... 19 threads finished 387277 ops, at time 1589241883981 ms, 215251.2 ops/s                              
+... 19 threads finished 388390 ops, at time 1589241884081 ms, 211301.0 ops/s                              
+... 19 threads finished 389498 ops, at time 1589241884182 ms, 210316.0 ops/s                              
+=== interval 4.79642e+07 18.4792
+... 18 threads finished 390643 ops, at time 1589241884282 ms, 205968.2 ops/s                              
+... 18 threads finished 391776 ops, at time 1589241884382 ms, 203685.4 ops/s                              
+... 18 threads finished 392919 ops, at time 1589241884482 ms, 205713.3 ops/s                              
+... 18 threads finished 394033 ops, at time 1589241884582 ms, 199804.7 ops/s                              
+... 18 threads finished 395154 ops, at time 1589241884682 ms, 201661.0 ops/s                              
+... 18 threads finished 396309 ops, at time 1589241884782 ms, 207754.6 ops/s                              
+... 18 threads finished 397475 ops, at time 1589241884882 ms, 209865.3 ops/s                              
+... 18 threads finished 398614 ops, at time 1589241884982 ms, 204868.4 ops/s                              
+... 18 threads finished 399709 ops, at time 1589241885082 ms, 197054.7 ops/s                              
+... 18 threads finished 400850 ops, at time 1589241885182 ms, 205369.7 ops/s                              
+=== interval 4.89642e+07 17.8059
+... 17 threads finished 401987 ops, at time 1589241885283 ms, 192908.0 ops/s                              
+... 17 threads finished 403185 ops, at time 1589241885383 ms, 203422.0 ops/s                              
+... 17 threads finished 404286 ops, at time 1589241885483 ms, 186908.3 ops/s                              
+... 17 threads finished 405394 ops, at time 1589241885583 ms, 188096.7 ops/s                              
+... 17 threads finished 406494 ops, at time 1589241885683 ms, 186908.4 ops/s                              
+... 17 threads finished 407633 ops, at time 1589241885783 ms, 193461.7 ops/s                              
+====== miss ratio: 20.9127
+... 17 threads finished 408777 ops, at time 1589241885883 ms, 194464.4 ops/s                              
+... 17 threads finished 409904 ops, at time 1589241885983 ms, 191135.1 ops/s                              
+... 17 threads finished 411054 ops, at time 1589241886083 ms, 195250.1 ops/s                              
+... 17 threads finished 412279 ops, at time 1589241886184 ms, 208006.6 ops/s                              
+=== interval 4.99644e+07 17.1548
+... 17 threads finished 413399 ops, at time 1589241886284 ms, 190365.7 ops/s                              
+... 17 threads finished 414552 ops, at time 1589241886384 ms, 195857.2 ops/s                              
+... 17 threads finished 415744 ops, at time 1589241886484 ms, 202589.4 ops/s                              
+... 17 threads finished 416894 ops, at time 1589241886584 ms, 195429.6 ops/s                              
+... 17 threads finished 418049 ops, at time 1589241886684 ms, 196287.2 ops/s                              
+... 17 threads finished 419258 ops, at time 1589241886784 ms, 205369.8 ops/s                              
+... 17 threads finished 420435 ops, at time 1589241886884 ms, 199980.0 ops/s                              
+... 17 threads finished 421587 ops, at time 1589241886984 ms, 195478.4 ops/s                              
+... 17 threads finished 422687 ops, at time 1589241887084 ms, 186968.2 ops/s                              
+... 17 threads finished 423898 ops, at time 1589241887184 ms, 205596.6 ops/s                              
+=== interval 5.09646e+07 16.5296
+... 16 threads finished 425011 ops, at time 1589241887284 ms, 177902.1 ops/s                              
+... 16 threads finished 426209 ops, at time 1589241887384 ms, 191607.2 ops/s                              
+... 16 threads finished 427401 ops, at time 1589241887484 ms, 190535.2 ops/s                              
+... 16 threads finished 428546 ops, at time 1589241887584 ms, 183092.0 ops/s                              
+... 16 threads finished 429759 ops, at time 1589241887685 ms, 193919.0 ops/s                              
+... 16 threads finished 430904 ops, at time 1589241887785 ms, 183037.1 ops/s                              
+... 16 threads finished 432133 ops, at time 1589241887885 ms, 196292.6 ops/s                              
+... 16 threads finished 433320 ops, at time 1589241887985 ms, 189794.7 ops/s                              
+... 16 threads finished 434491 ops, at time 1589241888085 ms, 187358.1 ops/s                              
+... 16 threads finished 435686 ops, at time 1589241888185 ms, 191190.4 ops/s                              
+=== interval 5.19646e+07 15.9336
+... 15 threads finished 436859 ops, at time 1589241888285 ms, 175805.8 ops/s                              
+... 15 threads finished 438023 ops, at time 1589241888385 ms, 174519.7 ops/s                              
+... 15 threads finished 439265 ops, at time 1589241888485 ms, 186294.4 ops/s                              
+... 15 threads finished 440428 ops, at time 1589241888585 ms, 174380.2 ops/s                              
+====== miss ratio: ====== miss ratio: ====== miss ratio: 20.2146
+20.2146
+-nan
+... 15 threads finished 441617 ops, at time 1589241888685 ms, 178273.3 ops/s                              
+... 15 threads finished 442732 ops, at time 1589241888785 ms, 167123.0 ops/s                              
+... 15 threads finished 443895 ops, at time 1589241888885 ms, 174389.0 ops/s                              
+... 15 threads finished 445073 ops, at time 1589241888985 ms, 176461.8 ops/s                              
+... 15 threads finished 446314 ops, at time 1589241889085 ms, 186070.0 ops/s                              
+... 15 threads finished 447434 ops, at time 1589241889185 ms, 167998.3 ops/s                              
+=== interval 5.29646e+07 15.3699
+... 15 threads finished 448678 ops, at time 1589241889285 ms, 186432.2 ops/s                              
+... 15 threads finished 449912 ops, at time 1589241889386 ms, 184992.7 ops/s                              
+... 15 threads finished 451153 ops, at time 1589241889486 ms, 186029.1 ops/s                              
+... 15 threads finished 452401 ops, at time 1589241889586 ms, 187183.2 ops/s                              
+... 15 threads finished 453666 ops, at time 1589241889686 ms, 189581.3 ops/s                              
+... 15 threads finished 454925 ops, at time 1589241889786 ms, 188619.9 ops/s                              
+... 15 threads finished 456193 ops, at time 1589241889886 ms, 190108.7 ops/s                              
+... 15 threads finished 457359 ops, at time 1589241889986 ms, 174877.3 ops/s                              
+... 15 threads finished 458545 ops, at time 1589241890086 ms, 177695.7 ops/s                              
+... 15 threads finished 459846 ops, at time 1589241890186 ms, 194774.1 ops/s                              
+=== interval 5.39648e+07 14.8415
+... 14 threads finished 461162 ops, at time 1589241890286 ms, 184081.7 ops/s                              
+... 14 threads finished 462308 ops, at time 1589241890386 ms, 160380.7 ops/s                              
+... 14 threads finished 463571 ops, at time 1589241890487 ms, 176498.8 ops/s                              
+... 14 threads finished 464859 ops, at time 1589241890587 ms, 180163.3 ops/s                              
+... 14 threads finished 466177 ops, at time 1589241890687 ms, 184243.6 ops/s                              
+... 14 threads finished 467396 ops, at time 1589241890787 ms, 170624.2 ops/s                              
+... 14 threads finished 468485 ops, at time 1589241890887 ms, 152382.3 ops/s                              
+... 14 threads finished 469739 ops, at time 1589241890987 ms, 175484.5 ops/s                              
+... 14 threads finished 471042 ops, at time 1589241891087 ms, 182301.5 ops/s                              
+... 14 threads finished 472209 ops, at time 1589241891187 ms, 163267.3 ops/s                              
+=== interval 5.49648e+07 14.3513
+... 14 threads finished 473333 ops, at time 1589241891287 ms, 157292.4 ops/s                              
+... 14 threads finished 474508 ops, at time 1589241891387 ms, 164217.5 ops/s                              
+... 14 threads finished 475646 ops, at time 1589241891487 ms, 159222.9 ops/s                              
+... 14 threads finished 476895 ops, at time 1589241891587 ms, 174823.3 ops/s                              
+====== miss ratio: ====== miss ratio: ====== miss ratio: 19.4852
+19.4852
+====== miss ratio: 0
+50
+====== miss ratio: ====== miss ratio: 25
+33.3333
+... 14 threads finished 478137 ops, at time 1589241891687 ms, 173721.9 ops/s                              
+... 14 threads finished 479430 ops, at time 1589241891787 ms, 180915.1 ops/s                              
+... 14 threads finished 480718 ops, at time 1589241891887 ms, 180217.3 ops/s                              
+... 14 threads finished 481966 ops, at time 1589241891988 ms, 174693.8 ops/s                              
+... 14 threads finished 483226 ops, at time 1589241892088 ms, 176345.3 ops/s                              
+... 14 threads finished 484456 ops, at time 1589241892188 ms, 172105.3 ops/s                              
+=== interval 5.59649e+07 13.9018
+... 13 threads finished 485793 ops, at time 1589241892288 ms, 173653.7 ops/s                              
+... 13 threads finished 487015 ops, at time 1589241892388 ms, 158729.8 ops/s                              
+... 13 threads finished 488030 ops, at time 1589241892488 ms, 131834.0 ops/s                              
+... 13 threads finished 489082 ops, at time 1589241892588 ms, 136585.2 ops/s                              
+... 13 threads finished 490432 ops, at time 1589241892688 ms, 175358.0 ops/s                              
+... 13 threads finished 491619 ops, at time 1589241892788 ms, 154095.8 ops/s                              
+... 13 threads finished 492941 ops, at time 1589241892888 ms, 171805.0 ops/s                              
+... 13 threads finished 494245 ops, at time 1589241892988 ms, 169357.4 ops/s                              
+... 13 threads finished 495336 ops, at time 1589241893088 ms, 141739.3 ops/s                              
+... 13 threads finished 496630 ops, at time 1589241893188 ms, 168137.6 ops/s                              
+=== interval 5.69649e+07 13.4955
+... 13 threads finished 498015 ops, at time 1589241893288 ms, 179978.0 ops/s                              
+... 13 threads finished 499354 ops, at time 1589241893389 ms, 173767.6 ops/s                              
+... 13 threads finished 500459 ops, at time 1589241893489 ms, 143472.1 ops/s                              
+... 13 threads finished 501686 ops, at time 1589241893589 ms, 159482.9 ops/s                              
+... 13 threads finished 502950 ops, at time 1589241893689 ms, 164278.9 ops/s                              
+... 13 threads finished 504254 ops, at time 1589241893789 ms, 169320.2 ops/s                              
+... 13 threads finished 505512 ops, at time 1589241893889 ms, 163428.9 ops/s                              
+... 13 threads finished 506719 ops, at time 1589241893989 ms, 156836.3 ops/s                              
+... 13 threads finished 507827 ops, at time 1589241894089 ms, 143917.7 ops/s                              
+... 13 threads finished 509136 ops, at time 1589241894189 ms, 170069.7 ops/s                              
+=== interval 5.7965e+07 13.1344
+... 13 threads finished 510457 ops, at time 1589241894289 ms, 171723.1 ops/s                              
+... 13 threads finished 511793 ops, at time 1589241894389 ms, 173555.0 ops/s                              
+... 13 threads finished 513158 ops, at time 1589241894489 ms, 177334.7 ops/s                              
+... 13 threads finished 514424 ops, at time 1589241894589 ms, 164560.3 ops/s                              
+... 13 threads finished 515806 ops, at time 1589241894690 ms, 179358.7 ops/s                              
+... 13 threads finished 517138 ops, at time 1589241894790 ms, 173082.1 ops/s                              
+====== miss ratio: ====== miss ratio: ====== miss ratio: 18.7933
+18.7934====== miss ratio: -nan
+
+66.6667
+... 13 threads finished 518427 ops, at time 1589241894890 ms, 167549.9 ops/s                              
+... 13 threads finished 519786 ops, at time 1589241894990 ms, 176400.1 ops/s                              
+... 13 threads finished 521010 ops, at time 1589241895090 ms, 158903.9 ops/s                              
+... 13 threads finished 522388 ops, at time 1589241895190 ms, 179134.6 ops/s                              
+=== interval 5.89651e+07 12.8206
+... 12 threads finished 523711 ops, at time 1589241895290 ms, 158614.1 ops/s                              
+... 12 threads finished 525019 ops, at time 1589241895390 ms, 156916.1 ops/s                              
+... 12 threads finished 526206 ops, at time 1589241895490 ms, 142421.5 ops/s                              
+... 12 threads finished 527455 ops, at time 1589241895590 ms, 149791.6 ops/s                              
+... 12 threads finished 528818 ops, at time 1589241895690 ms, 163395.0 ops/s                              
+... 12 threads finished 530056 ops, at time 1589241895790 ms, 148463.5 ops/s                              
+... 12 threads finished 531322 ops, at time 1589241895890 ms, 151818.3 ops/s                              
+... 12 threads finished 532729 ops, at time 1589241895990 ms, 168799.5 ops/s                              
+... 12 threads finished 534039 ops, at time 1589241896090 ms, 156969.3 ops/s                              
+... 12 threads finished 535353 ops, at time 1589241896190 ms, 157657.9 ops/s                              
+=== interval 5.99651e+07 12.5557
+... 12 threads finished 536769 ops, at time 1589241896290 ms, 169899.6 ops/s                              
+... 12 threads finished 538166 ops, at time 1589241896391 ms, 167398.9 ops/s                              
+... 12 threads finished 539568 ops, at time 1589241896491 ms, 168107.2 ops/s                              
+... 12 threads finished 540929 ops, at time 1589241896591 ms, 163280.8 ops/s                              
+... 12 threads finished 542310 ops, at time 1589241896691 ms, 165620.6 ops/s                              
+... 12 threads finished 543638 ops, at time 1589241896791 ms, 159294.7 ops/s                              
+... 12 threads finished 545012 ops, at time 1589241896891 ms, 164777.8 ops/s                              
+... 12 threads finished 546331 ops, at time 1589241896991 ms, 158194.6 ops/s                              
+... 12 threads finished 547727 ops, at time 1589241897091 ms, 167419.5 ops/s                              
+... 12 threads finished 548776 ops, at time 1589241897191 ms, 125857.3 ops/s                              
+=== interval 6.09652e+07 12.3411
+... 12 threads finished 550030 ops, at time 1589241897291 ms, 150445.4 ops/s                              
+... 12 threads finished 551246 ops, at time 1589241897391 ms, 145908.3 ops/s                              
+... 12 threads finished 552373 ops, at time 1589241897491 ms, 135185.9 ops/s                              
+... 12 threads finished 553602 ops, at time 1589241897591 ms, 147304.7 ops/s                              
+... 12 threads finished 555006 ops, at time 1589241897691 ms, 168471.6 ops/s                              
+... 12 threads finished 556248 ops, at time 1589241897791 ms, 148833.1 ops/s                              
+... 12 threads finished 557501 ops, at time 1589241897891 ms, 150320.9 ops/s                              
+... 12 threads finished 558452 ops, at time 1589241897999 ms, 106034.8 ops/s                              
+... 12 threads finished 559335 ops, at time 1589241898107 ms, 97688.7 ops/s                              
+... 12 threads finished 560323 ops, at time 1589241898210 ms, 115316.2 ops/s                              
+=== interval 6.19692e+07 12.1774
+... 12 threads finished 561072 ops, at time 1589241898317 ms, 84496.7 ops/s                              
+... 12 threads finished 561684 ops, at time 1589241898417 ms, 73343.9 ops/s                              
+====== miss ratio: 18.1732
+... 12 threads finished 562820 ops, at time 1589241898524 ms, 127262.7 ops/s                              
+... 12 threads finished 563749 ops, at time 1589241898624 ms, 111341.9 ops/s                              
+... 12 threads finished 564644 ops, at time 1589241898724 ms, 107362.4 ops/s                              
+... 12 threads finished 565515 ops, at time 1589241898831 ms, 97882.6 ops/s                              
+... 12 threads finished 566594 ops, at time 1589241898934 ms, 126105.4 ops/s                              
+... 12 threads finished 567413 ops, at time 1589241899034 ms, 98065.2 ops/s                              
+... 12 threads finished 568248 ops, at time 1589241899134 ms, 100102.9 ops/s                              
+... 12 threads finished 569151 ops, at time 1589241899234 ms, 108283.1 ops/s                              
+=== interval 6.29708e+07 12.0667
+... 12 threads finished 570145 ops, at time 1589241899334 ms, 119146.6 ops/s                              
+... 12 threads finished 571174 ops, at time 1589241899434 ms, 123478.8 ops/s                              
+... 12 threads finished 572320 ops, at time 1589241899534 ms, 137297.6 ops/s                              
+... 12 threads finished 573186 ops, at time 1589241899636 ms, 101882.4 ops/s                              
+... 12 threads finished 574352 ops, at time 1589241899736 ms, 139766.3 ops/s                              
+... 12 threads finished 575612 ops, at time 1589241899842 ms, 142733.1 ops/s                              
+... 12 threads finished 576650 ops, at time 1589241899942 ms, 124520.2 ops/s                              
+... 12 threads finished 577734 ops, at time 1589241900042 ms, 129965.6 ops/s                              
+... 12 threads finished 578957 ops, at time 1589241900142 ms, 146672.0 ops/s                              
+... 12 threads finished 579995 ops, at time 1589241900243 ms, 124460.4 ops/s                              
+=== interval 6.39708e+07 12.009
+... 12 threads finished 581027 ops, at time 1589241900343 ms, 123702.7 ops/s                              
+... 12 threads finished 582122 ops, at time 1589241900443 ms, 131316.0 ops/s                              
+... 12 threads finished 583252 ops, at time 1589241900543 ms, 135516.0 ops/s                              
+... 12 threads finished 584541 ops, at time 1589241900643 ms, 154564.1 ops/s                              
+... 12 threads finished 585693 ops, at time 1589241900743 ms, 138009.5 ops/s                              
+... 12 threads finished 587044 ops, at time 1589241900843 ms, 161933.8 ops/s                              
+... 12 threads finished 588303 ops, at time 1589241900943 ms, 150983.4 ops/s                              
+... 12 threads finished 589511 ops, at time 1589241901043 ms, 144873.1 ops/s                              
+... 12 threads finished 590795 ops, at time 1589241901143 ms, 154067.7 ops/s                              
+... 12 threads finished 592125 ops, at time 1589241901243 ms, 159560.1 ops/s                              
+=== interval 6.49709e+07 12.0046
+... 12 threads finished 593446 ops, at time 1589241901343 ms, 158336.3 ops/s                              
+... 12 threads finished 594832 ops, at time 1589241901444 ms, 166001.3 ops/s                              
+... 12 threads finished 596166 ops, at time 1589241901544 ms, 160028.8 ops/s                              
+... 12 threads finished 597376 ops, at time 1589241901644 ms, 144953.6 ops/s                              
+... 12 threads finished 598484 ops, at time 1589241901744 ms, 132924.1 ops/s                              
+... 12 threads finished 599766 ops, at time 1589241901844 ms, 153701.7 ops/s                              
+... 12 threads finished 601098 ops, at time 1589241901944 ms, 159832.0 ops/s                              
+... 12 threads finished 602316 ops, at time 1589241902044 ms, 146130.8 ops/s                              
+... 12 threads finished 603575 ops, at time 1589241902144 ms, 151021.1 ops/s                              
+... 12 threads finished 604790 ops, at time 1589241902244 ms, 145750.4 ops/s                              
+=== interval 6.59709e+07 12.0535
+====== miss ratio: ====== miss ratio: ====== miss ratio: 17.568717.5687
+
+====== miss ratio: 17.5687
+-nan
+... 12 threads finished 605969 ops, at time 1589241902344 ms, 141447.5 ops/s                              
+... 12 threads finished 607265 ops, at time 1589241902444 ms, 155204.9 ops/s                              
+... 12 threads finished 608645 ops, at time 1589241902544 ms, 165560.3 ops/s                              
+... 12 threads finished 609892 ops, at time 1589241902644 ms, 149412.9 ops/s                              
+... 12 threads finished 610976 ops, at time 1589241902744 ms, 130017.6 ops/s                              
+... 12 threads finished 612289 ops, at time 1589241902845 ms, 157430.9 ops/s                              
+... 12 threads finished 613668 ops, at time 1589241902945 ms, 165470.1 ops/s                              
+... 12 threads finished 615022 ops, at time 1589241903045 ms, 162385.8 ops/s                              
+... 12 threads finished 616182 ops, at time 1589241903145 ms, 139187.5 ops/s                              
+... 12 threads finished 617579 ops, at time 1589241903245 ms, 167589.7 ops/s                              
+=== interval 6.69709e+07 12.1553
+... 12 threads finished 618955 ops, at time 1589241903345 ms, 165030.9 ops/s                              
+... 12 threads finished 620248 ops, at time 1589241903445 ms, 154875.0 ops/s                              
+... 12 threads finished 621535 ops, at time 1589241903545 ms, 154375.2 ops/s                              
+... 12 threads finished 622821 ops, at time 1589241903645 ms, 154301.5 ops/s                              
+... 12 threads finished 624087 ops, at time 1589241903745 ms, 151872.9 ops/s                              
+... 12 threads finished 625149 ops, at time 1589241903845 ms, 127352.1 ops/s                              
+... 12 threads finished 626364 ops, at time 1589241903945 ms, 145626.7 ops/s                              
+... 12 threads finished 627730 ops, at time 1589241904045 ms, 163910.2 ops/s                              
+... 12 threads finished 629115 ops, at time 1589241904145 ms, 166186.7 ops/s                              
+... 12 threads finished 630508 ops, at time 1589241904245 ms, 167101.5 ops/s                              
+=== interval 6.79709e+07 12.3096
+... 12 threads finished 631895 ops, at time 1589241904345 ms, 166396.7 ops/s                              
+... 12 threads finished 633229 ops, at time 1589241904445 ms, 159918.5 ops/s                              
+... 12 threads finished 634537 ops, at time 1589241904545 ms, 156843.9 ops/s                              
+... 12 threads finished 635637 ops, at time 1589241904645 ms, 131998.7 ops/s                              
+... 12 threads finished 636919 ops, at time 1589241904745 ms, 153780.0 ops/s                              
+... 12 threads finished 638314 ops, at time 1589241904846 ms, 167242.8 ops/s                              
+... 12 threads finished 639695 ops, at time 1589241904946 ms, 165685.2 ops/s                              
+... 12 threads finished 641077 ops, at time 1589241905046 ms, 165482.6 ops/s                              
+... 12 threads finished 642437 ops, at time 1589241905146 ms, 163149.4 ops/s                              
+... 12 threads finished 643815 ops, at time 1589241905246 ms, 165241.0 ops/s                              
+=== interval 6.8971e+07 12.5155
+... 12 threads finished 645051 ops, at time 1589241905346 ms, 148176.3 ops/s                              
+... 12 threads finished 646359 ops, at time 1589241905446 ms, 156833.0 ops/s                              
+... 12 threads finished 647602 ops, at time 1589241905546 ms, 149157.0 ops/s                              
+... 12 threads finished 648934 ops, at time 1589241905646 ms, 159683.5 ops/s                              
+====== miss ratio: ====== miss ratio: 16.991216.9912
+
+... 12 threads finished 650232 ops, at time 1589241905746 ms, 155708.6 ops/s                              
+... 12 threads finished 651439 ops, at time 1589241905846 ms, 144712.7 ops/s                              
+... 12 threads finished 652682 ops, at time 1589241905946 ms, 148981.2 ops/s                              
+... 12 threads finished 654057 ops, at time 1589241906046 ms, 164922.5 ops/s                              
+... 12 threads finished 655304 ops, at time 1589241906146 ms, 149515.9 ops/s                              
+... 12 threads finished 656702 ops, at time 1589241906247 ms, 167741.5 ops/s                              
+=== interval 6.99711e+07 12.772
+... 12 threads finished 657961 ops, at time 1589241906347 ms, 150966.8 ops/s                              
+... 12 threads finished 659280 ops, at time 1589241906447 ms, 158196.2 ops/s                              
+... 12 threads finished 660696 ops, at time 1589241906547 ms, 169736.7 ops/s                              
+... 12 threads finished 662029 ops, at time 1589241906647 ms, 159827.3 ops/s                              
+... 12 threads finished 663168 ops, at time 1589241906747 ms, 136663.6 ops/s                              
+... 12 threads finished 664360 ops, at time 1589241906847 ms, 142947.1 ops/s                              
+... 12 threads finished 665752 ops, at time 1589241906947 ms, 166808.1 ops/s                              
+... 12 threads finished 667115 ops, at time 1589241907047 ms, 163524.0 ops/s                              
+... 13 threads finished 668429 ops, at time 1589241907147 ms, 170792.7 ops/s                              
+... 13 threads finished 669753 ops, at time 1589241907247 ms, 171850.2 ops/s                              
+=== interval 7.09711e+07 13.0775
+... 13 threads finished 671008 ops, at time 1589241907347 ms, 163018.0 ops/s                              
+... 13 threads finished 672366 ops, at time 1589241907447 ms, 176467.6 ops/s                              
+... 13 threads finished 673729 ops, at time 1589241907547 ms, 177078.4 ops/s                              
+... 13 threads finished 675039 ops, at time 1589241907647 ms, 170257.4 ops/s                              
+... 13 threads finished 676253 ops, at time 1589241907748 ms, 157701.7 ops/s                              
+... 13 threads finished 677492 ops, at time 1589241907848 ms, 160901.1 ops/s                              
+... 13 threads finished 678791 ops, at time 1589241907948 ms, 168849.7 ops/s                              
+... 13 threads finished 679862 ops, at time 1589241908048 ms, 139217.5 ops/s                              
+... 13 threads finished 681142 ops, at time 1589241908148 ms, 166296.9 ops/s                              
+... 13 threads finished 682465 ops, at time 1589241908248 ms, 171964.2 ops/s                              
+=== interval 7.19712e+07 13.4307
+... 13 threads finished 683697 ops, at time 1589241908348 ms, 160123.2 ops/s                              
+... 13 threads finished 684826 ops, at time 1589241908448 ms, 146746.5 ops/s                              
+... 13 threads finished 686201 ops, at time 1589241908548 ms, 178701.8 ops/s                              
+... 13 threads finished 687498 ops, at time 1589241908648 ms, 168599.9 ops/s                              
+... 13 threads finished 688858 ops, at time 1589241908748 ms, 176752.3 ops/s                              
+... 13 threads finished 690181 ops, at time 1589241908848 ms, 171790.7 ops/s                              
+... 13 threads finished 691516 ops, at time 1589241908948 ms, 173491.0 ops/s                              
+====== miss ratio: ====== miss ratio: ====== miss ratio: 16.3525
+16.3525
+16.3525
+... 13 threads finished 692822 ops, at time 1589241909048 ms, 169686.7 ops/s                              
+... 13 threads finished 694145 ops, at time 1589241909148 ms, 171917.8 ops/s                              
+... 13 threads finished 695506 ops, at time 1589241909248 ms, 176839.8 ops/s                              
+=== interval 7.29712e+07 13.8294
+... 13 threads finished 696782 ops, at time 1589241909348 ms, 165805.4 ops/s                              
+... 13 threads finished 698170 ops, at time 1589241909448 ms, 180268.7 ops/s                              
+... 13 threads finished 699426 ops, at time 1589241909548 ms, 163253.9 ops/s                              
+... 13 threads finished 700503 ops, at time 1589241909648 ms, 139803.1 ops/s                              
+... 13 threads finished 701692 ops, at time 1589241909748 ms, 154536.0 ops/s                              
+... 13 threads finished 702830 ops, at time 1589241909849 ms, 147863.1 ops/s                              
+... 13 threads finished 704141 ops, at time 1589241909949 ms, 170220.6 ops/s                              
+... 13 threads finished 705500 ops, at time 1589241910049 ms, 176654.1 ops/s                              
+... 13 threads finished 706885 ops, at time 1589241910149 ms, 179992.4 ops/s                              
+... 14 threads finished 708158 ops, at time 1589241910249 ms, 178145.2 ops/s                              
+=== interval 7.39714e+07 14.2718
+... 14 threads finished 709370 ops, at time 1589241910349 ms, 169586.7 ops/s                              
+... 14 threads finished 710709 ops, at time 1589241910449 ms, 187362.6 ops/s                              
+... 14 threads finished 712041 ops, at time 1589241910549 ms, 186411.0 ops/s                              
+... 14 threads finished 713270 ops, at time 1589241910649 ms, 171980.9 ops/s                              
+... 14 threads finished 714500 ops, at time 1589241910749 ms, 172138.0 ops/s                              
+... 14 threads finished 715646 ops, at time 1589241910849 ms, 160348.6 ops/s                              
+... 14 threads finished 716938 ops, at time 1589241910949 ms, 180860.1 ops/s                              
+... 14 threads finished 718237 ops, at time 1589241911049 ms, 181785.5 ops/s                              
+... 14 threads finished 719499 ops, at time 1589241911149 ms, 176508.8 ops/s                              
+... 14 threads finished 720676 ops, at time 1589241911249 ms, 164649.9 ops/s                              
+=== interval 7.49714e+07 14.7553
+... 14 threads finished 721867 ops, at time 1589241911349 ms, 166645.0 ops/s                              
+... 14 threads finished 723196 ops, at time 1589241911449 ms, 185970.7 ops/s                              
+... 14 threads finished 724411 ops, at time 1589241911549 ms, 169836.8 ops/s                              
+... 14 threads finished 725656 ops, at time 1589241911650 ms, 174138.1 ops/s                              
+... 14 threads finished 727056 ops, at time 1589241911750 ms, 195815.9 ops/s                              
+... 14 threads finished 728392 ops, at time 1589241911850 ms, 187030.6 ops/s                              
+... 14 threads finished 729692 ops, at time 1589241911950 ms, 181907.2 ops/s                              
+====== miss ratio: ====== miss ratio: ====== miss ratio: 16.1841
+16.1841
+-nan
+====== miss ratio: ====== miss ratio: 0
+-nan
+... 14 threads finished 730971 ops, at time 1589241912050 ms, 179009.9 ops/s                              
+... 14 threads finished 732101 ops, at time 1589241912150 ms, 158195.3 ops/s                              
+... 15 threads finished 733401 ops, at time 1589241912250 ms, 194488.5 ops/s                              
+=== interval 7.59716e+07 15.2774
+... 15 threads finished 734581 ops, at time 1589241912350 ms, 176987.6 ops/s                              
+... 15 threads finished 735828 ops, at time 1589241912450 ms, 186874.3 ops/s                              
+... 15 threads finished 737145 ops, at time 1589241912550 ms, 197526.3 ops/s                              
+... 15 threads finished 738432 ops, at time 1589241912650 ms, 192824.4 ops/s                              
+... 15 threads finished 739724 ops, at time 1589241912750 ms, 193614.1 ops/s                              
+... 15 threads finished 740924 ops, at time 1589241912850 ms, 179850.7 ops/s                              
+... 15 threads finished 742221 ops, at time 1589241912950 ms, 194489.7 ops/s                              
+... 15 threads finished 743500 ops, at time 1589241913051 ms, 191765.6 ops/s                              
+... 15 threads finished 744814 ops, at time 1589241913151 ms, 197048.8 ops/s                              
+... 15 threads finished 746066 ops, at time 1589241913251 ms, 187627.4 ops/s                              
+=== interval 7.69716e+07 15.8352
+... 15 threads finished 747336 ops, at time 1589241913351 ms, 190458.1 ops/s                              
+... 15 threads finished 748608 ops, at time 1589241913451 ms, 190447.7 ops/s                              
+... 15 threads finished 749849 ops, at time 1589241913551 ms, 186016.1 ops/s                              
+... 15 threads finished 751088 ops, at time 1589241913651 ms, 185822.1 ops/s                              
+... 15 threads finished 752370 ops, at time 1589241913751 ms, 192230.8 ops/s                              
+... 15 threads finished 753669 ops, at time 1589241913851 ms, 194772.1 ops/s                              
+... 15 threads finished 754950 ops, at time 1589241913951 ms, 191927.4 ops/s                              
+... 15 threads finished 756226 ops, at time 1589241914051 ms, 191302.4 ops/s                              
+... 15 threads finished 757503 ops, at time 1589241914151 ms, 191377.8 ops/s                              
+... 16 threads finished 758763 ops, at time 1589241914251 ms, 201342.3 ops/s                              
+=== interval 7.79716e+07 16.4259
+... 16 threads finished 759999 ops, at time 1589241914351 ms, 197722.4 ops/s                              
+... 16 threads finished 761268 ops, at time 1589241914451 ms, 202898.0 ops/s                              
+... 16 threads finished 762522 ops, at time 1589241914552 ms, 200399.5 ops/s                              
+... 16 threads finished 763819 ops, at time 1589241914652 ms, 207472.3 ops/s                              
+... 16 threads finished 765050 ops, at time 1589241914752 ms, 196849.8 ops/s                              
+... 16 threads finished 766344 ops, at time 1589241914852 ms, 206791.8 ops/s                              
+====== miss ratio: ====== miss ratio: ====== miss ratio: 16.2008
+16.2009
+16.2008
+... 16 threads finished 767625 ops, at time 1589241914952 ms, 204935.4 ops/s                              
+... 16 threads finished 768898 ops, at time 1589241915052 ms, 203588.4 ops/s                              
+... 16 threads finished 770140 ops, at time 1589241915152 ms, 198674.3 ops/s                              
+... 16 threads finished 771406 ops, at time 1589241915252 ms, 202491.2 ops/s                              
+=== interval 7.89717e+07 17.0464
+... 16 threads finished 772673 ops, at time 1589241915352 ms, 202641.0 ops/s                              
+... 16 threads finished 773881 ops, at time 1589241915452 ms, 193175.7 ops/s                              
+... 17 threads finished 775135 ops, at time 1589241915552 ms, 212848.0 ops/s                              
+... 16 threads finished 776371 ops, at time 1589241915652 ms, 197663.1 ops/s                              
+... 16 threads finished 777648 ops, at time 1589241915752 ms, 204252.6 ops/s                              
+... 17 threads finished 778899 ops, at time 1589241915852 ms, 212434.2 ops/s                              
+... 16 threads finished 780158 ops, at time 1589241915952 ms, 201417.8 ops/s                              
+... 17 threads finished 781405 ops, at time 1589241916052 ms, 211930.7 ops/s                              
+... 17 threads finished 782633 ops, at time 1589241916152 ms, 208682.8 ops/s                              
+... 17 threads finished 783906 ops, at time 1589241916252 ms, 216397.0 ops/s                              
+=== interval 7.99717e+07 17.6932
+... 17 threads finished 785140 ops, at time 1589241916352 ms, 209677.3 ops/s                              
+... 17 threads finished 786330 ops, at time 1589241916453 ms, 202221.1 ops/s                              
+... 17 threads finished 787580 ops, at time 1589241916553 ms, 212434.1 ops/s                              
+... 17 threads finished 788801 ops, at time 1589241916653 ms, 207346.1 ops/s                              
+... 17 threads finished 790014 ops, at time 1589241916753 ms, 205997.8 ops/s                              
+... 17 threads finished 791308 ops, at time 1589241916853 ms, 219975.6 ops/s                              
+... 17 threads finished 792575 ops, at time 1589241916953 ms, 215159.8 ops/s                              
+... 17 threads finished 793800 ops, at time 1589241917053 ms, 208148.0 ops/s                              
+... 17 threads finished 795099 ops, at time 1589241917153 ms, 220706.4 ops/s                              
+... 18 threads finished 796390 ops, at time 1589241917253 ms, 232113.1 ops/s                              
+=== interval 8.09717e+07 18.3629
+... 18 threads finished 797600 ops, at time 1589241917353 ms, 217789.1 ops/s                              
+====== miss ratio: ====== miss ratio: ====== miss ratio: 16.2181
+16.2181
+====== miss ratio: -nan
+====== miss ratio: -nan====== miss ratio: 
+====== miss ratio: ====== miss ratio: 40
+====== miss ratio: ====== miss ratio: 0
+-nan
+====== miss ratio: ====== miss ratio: ====== miss ratio: 13.3333
+0
+12.5
+100
+100
+====== miss ratio: 0
+50
+... 18 threads finished 798836 ops, at time 1589241917453 ms, 222279.9 ops/s                              
+... 18 threads finished 800073 ops, at time 1589241917553 ms, 222424.2 ops/s                              
+... 18 threads finished 801350 ops, at time 1589241917653 ms, 229758.9 ops/s                              
+... 18 threads finished 802570 ops, at time 1589241917753 ms, 219360.9 ops/s                              
+... 18 threads finished 803758 ops, at time 1589241917854 ms, 213462.2 ops/s                              
+... 18 threads finished 804965 ops, at time 1589241917954 ms, 217242.6 ops/s                              
+... 18 threads finished 806142 ops, at time 1589241918054 ms, 211688.5 ops/s                              
+... 18 threads finished 807425 ops, at time 1589241918154 ms, 230771.5 ops/s                              
+... 18 threads finished 808628 ops, at time 1589241918254 ms, 216364.7 ops/s                              
+=== interval 8.19718e+07 19.052
+... 18 threads finished 809801 ops, at time 1589241918354 ms, 210878.5 ops/s                              
+... 19 threads finished 811007 ops, at time 1589241918454 ms, 229055.2 ops/s                              
+... 18 threads finished 812217 ops, at time 1589241918554 ms, 217623.7 ops/s                              
+... 18 threads finished 813429 ops, at time 1589241918654 ms, 217968.2 ops/s                              
+... 18 threads finished 814611 ops, at time 1589241918754 ms, 212713.2 ops/s                              
+... 18 threads finished 815777 ops, at time 1589241918854 ms, 209873.7 ops/s                              
+... 18 threads finished 816969 ops, at time 1589241918954 ms, 214429.2 ops/s                              
+... 19 threads finished 818155 ops, at time 1589241919054 ms, 225326.5 ops/s                              
+... 18 threads finished 819350 ops, at time 1589241919154 ms, 214999.0 ops/s                              
+... 19 threads finished 820498 ops, at time 1589241919254 ms, 218080.7 ops/s                              
+=== interval 8.29719e+07 19.7569
+... 19 threads finished 821681 ops, at time 1589241919354 ms, 224754.3 ops/s                              
+... 19 threads finished 822829 ops, at time 1589241919454 ms, 217930.4 ops/s                              
+... 19 threads finished 823996 ops, at time 1589241919554 ms, 221716.7 ops/s                              
+... 19 threads finished 825191 ops, at time 1589241919654 ms, 227011.4 ops/s                              
+... 19 threads finished 826390 ops, at time 1589241919755 ms, 227527.9 ops/s                              
+... 19 threads finished 827543 ops, at time 1589241919855 ms, 218811.8 ops/s                              
+====== miss ratio: ====== miss ratio: 16.3412
+16.3413
+... 19 threads finished 828709 ops, at time 1589241919955 ms, 221380.6 ops/s                              
+... 19 threads finished 829868 ops, at time 1589241920055 ms, 220100.0 ops/s                              
+... 19 threads finished 831053 ops, at time 1589241920155 ms, 225089.2 ops/s                              
+... 20 threads finished 832189 ops, at time 1589241920255 ms, 227104.6 ops/s                              
+=== interval 8.39719e+07 20.4736
+... 20 threads finished 833331 ops, at time 1589241920355 ms, 228283.6 ops/s                              
+... 20 threads finished 834480 ops, at time 1589241920455 ms, 229740.3 ops/s                              
+... 20 threads finished 835644 ops, at time 1589241920555 ms, 232551.2 ops/s                              
+... 20 threads finished 836854 ops, at time 1589241920655 ms, 241845.2 ops/s                              
+... 20 threads finished 838024 ops, at time 1589241920755 ms, 233950.9 ops/s                              
+... 20 threads finished 839182 ops, at time 1589241920855 ms, 231389.4 ops/s                              
+... 20 threads finished 840353 ops, at time 1589241920955 ms, 234169.6 ops/s                              
+... 20 threads finished 841253 ops, at time 1589241921055 ms, 179902.9 ops/s                              
+... 20 threads finished 842376 ops, at time 1589241921155 ms, 224537.1 ops/s                              
+... 21 threads finished 843541 ops, at time 1589241921256 ms, 244190.9 ops/s                              
+=== interval 8.49719e+07 21.1985
+... 21 threads finished 844653 ops, at time 1589241921356 ms, 233221.5 ops/s                              
+... 21 threads finished 845769 ops, at time 1589241921456 ms, 234357.7 ops/s                              
+... 21 threads finished 846883 ops, at time 1589241921556 ms, 233881.5 ops/s                              
+... 21 threads finished 848011 ops, at time 1589241921656 ms, 236825.5 ops/s                              
+... 21 threads finished 849137 ops, at time 1589241921756 ms, 236389.1 ops/s                              
+... 21 threads finished 850235 ops, at time 1589241921856 ms, 230563.9 ops/s                              
+... 21 threads finished 851343 ops, at time 1589241921956 ms, 232435.9 ops/s                              
+... 21 threads finished 852442 ops, at time 1589241922056 ms, 230716.2 ops/s                              
+... 21 threads finished 853531 ops, at time 1589241922156 ms, 228333.8 ops/s                              
+... 21 threads finished 854650 ops, at time 1589241922256 ms, 234860.8 ops/s                              
+====== miss ratio: ====== miss ratio: ====== miss ratio: 16.3511
+16.3511
+====== miss ratio: 16.3511
+====== miss ratio: ====== miss ratio: 33.3333
+====== miss ratio: ====== miss ratio: 00
+
+0
+0
+=== interval 8.5972e+07 21.9277
+... 21 threads finished 855825 ops, at time 1589241922356 ms, 246720.4 ops/s                              
+... 21 threads finished 856987 ops, at time 1589241922456 ms, 243720.2 ops/s                              
+... 21 threads finished 858143 ops, at time 1589241922556 ms, 242636.3 ops/s                              
+... 21 threads finished 859303 ops, at time 1589241922656 ms, 243512.3 ops/s                              
+... 21 threads finished 860446 ops, at time 1589241922756 ms, 239797.4 ops/s                              
+... 21 threads finished 861591 ops, at time 1589241922857 ms, 240183.4 ops/s                              
+... 21 threads finished 862707 ops, at time 1589241922957 ms, 234125.9 ops/s                              
+... 21 threads finished 863819 ops, at time 1589241923057 ms, 233408.0 ops/s                              
+... 21 threads finished 864925 ops, at time 1589241923157 ms, 231870.5 ops/s                              
+... 21 threads finished 866018 ops, at time 1589241923257 ms, 229520.8 ops/s                              
+=== interval 8.6972e+07 22.6572
+... 22 threads finished 867173 ops, at time 1589241923357 ms, 253856.3 ops/s                              
+... 22 threads finished 868247 ops, at time 1589241923457 ms, 236178.4 ops/s                              
+... 22 threads finished 869362 ops, at time 1589241923557 ms, 245248.5 ops/s                              
+... 22 threads finished 870447 ops, at time 1589241923657 ms, 238645.1 ops/s                              
+... 22 threads finished 871549 ops, at time 1589241923757 ms, 242360.0 ops/s                              
+... 22 threads finished 872694 ops, at time 1589241923857 ms, 251439.9 ops/s                              
+... 22 threads finished 873783 ops, at time 1589241923957 ms, 239515.3 ops/s                              
+... 22 threads finished 874883 ops, at time 1589241924057 ms, 241944.4 ops/s                              
+... 22 threads finished 875965 ops, at time 1589241924157 ms, 237987.6 ops/s                              
+... 22 threads finished 877069 ops, at time 1589241924257 ms, 242601.0 ops/s                              
+=== interval 8.79721e+07 23.3833
+... 23 threads finished 878122 ops, at time 1589241924358 ms, 241878.0 ops/s                              
+... 23 threads finished 879197 ops, at time 1589241924458 ms, 247198.1 ops/s                              
+... 23 threads finished 880240 ops, at time 1589241924558 ms, 239695.8 ops/s                              
+====== miss ratio: ====== miss ratio: ====== miss ratio: 16.382
+16.382
+====== miss ratio: 16.382
+-nan
+... 23 threads finished 881323 ops, at time 1589241924658 ms, 248963.0 ops/s                              
+... 23 threads finished 882384 ops, at time 1589241924758 ms, 243995.8 ops/s                              
+... 23 threads finished 883453 ops, at time 1589241924858 ms, 245796.3 ops/s                              
+... 23 threads finished 884516 ops, at time 1589241924958 ms, 244365.4 ops/s                              
+... 23 threads finished 885536 ops, at time 1589241925058 ms, 234269.7 ops/s                              
+... 23 threads finished 886564 ops, at time 1589241925158 ms, 236359.6 ops/s                              
+... 24 threads finished 887610 ops, at time 1589241925258 ms, 250974.7 ops/s                              
+=== interval 8.89722e+07 24.102
+... 24 threads finished 888647 ops, at time 1589241925358 ms, 248472.5 ops/s                              
+... 24 threads finished 889662 ops, at time 1589241925458 ms, 243461.2 ops/s                              
+... 24 threads finished 890681 ops, at time 1589241925558 ms, 244520.9 ops/s                              
+... 24 threads finished 891745 ops, at time 1589241925658 ms, 255212.0 ops/s                              
+... 24 threads finished 892761 ops, at time 1589241925758 ms, 243684.0 ops/s                              
+... 24 threads finished 893801 ops, at time 1589241925858 ms, 249590.0 ops/s                              
+... 24 threads finished 894807 ops, at time 1589241925958 ms, 241271.1 ops/s                              
+... 24 threads finished 895794 ops, at time 1589241926059 ms, 236551.2 ops/s                              
+... 24 threads finished 896799 ops, at time 1589241926159 ms, 240387.5 ops/s                              
+... 24 threads finished 897863 ops, at time 1589241926259 ms, 254695.2 ops/s                              
+=== interval 8.99723e+07 24.8096
+... 24 threads finished 898825 ops, at time 1589241926359 ms, 230820.0 ops/s                              
+... 24 threads finished 899849 ops, at time 1589241926459 ms, 245757.5 ops/s                              
+... 24 threads finished 900872 ops, at time 1589241926559 ms, 245497.9 ops/s                              
+... 24 threads finished 901869 ops, at time 1589241926659 ms, 239227.4 ops/s                              
+... 24 threads finished 902848 ops, at time 1589241926759 ms, 234950.6 ops/s                              
+... 24 threads finished 903838 ops, at time 1589241926859 ms, 237459.9 ops/s                              
+====== miss ratio: ====== miss ratio: 16.4534
+16.4534
+... 24 threads finished 904879 ops, at time 1589241926959 ms, 249800.0 ops/s                              
+... 24 threads finished 905879 ops, at time 1589241927059 ms, 239836.9 ops/s                              
+... 24 threads finished 906870 ops, at time 1589241927160 ms, 237474.3 ops/s                              
+... 25 threads finished 907879 ops, at time 1589241927260 ms, 252212.2 ops/s                              
+=== interval 9.09726e+07 25.5022
+... 25 threads finished 908888 ops, at time 1589241927360 ms, 252234.9 ops/s                              
+... 25 threads finished 909857 ops, at time 1589241927460 ms, 241913.7 ops/s                              
+... 25 threads finished 910813 ops, at time 1589241927560 ms, 238799.4 ops/s                              
+... 25 threads finished 911748 ops, at time 1589241927660 ms, 233385.9 ops/s                              
+... 25 threads finished 912736 ops, at time 1589241927760 ms, 246916.0 ops/s                              
+... 25 threads finished 913710 ops, at time 1589241927860 ms, 243349.1 ops/s                              
+... 25 threads finished 914698 ops, at time 1589241927960 ms, 246995.1 ops/s                              
+... 25 threads finished 915670 ops, at time 1589241928060 ms, 242949.0 ops/s                              
+... 25 threads finished 916665 ops, at time 1589241928160 ms, 248722.6 ops/s                              
+... 26 threads finished 917608 ops, at time 1589241928260 ms, 244798.1 ops/s                              
+=== interval 9.19726e+07 26.1761
+... 26 threads finished 918537 ops, at time 1589241928360 ms, 241390.3 ops/s                              
+... 26 threads finished 919487 ops, at time 1589241928460 ms, 246829.7 ops/s                              
+... 26 threads finished 920400 ops, at time 1589241928561 ms, 236979.5 ops/s                              
+... 26 threads finished 921387 ops, at time 1589241928661 ms, 256581.5 ops/s                              
+... 26 threads finished 922340 ops, at time 1589241928761 ms, 247614.1 ops/s                              
+... 26 threads finished 923287 ops, at time 1589241928861 ms, 246067.4 ops/s                              
+... 26 threads finished 924266 ops, at time 1589241928961 ms, 254323.8 ops/s                              
+... 26 threads finished 925210 ops, at time 1589241929061 ms, 245403.2 ops/s                              
+====== miss ratio: ====== miss ratio: ====== miss ratio: 16.584116.5841
+====== miss ratio: 16.584
+
+====== miss ratio: -nan
+====== miss ratio: ====== miss ratio: 0
+====== miss ratio: 25
+0
+====== miss ratio: ====== miss ratio: ... 26 threads finished 926141 ops, at time 1589241929161 ms, 241064.4 ops/s                              
+====== miss ratio: ====== miss ratio: 00====== miss ratio: 
+00
+
+0
+-nan
+
+... 26 threads finished 927114 ops, at time 1589241929261 ms, 252737.4 ops/s                              
+=== interval 9.29727e+07 26.8278
+... 26 threads finished 928045 ops, at time 1589241929361 ms, 241985.0 ops/s                              
+... 26 threads finished 928982 ops, at time 1589241929461 ms, 243418.0 ops/s                              
+... 26 threads finished 929920 ops, at time 1589241929561 ms, 243862.9 ops/s                              
+... 26 threads finished 930873 ops, at time 1589241929662 ms, 247324.9 ops/s                              
+... 26 threads finished 931861 ops, at time 1589241929762 ms, 256584.9 ops/s                              
+... 26 threads finished 932803 ops, at time 1589241929862 ms, 244878.4 ops/s                              
+... 26 threads finished 933713 ops, at time 1589241929962 ms, 236566.9 ops/s                              
+... 26 threads finished 934665 ops, at time 1589241930062 ms, 247181.4 ops/s                              
+... 26 threads finished 935623 ops, at time 1589241930162 ms, 249017.7 ops/s                              
+... 27 threads finished 936532 ops, at time 1589241930262 ms, 245260.8 ops/s                              
+=== interval 9.39728e+07 27.4537
+... 27 threads finished 937400 ops, at time 1589241930362 ms, 234093.1 ops/s                              
+... 27 threads finished 938341 ops, at time 1589241930462 ms, 253801.0 ops/s                              
+... 27 threads finished 939265 ops, at time 1589241930562 ms, 249442.6 ops/s                              
+... 27 threads finished 940241 ops, at time 1589241930662 ms, 263496.3 ops/s                              
+... 27 threads finished 941153 ops, at time 1589241930762 ms, 246198.1 ops/s                              
+... 27 threads finished 942092 ops, at time 1589241930862 ms, 253466.6 ops/s                              
+... 27 threads finished 943004 ops, at time 1589241930962 ms, 246235.1 ops/s                              
+... 27 threads finished 943924 ops, at time 1589241931062 ms, 248357.8 ops/s                              
+... 27 threads finished 944920 ops, at time 1589241931162 ms, 268764.1 ops/s                              
+... 28 threads finished 945834 ops, at time 1589241931262 ms, 255674.6 ops/s                              
+=== interval 9.49729e+07 28.0506
+... 28 threads finished 946708 ops, at time 1589241931363 ms, 244348.6 ops/s                              
+====== miss ratio: ====== miss ratio: 16.6274
+16.6275
+... 28 threads finished 947599 ops, at time 1589241931463 ms, 249133.7 ops/s                              
+... 28 threads finished 948497 ops, at time 1589241931563 ms, 251013.3 ops/s                              
+... 28 threads finished 949360 ops, at time 1589241931663 ms, 241613.4 ops/s                              
+... 28 threads finished 950231 ops, at time 1589241931763 ms, 243814.2 ops/s                              
+... 28 threads finished 951153 ops, at time 1589241931863 ms, 258005.2 ops/s                              
+... 28 threads finished 952055 ops, at time 1589241931963 ms, 252544.8 ops/s                              
+... 27 threads finished 952945 ops, at time 1589241932063 ms, 239956.9 ops/s                              
+... 28 threads finished 953839 ops, at time 1589241932163 ms, 250074.9 ops/s                              
+... 28 threads finished 954704 ops, at time 1589241932263 ms, 242095.9 ops/s                              
+=== interval 9.5973e+07 28.6152
+... 28 threads finished 955612 ops, at time 1589241932363 ms, 254148.5 ops/s                              
+... 28 threads finished 956497 ops, at time 1589241932463 ms, 247377.0 ops/s                              
+... 28 threads finished 957398 ops, at time 1589241932564 ms, 251829.2 ops/s                              
+... 28 threads finished 958268 ops, at time 1589241932664 ms, 243536.7 ops/s                              
+... 28 threads finished 959145 ops, at time 1589241932764 ms, 245405.4 ops/s                              
+... 28 threads finished 960060 ops, at time 1589241932864 ms, 256174.4 ops/s                              
+... 28 threads finished 960964 ops, at time 1589241932964 ms, 253071.9 ops/s                              
+... 28 threads finished 961827 ops, at time 1589241933064 ms, 241574.8 ops/s                              
+... 28 threads finished 962721 ops, at time 1589241933164 ms, 250307.5 ops/s                              
+... 29 threads finished 963579 ops, at time 1589241933264 ms, 248556.5 ops/s                              
+=== interval 9.6973e+07 29.1446
+... 29 threads finished 964438 ops, at time 1589241933364 ms, 249010.4 ops/s                              
+... 29 threads finished 965308 ops, at time 1589241933464 ms, 251711.0 ops/s                              
+... 29 threads finished 966181 ops, at time 1589241933564 ms, 252800.9 ops/s                              
+... 29 threads finished 967012 ops, at time 1589241933664 ms, 240744.4 ops/s                              
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 16.628816.628816.6288
+
+
+16.6288
+... 29 threads finished 967862 ops, at time 1589241933764 ms, 246401.4 ops/s                              
+... 29 threads finished 968723 ops, at time 1589241933865 ms, 249532.8 ops/s                              
+... 29 threads finished 969526 ops, at time 1589241933965 ms, 232737.3 ops/s                              
+... 29 threads finished 970378 ops, at time 1589241934065 ms, 246796.2 ops/s                              
+... 29 threads finished 971256 ops, at time 1589241934165 ms, 254251.3 ops/s                              
+... 29 threads finished 972105 ops, at time 1589241934265 ms, 246195.2 ops/s                              
+=== interval 9.79731e+07 29.6359
+... 29 threads finished 972931 ops, at time 1589241934365 ms, 239377.2 ops/s                              
+... 29 threads finished 973762 ops, at time 1589241934465 ms, 240944.2 ops/s                              
+... 29 threads finished 974611 ops, at time 1589241934565 ms, 246082.0 ops/s                              
+... 29 threads finished 975491 ops, at time 1589241934665 ms, 254810.1 ops/s                              
+... 29 threads finished 976342 ops, at time 1589241934765 ms, 246577.9 ops/s                              
+... 29 threads finished 977218 ops, at time 1589241934865 ms, 253961.3 ops/s                              
+... 29 threads finished 978103 ops, at time 1589241934966 ms, 255887.5 ops/s                              
+... 29 threads finished 978950 ops, at time 1589241935066 ms, 245487.6 ops/s      ========================= overall  1  experiments =============================
+==================== results in  /home/kanwu/Research/results/leveldb/zippydb/test  ============================
+                ********* Configured with **********
+{'type': 'no_name', 'threads': 32, 'swapiness': 0, 'readahead': 128, 'memory': 2147483648}
+Doing: echo 128 > /sys/class/block/nvme0n1/queue/read_ahead_kb
+Returned 0 echo 128 > /sys/class/block/nvme0n1/queue/read_ahead_kb
+Doing: echo 128 > /sys/class/block/nvme1n1/queue/read_ahead_kb
+Returned 0 echo 128 > /sys/class/block/nvme1n1/queue/read_ahead_kb
+Doing: cgcreate -g memory:charlie
+Returned 0 cgcreate -g memory:charlie
+Doing: sync; echo 3 > /proc/sys/vm/drop_caches; sleep 1
+Returned 0 sync; echo 3 > /proc/sys/vm/drop_caches; sleep 1
+Doing: pkill iostat
+Returned 1 pkill iostat
+Doing: iostat -mx 1 /dev/nvme0n1 /dev/nvme1n1  > /dev/shm//iostat.out &
+Returned 0 iostat -mx 1 /dev/nvme0n1 /dev/nvme1n1  > /dev/shm//iostat.out &
+Doing: sudo pkill blkparse
+Returned 1 sudo pkill blkparse
+Doing: sudo pkill blktrace
+Returned 1 sudo pkill blktrace
+              *********** start running ***********
+Doing: rm -r /mnt/970/db_1024 ; cp -r /mnt/970/db_1024_backup /mnt/970/db_1024
+Returned 0 rm -r /mnt/970/db_1024 ; cp -r /mnt/970/db_1024_backup /mnt/970/db_1024
+/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/970/db_1024 --value_size=1024 --write_buffer_size=134217728 --cache_size=0 --compression_ratio=1 --benchmarks=mixgraph --use_existing_db=1 --db_num=80000000 --reads=5000000 --threads=32
+Doing: cgexec -g memory:charlie --sticky /home/kanwu/Research/739-wisckey/db_bench --db=/mnt/970/db_1024 --value_size=1024 --write_buffer_size=134217728 --cache_size=0 --compression_ratio=1 --benchmarks=mixgraph --use_existing_db=1 --db_num=80000000 --reads=5000000 --threads=32 &
+Returned 0 cgexec -g memory:charlie --sticky /home/kanwu/Research/739-wisckey/db_bench --db=/mnt/970/db_1024 --value_size=1024 --write_buffer_size=134217728 --cache_size=0 --compression_ratio=1 --benchmarks=mixgraph --use_existing_db=1 --db_num=80000000 --reads=5000000 --threads=32 &
+Doing: sleep 100; pkill db_bench
+Returned 0 sleep 100; pkill db_bench
+              **************** done ***************
+Doing: sleep 1; sync; sleep 1
+Returned 0 sleep 1; sync; sleep 1
+Doing: pkill iostat; sleep 1
+Returned 0 pkill iostat; sleep 1
+Doing: sync; sleep 1
+Returned 0 sync; sleep 1
+Doing: cp /dev/shm//running /home/kanwu/Research/results/leveldb/zippydb/test/19-02-02_20200511/running
+Returned 0 cp /dev/shm//running /home/kanwu/Research/results/leveldb/zippydb/test/19-02-02_20200511/running
+Doing: cp /dev/shm//iostat.out /home/kanwu/Research/results/leveldb/zippydb/test/19-02-02_20200511/iostat.out
+Returned 0 cp /dev/shm//iostat.out /home/kanwu/Research/results/leveldb/zippydb/test/19-02-02_20200511/iostat.out
+==== utilization statistics ====
+iowait  system  user  idle
+37.0502 17.9661 35.9914 8.9915
+1310.67333333 429.103333333
+=================================
