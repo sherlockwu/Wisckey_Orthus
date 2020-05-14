@@ -98,7 +98,10 @@ Status ReadBlock(RandomAccessFile* file,
       
     //look up the cache
     cache_handle = persist_block_cache->Lookup(key, buf);
-    if (cache_handle == NULL) {
+    if (cache_handle == (Cache::Handle*) 666) {
+      // even cache miss, rejected; to read the pages from flash
+      s = file->Read(handle.offset(), n + kBlockTrailerSize, &contents, buf);
+    } else if (cache_handle == NULL) {
       // read the pages from flash
       s = file->Read(handle.offset(), n + kBlockTrailerSize, &contents, buf);
       

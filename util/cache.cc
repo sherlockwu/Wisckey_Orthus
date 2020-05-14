@@ -735,7 +735,7 @@ class ShardedBucketLRUCache : public Cache {
       cache_miss += 1;
     }
     if ((uint64_t)((char *)bucket_handle) == 666) {
-      bucket_handle = NULL;
+      bucket_handle = (Handle *) 666;
     }
 
 

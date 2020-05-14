@@ -889,7 +889,6 @@ class Benchmark {
     //options.persist_block_cache = NULL;
     
     options.use_persist_cache = true;
-    //options.persist_block_cache = NewPersistLRUCache(((size_t)34)*1024*1024*1024);
     options.persist_block_cache = NewPersistLRUCache(((size_t)34)*1024*1024*1024);
     
     // zippydb is so skewed, use a 1/10 cache size 
@@ -1523,7 +1522,7 @@ class Benchmark {
     int found = 0;
     int64_t bytes = 0;
     // init the zipfian random generator
-    double g_zipfian_theta = 0.9;
+    double g_zipfian_theta = 0.99;
     ZipfianRandom zipfian_rng(FLAGS_db_num, g_zipfian_theta, 1237 + thread->tid); 
 
     // warmup phase
@@ -1554,7 +1553,7 @@ class Benchmark {
     // TO test classic cache or tuned cache
     flag_monitor = true;
     
-    double read_ratio = 0.5;
+    double read_ratio = 1.0;
     double scan_ratio = 0.0;
     double write_ratio = 0.5;
     bool rmw = true;    // whether the write is read modify write

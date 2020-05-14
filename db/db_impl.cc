@@ -238,10 +238,10 @@ void * monitor_func(void *vargp) {
       //while ( !( detect_miss_ratio >= last_miss_ratio - 0.25 && detect_miss_ratio <= last_miss_ratio + 0.25) ){// || detect_miss_ratio >= 15.0) {
       while ( !( detect_miss_ratio >= last_miss_ratio - 0.25 && detect_miss_ratio <= last_miss_ratio + 0.25) ){// || detect_miss_ratio >= 15.0) {
 	//usleep(1000000);
-	usleep(1000000);
+	usleep(100000);
 	last_miss_ratio = detect_miss_ratio;
 	detect_miss_ratio = cache_ptr->check_miss_ratio();
-	std::cout << "detect miss ratio: " << detect_miss_ratio << std::endl;
+	std::cout << "detect miss ratio: " << detect_miss_ratio << " " << last_miss_ratio << std::endl;
       }
 
       std::cout << "================ Max L1 gets stable\n";
@@ -252,6 +252,9 @@ void * monitor_func(void *vargp) {
       float tp1, tp2, tp3;
 
       for (int iteration = 0; ; iteration++) {
+	if (iteration % 2 == 0)
+	  continue;
+
 	int * to_change_ratio = iteration%2==0?&data_admit_ratio:&load_admit_ratio;
 	
         ratio1 = *to_change_ratio - step;
@@ -266,8 +269,6 @@ void * monitor_func(void *vargp) {
           tp2 = check_throughput();
 	}
 	
-	//if (iteration % 2 == 0)
-	//  continue;
 
 	if (ratio1 < 0) {
 	  tp1 = -10;
@@ -1651,11 +1652,13 @@ Status DBImpl::ReadVlog(uint64_t offset, size_t n, Slice* result, char* scratch)
       // look up the cache
       char* page_buf = new char[(end_page - start_page + 1) * 4096];
       cache_handle = persist_block_cache->Lookup(key, page_buf);
-      if (cache_handle == NULL) {
+      if (cache_handle == (Cache::Handle*) 666) {
+        // even cache miss, rejected; to read the pages from flash
+	s = vlog_read_->Read(start_page * 4096, (end_page - start_page + 1) * 4096, result, page_buf);
+      } else if (cache_handle == NULL) {
 	// read the pages from the real vlog file
 	s = vlog_read_->Read(start_page * 4096, (end_page - start_page + 1) * 4096, result, page_buf);
 	// decide whether to admit
-        //if (flag_admit) {
         if ((fastrand()%100) < data_admit_ratio) {
 	  // insert the pages into the cache 
           cache_handle = persist_block_cache->Insert(key, (end_page - start_page + 1) * 4096, page_buf);

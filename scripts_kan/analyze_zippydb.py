@@ -22,12 +22,12 @@ with open(report_file_name, 'r')  as report_file:
                 end_to_end_throughput[throughput_timing] = throughput_num
             else:
                 end_to_end_throughput[throughput_timing] += throughput_num
-            print throughput_timing, throughput_num
+            #print throughput_timing, throughput_num
 
         if 'Data admit ratio' in line:
             data_admit_ratio =  int(re.sub("[^0-9]", "", line.split('Load')[0]))
             load_admit_ratio =  int(re.sub("[^0-9.]", "", line.split('Load')[-1]))
-            #print data_admit_ratio, load_admit_ratio
+            print data_admit_ratio, load_admit_ratio
         
         if 'Optane read throughput' in line:
             line = re.sub("-nan", "0", line)

@@ -22,7 +22,7 @@ class Experiment(object):
     def __init__(self):
         # config something
         #self.exp_name = 'leveldb/ycsb/1kb_zipf_09/tune_cache'
-        self.exp_name = 'leveldb/ycsb/D/test/'
+        self.exp_name = 'leveldb/ycsb/C/test/'
         self.home_dir = '/home/kanwu/Research/'
         self.res_dir = self.home_dir + 'results/' + self.exp_name
         self.tmp_dir = '/dev/shm/'
@@ -40,7 +40,8 @@ class Experiment(object):
 
         # experiment config
         config = {
-          'type': ['no_name'],
+          #'type': ['16kb'],
+          'type': ['1kb'],
           #'threads': [1, 4, 8, 16, 24, 32],
           #'threads': [1, 8, 16, 24, 32],
           'threads': [32],
@@ -102,19 +103,22 @@ class Experiment(object):
  
     def exp(self, config):
         print '              *********** start running ***********'
-        
-        #shcmd('rm -r /mnt/970/db_1024 ; cp -r /mnt/970/db_1024_backup /mnt/970/db_1024')
-        shcmd('rm -r /mnt/970/db_16384 ; cp -r /mnt/970/db_16384_backup /mnt/970/db_16384')
+        print config
 
-        #Small: 1KB value
-        #cmd = '/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/970/db_1024 --value_size=1024 --cache_size=0 --compression_ratio=1 --benchmarks=ycsb --use_existing_db=1 --db_num=80000000 --reads=18000000 --write_buffer_size=134217728 ' + '--threads=' + str(config['threads']) #+ ' > /dev/shm/running'
+
+        #shcmd('rm -r /mnt/970/db_1024 ; cp -r /mnt/970/db_1024_backup /mnt/970/db_1024')
+        #shcmd('rm -r /mnt/970/db_16384 ; cp -r /mnt/970/db_16384_backup /mnt/970/db_16384')
+        if config['type'] == '1kb':
+            #Small: 1KB value
+            #cmd = '/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/970/db_1024 --value_size=1024 --cache_size=0 --compression_ratio=1 --benchmarks=ycsb --use_existing_db=1 --db_num=80000000 --reads=18000000 --write_buffer_size=134217728 ' + '--threads=' + str(config['threads']) #+ ' > /dev/shm/running'
+            cmd = '/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/970/db_1024 --value_size=1024 --cache_size=0 --compression_ratio=1 --benchmarks=ycsb --use_existing_db=1 --db_num=80000000 --reads=25000000 --write_buffer_size=134217728 ' + '--threads=' + str(config['threads']) #+ ' > /dev/shm/running'
         
         #Large: 64KB value
         #cmd = '/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/970/db_65536 --value_size=65536 --cache_size=0 --compression_ratio=1 --benchmarks=ycsb --use_existing_db=1 --db_num=1700000 --reads=5000000 --write_buffer_size=134217728 ' + '--threads=' + str(config['threads']) #+ ' > /dev/shm/running'
         
         #Medium: 16KB value
-        
-        cmd = '/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/970/db_16384 --value_size=16384 --cache_size=0 --compression_ratio=1 --benchmarks=ycsb --use_existing_db=1 --db_num=6600000 --reads=10000000 --write_buffer_size=134217728 ' + '--threads=' + str(config['threads']) #+ ' > /dev/shm/running'
+        if config['type'] == '16kb':
+            cmd = '/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/970/db_16384 --value_size=16384 --cache_size=0 --compression_ratio=1 --benchmarks=ycsb --use_existing_db=1 --db_num=6600000 --reads=10000000 --write_buffer_size=134217728 ' + '--threads=' + str(config['threads']) #+ ' > /dev/shm/running'
         
         print cmd
         
