@@ -252,8 +252,8 @@ void * monitor_func(void *vargp) {
       float tp1, tp2, tp3;
 
       for (int iteration = 0; ; iteration++) {
-	if (iteration % 2 == 0)
-	  continue;
+	//if (iteration % 2 == 0)
+	//  continue;
 
 	int * to_change_ratio = iteration%2==0?&data_admit_ratio:&load_admit_ratio;
 	
