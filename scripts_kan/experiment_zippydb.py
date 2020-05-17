@@ -45,7 +45,7 @@ class Experiment(object):
           #'keyrange_num': [5, 6, 7], 
           'keyrange_num': [6], 
           #'monitor': [0, 1], 
-          'monitor': [1], 
+          'monitor': [0, 1], 
           #'threads': [1, 4, 8, 16, 24, 32],
           #'threads': [1, 8, 16, 24, 32],
           #'threads': [4, 8, 16, 24],

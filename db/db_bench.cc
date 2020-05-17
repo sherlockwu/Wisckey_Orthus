@@ -288,6 +288,7 @@ class Stats {
     done_put_ = last_done_put_ = 0;
     done_scan_ = last_done_scan_ = 0;
     next_report_ = 10000;
+    start_ = Env::Default()->NowMicros();
   }
 
   void ResetSineInterval() {
@@ -1304,6 +1305,8 @@ class Benchmark {
 
     std::cout << "==== thread" << thread->tid << " warming up finished\n";
     
+    thread->stats.ClearStats();
+    
     flag_monitor = FLAGS_monitor;
     //flag_monitor = true;
     //flag_monitor = true;
@@ -1326,8 +1329,8 @@ class Benchmark {
 	double usecs_since_start = static_cast<double>(now - thread->stats.GetStart());
          thread->stats.ResetSineInterval();
 	//double mix_rate_with_noise = SineRate(usecs_since_start / 1000000.0);
-        //mix_rate_with_noise = SineRate(usecs_since_start / 1000.0);
-        mix_rate_with_noise = SineRate(usecs_since_start / 500.0);
+        //mix_rate_with_noise = SineRate(usecs_since_start / 500.0);
+        mix_rate_with_noise = SineRate(usecs_since_start / 1000.0);
         //mix_rate_with_noise = 24;
 	if (thread -> tid == 0)
           std::cout << "=== interval " << usecs_since_start << " " << mix_rate_with_noise << "\n";

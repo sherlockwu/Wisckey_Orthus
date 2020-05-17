@@ -253,8 +253,8 @@ void * monitor_func(void *vargp) {
       int ratio1, ratio2, ratio3;   // indicating a window eg. [45, 50, 55]
       float tp1, tp2, tp3;
 
-      //data_admit_ratio = 0;
-      data_admit_ratio = 100;
+      data_admit_ratio = 0;
+      //data_admit_ratio = 100;
       for (int iteration = 0; ; iteration++) {
 	
 	//load_admit_ratio = 100;
