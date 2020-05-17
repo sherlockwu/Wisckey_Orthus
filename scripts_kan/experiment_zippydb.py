@@ -21,7 +21,7 @@ GB = 1024 * MB
 class Experiment(object):
     def __init__(self):
         # config something
-        self.exp_name = 'leveldb/zippydb/test'
+        self.exp_name = 'leveldb/zippydb/'
         self.home_dir = '/home/kanwu/Research/'
         self.res_dir = self.home_dir + 'results/' + self.exp_name
         self.tmp_dir = '/dev/shm/'
@@ -39,12 +39,20 @@ class Experiment(object):
 
         # experiment config
         config = {
-          'type': ['no_name'],
+          'type': ['test'], 
+          #'keyrange_num': [7], 
+          #'keyrange_num': [1, 2, 3, 4, 5, 6, 7], 
+          #'keyrange_num': [5, 6, 7], 
+          'keyrange_num': [6], 
+          #'monitor': [0, 1], 
+          'monitor': [1], 
           #'threads': [1, 4, 8, 16, 24, 32],
           #'threads': [1, 8, 16, 24, 32],
           #'threads': [4, 8, 16, 24],
-          'threads': [32],
+          #'threads': [24],  
+          'threads': [32],  
           #'memory': [int(1*GB)],    #'memory limit'
+          #'memory': [int(2*GB)],    #'memory limit'
           'memory': [int(2*GB)],    #'memory limit'
           'swapiness': [0],
           #'readahead': [128, 0, 16]    # default 128KB
@@ -104,24 +112,31 @@ class Experiment(object):
         print '              *********** start running ***********'
         
         
-        shcmd('rm -r /mnt/970/db_1024 ; cp -r /mnt/970/db_1024_backup /mnt/970/db_1024')
-        #shcmd('rm -r /mnt/970/db_16384 ; cp -r /mnt/970/db_16384_backup /mnt/970/db_16384')
+        #shcmd('rm -r /mnt/970/db_1024 ; cp -r /mnt/970/db_1024_backup /mnt/970/db_1024')
+        shcmd('rm -r /mnt/970/db_16384 ; cp -r /mnt/970/db_16384_backup /mnt/970/db_16384')
+        
+        # try key range number 
+        #cmd = '/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/970/db_1024 --value_size=1024 --write_buffer_size=134217728 --cache_size=0 --compression_ratio=1 --benchmarks=mixgraph --use_existing_db=1 --db_num=80000000 --reads=5000000 ' + '--threads=' + str(config['threads']) + ' --keyrange_num=' + str(config['keyrange_num']) # + ' > /dev/shm/running'
         
         #Small: 1KB value
-        cmd = '/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/970/db_1024 --value_size=1024 --write_buffer_size=134217728 --cache_size=0 --compression_ratio=1 --benchmarks=mixgraph --use_existing_db=1 --db_num=80000000 --reads=5000000 ' + '--threads=' + str(config['threads']) # + ' > /dev/shm/running'
+        #cmd = '/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/970/db_1024 --value_size=1024 --write_buffer_size=134217728 --cache_size=0 --compression_ratio=1 --benchmarks=mixgraph --use_existing_db=1 --db_num=80000000 --reads=5000000 ' + '--threads=' + str(config['threads']) # + ' > /dev/shm/running'
         #cmd = '/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/optane/db_1024 --value_size=1024 --write_buffer_size=134217728 --cache_size=0 --compression_ratio=1 --benchmarks=mixgraph --use_existing_db=1 --db_num=80000000 --reads=2000000 ' + '--threads=' + str(config['threads']) + ' > /dev/shm/running'
+        
+        # 200 GB 1KB
+        #cmd = '/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/970/db_1024 --value_size=1024 --write_buffer_size=134217728 --cache_size=0 --compression_ratio=1 --benchmarks=mixgraph --use_existing_db=1 --db_num=160000000 --reads=5000000 ' + '--threads=' + str(config['threads']) # + ' > /dev/shm/running'
         
         #Large: 64KB value
         #cmd = '/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/970/db_65536 --value_size=65536 --cache_size=0 --compression_ratio=1 --benchmarks=ycsb --use_existing_db=1 --db_num=1700000 --reads=5000000 ' + '--threads=' + str(config['threads']) #+ ' > /dev/shm/running'
         
         #Medium: 16KB value
-        #cmd = '/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/970/db_16384 --value_size=16384 --write_buffer_size=134217728 --cache_size=0 --compression_ratio=1 --benchmarks=mixgraph --use_existing_db=1 --db_num=6600000 --reads=10000000 ' + '--threads=' + str(config['threads']) #+ ' > /dev/shm/running'
+        #cmd = '/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/970/db_16384 --value_size=16384 --write_buffer_size=134217728 --cache_size=0 --compression_ratio=1 --benchmarks=mixgraph --use_existing_db=1 --db_num=6600000 --reads=10000000 ' + '--threads=' + str(config['threads']) + ' --keyrange_num=' + str(config['keyrange_num']) #+ ' > /dev/shm/running'
+        cmd = '/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/970/db_16384 --value_size=16384 --write_buffer_size=134217728 --cache_size=0 --compression_ratio=1 --benchmarks=mixgraph --use_existing_db=1 --db_num=6600000 --reads=10000000 ' + '--threads=' + str(config['threads']) + ' --keyrange_num=' + str(config['keyrange_num']) + ' --monitor=' + str(config['monitor'])  + ' > /dev/shm/running'
         
         print cmd
         
         
         shcmd('cgexec -g memory:charlie --sticky ' + cmd + ' &')
-        shcmd('sleep 100; pkill db_bench') 
+        shcmd('sleep 200; pkill db_bench') 
         #p = self.cg.execute(shlex.split(cmd))
         #p.wait()
 

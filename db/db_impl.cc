@@ -138,7 +138,9 @@ uint64_t perf_counter()
 }
 
 
-int scheduler_step = 5;
+int scheduler_step = 2;
+//int scheduler_step = 2;
+//int scheduler_frequency = 5000;
 int scheduler_frequency = 5000;
 
 int fd_optane, fd_flash;
@@ -244,25 +246,29 @@ void * monitor_func(void *vargp) {
 	std::cout << "detect miss ratio: " << detect_miss_ratio << " " << last_miss_ratio << std::endl;
       }
 
-      std::cout << "================ Max L1 gets stable\n";
+      std::cout << "================ Classic Caching gets stable\n";
       
       // it's time to optimize Max(L1 + L2) based on Max(L1)
       float basic_miss_ratio = detect_miss_ratio; 
       int ratio1, ratio2, ratio3;   // indicating a window eg. [45, 50, 55]
       float tp1, tp2, tp3;
 
+      //data_admit_ratio = 0;
+      data_admit_ratio = 100;
       for (int iteration = 0; ; iteration++) {
-	//if (iteration % 2 == 0)
-	//  continue;
+	
+	//load_admit_ratio = 100;
+	//usleep(100000);
+	//continue;
 
-	int * to_change_ratio = iteration%2==0?&data_admit_ratio:&load_admit_ratio;
+	int * to_change_ratio = &load_admit_ratio;
 	
         ratio1 = *to_change_ratio - step;
         ratio2 = *to_change_ratio;
         ratio3 = *to_change_ratio + step;
        
 	//if (true && iteration % 20  == 0) {
-	if (true && iteration % 5  == 0) {   // 5 * 4 * frequency = 100 ms
+	if (false && iteration % 5  == 0) {   // 5 * 4 * frequency = 100 ms
 	  std::cout << "After iteration " << iteration << " : " << data_admit_ratio << " " << load_admit_ratio << std::endl;
 	  tp2 = check_throughput(true);
 	} else {
@@ -287,11 +293,11 @@ void * monitor_func(void *vargp) {
 
         while (true) {
             // detect whether workload has changed -> reoptimize
-	    detect_miss_ratio = cache_ptr->check_miss_ratio();
+	    /*detect_miss_ratio = cache_ptr->check_miss_ratio();
 	    if ( true && !( detect_miss_ratio <= basic_miss_ratio + 10) )  {
 	      std::cout <<  "detect miss ratio: " << detect_miss_ratio << ", basic miss ratio: " << basic_miss_ratio << std::endl;  
               goto reoptimize;
-            }
+            }*/
             float max_tp = std::max(tp1, std::max(tp2, tp3));
             if (tp2 == max_tp) {
                 *to_change_ratio = ratio2;
@@ -326,6 +332,12 @@ void * monitor_func(void *vargp) {
                 continue;
             }
         }
+
+	// TODO if it gets stable to 100\%
+	if  (*to_change_ratio == 100) {
+	  std::cout << "====== Found the optimal is 100%, hit rate < w0\n";
+	  goto reoptimize;
+	}
 
       }
     } else {

@@ -121,20 +121,26 @@ static const char* FLAGS_db = NULL;
 
 // Kan: For general benchmark
 int num_threads_measure = 1;
+static bool FLAGS_monitor = false;
 
 // Kan: For zippydb
 //  key:
-static int FLAGS_keyrange_num = 3;
+//static int FLAGS_keyrange_num = 10;
+//static int FLAGS_keyrange_num = 3;
+//static int FLAGS_keyrange_num = 5;
+static int FLAGS_keyrange_num = 1;
 // -keyrange_dist_a=14.18 -keyrange_dist_b=-2.917 -keyrange_dist_c=0.0164 -keyrange_dist_d=-0.08082
-static int FLAGS_keyrange_dist_a = 14.18;
-static int FLAGS_keyrange_dist_b = -2.917;
-static int FLAGS_keyrange_dist_c = 0.0164;
-static int FLAGS_keyrange_dist_d = -0.08082;
+static double FLAGS_keyrange_dist_a = 14.18;
+static double FLAGS_keyrange_dist_b = -2.917;
+static double FLAGS_keyrange_dist_c = 0.0164;
+static double FLAGS_keyrange_dist_d = -0.08082;
     
 //  query type
 static double FLAGS_mix_get_ratio = 0.85;
+//static double FLAGS_mix_get_ratio = 1.0;
 //static double FLAGS_mix_get_ratio = 1.00;
 static double FLAGS_mix_put_ratio = 0.14;
+//static double FLAGS_mix_put_ratio = 0.15;
 static double FLAGS_mix_seek_ratio = 0.01;
 
 //  value:
@@ -148,16 +154,16 @@ static double FLAGS_iter_sigma = 25.45;
 // QPS: -sine_a=1000 -sine_b=0.000073 -sine_d=4500
 //      FLAGS_sine_a*sin((FLAGS_sine_b*x) + FLAGS_sine_c) + FLAGS_sine_d;
 //static double FLAGS_sine_a = 1000;
-static double FLAGS_sine_a = 10;
+static double FLAGS_sine_a = 12;
 static double FLAGS_sine_b = 0.000073;
 static double FLAGS_sine_c = 0;
 //static double FLAGS_sine_d = 4500;
-static double FLAGS_sine_d = 22;
+static double FLAGS_sine_d = 20;
 //static uint64_t FLAGS_sine_mix_rate_interval_milliseconds = 5000;
 static uint64_t FLAGS_sine_mix_rate_interval_milliseconds = 1000;
 static uint64_t throughput_report_interval = 100; // 100 ms report once
 
-int running_threads = 32;
+int running_threads = 24;
 
 
 
@@ -227,6 +233,10 @@ class Stats {
   double seconds_;
   int done_;
   int last_done_;
+  int done_put_;
+  int last_done_put_;
+  int done_scan_;
+  int last_done_scan_;
   int next_report_;
   int64_t bytes_;
   double last_op_finish_;
@@ -242,6 +252,8 @@ class Stats {
     hist_.Clear();
     done_ = 0;
     last_done_ = 0;
+    done_put_ = last_done_put_ = 0;
+    done_scan_ = last_done_scan_ = 0;
     bytes_ = 0;
     seconds_ = 0;
     start_ = Env::Default()->NowMicros();
@@ -273,6 +285,8 @@ class Stats {
 
   void ClearStats() {
     last_done_ = done_ = 0;
+    done_put_ = last_done_put_ = 0;
+    done_scan_ = last_done_scan_ = 0;
     next_report_ = 10000;
   }
 
@@ -300,8 +314,14 @@ class Stats {
       last_op_finish_ = now;
     }
 
-    
-    done_++;
+    if (type == 0)
+      done_++;
+    if (type == 2)
+      done_scan_++;
+    if (type == 1)
+      done_put_++;
+
+
       
      
     uint64_t now = Env::Default()->NowMicros();
@@ -316,16 +336,24 @@ class Stats {
         (throughput_report_interval * uint64_t{1000})) {
       
       double micros = now - last_op_finish_;
-      int last_finished = done_ - last_done_;
       last_op_finish_ = now;
+      
+      int last_finished = done_ - last_done_;
+      int last_finished_put = done_put_ - last_done_put_;
+      int last_finished_scan = done_scan_ - last_done_scan_;
       last_done_ = done_;
+      last_done_put_ = done_put_;
+      last_done_scan_ = done_scan_;
 
-      double speed = last_finished / micros * 1000000;
+      double speed_get = last_finished / micros * 1000000 * (int) running_threads;
+      double speed_put = last_finished_put / micros * 1000000 * (int) running_threads;
+      double speed_scan = last_finished_scan / micros * 1000000 * (int) running_threads;
       //fprintf(stdout, "... thread %d finished %d ops, %.1f ops/s%30s\n", tid, done_, speed, "");
       
       if (tid == 0) {
         //fprintf(stdout, "... %d threads finished at time %ld ms, %.1f ops/s%30s\n", FLAGS_threads, now/ 1000, speed * FLAGS_threads, "");
-        fprintf(stdout, "... %d threads finished %d ops, at time %ld ms, %.1f ops/s%30s\n", running_threads, done_, now/ 1000, speed * (int) running_threads, "");
+        //fprintf(stdout, "... %d threads finished %d ops, at time %ld ms, %.1f ops/s %.1f puts/s %.1f scans/s %40s\n", running_threads, done_, now/ 1000, speed * (int) running_threads, speed_put, speed_scan, "");
+        fprintf(stdout, "... %d threads, finished %d ops, at time %ld ms, %.1f ops/s, %.1f gets/s, %.1f puts/s, %.1f scans/s, data admission ratio: %d, load admission ratio: %d %30s\n", running_threads, done_, now/ 1000, speed_get + speed_put + speed_scan, speed_get, speed_put, speed_scan, data_admit_ratio, load_admit_ratio, "");
       }
     }
     return ;
@@ -584,6 +612,7 @@ class Benchmark {
       
       
       int num_threads = FLAGS_threads;
+      running_threads = FLAGS_threads;
 
       if (name == Slice("open")) {
         method = &Benchmark::OpenBench;
@@ -625,7 +654,6 @@ class Benchmark {
         method = &Benchmark::ReadReverse;
       } else if (name == "mixgraph") {
         method = &Benchmark::MixGraph;
-	flag_monitor = false;
       } else if (name == Slice("ycsb")) {
 	num_threads_measure = num_threads;
 	num_threads = 32;
@@ -890,6 +918,7 @@ class Benchmark {
     
     options.use_persist_cache = true;
     options.persist_block_cache = NewPersistLRUCache(((size_t)34)*1024*1024*1024);
+    //options.persist_block_cache = NewPersistLRUCache(((size_t)100)*1024*1024*1024);
     
     // zippydb is so skewed, use a 1/10 cache size 
     //options.persist_block_cache = NewPersistLRUCache(((size_t)4)*1024*1024*1024);
@@ -1254,10 +1283,13 @@ class Benchmark {
     
     //TODO init the qps rate limiter
     double mix_rate_with_noise = 32;
+    //double mix_rate_with_noise = 24;
 
 
     // warmup phase
+    flag_monitor = false;
     for (int i = 0; i < 200000; i++) {
+    //for (int i = 0; i < 500000; i++) {
       int64_t ini_rand, key_rand, rand_v;
       ini_rand = thread->rand.Next();
       key_rand = gen_exp.DistGetKeyID(ini_rand, 0.0, 0.0);
@@ -1272,50 +1304,12 @@ class Benchmark {
 
     std::cout << "==== thread" << thread->tid << " warming up finished\n";
     
-    flag_monitor = false;
+    flag_monitor = FLAGS_monitor;
+    //flag_monitor = true;
+    //flag_monitor = true;
 
     //for (int i = 0; i < reads_; i++) {
     while (true) {
-      /*
-      int64_t ini_rand, rand_v, key_rand, key_seed;
-      ini_rand = GetRandomKey(&thread->rand);
-      rand_v = ini_rand % FLAGS_num;
-      double u = static_cast<double>(rand_v) / FLAGS_num;
-
-      
-      
-      int query_type = query.GetType(rand_v);
-
-      // change the qps
-      uint64_t now = FLAGS_env->NowMicros();
-      uint64_t usecs_since_last;
-      if (now > thread->stats.GetSineInterval()) {
-        usecs_since_last = now - thread->stats.GetSineInterval();
-      } else {
-        usecs_since_last = 0;
-      }
-
-      if (usecs_since_last >
-          (FLAGS_sine_mix_rate_interval_milliseconds * uint64_t{1000})) {
-        double usecs_since_start =
-            static_cast<double>(now - thread->stats.GetStart());
-        thread->stats.ResetSineInterval();
-        double mix_rate_with_noise = AddNoise(
-            SineRate(usecs_since_start / 1000000.0), FLAGS_sine_mix_rate_noise);
-        read_rate = mix_rate_with_noise * (query.ratio_[0] + query.ratio_[2]);
-        write_rate =
-            mix_rate_with_noise * query.ratio_[1] * FLAGS_mix_ave_kv_size;
-
-        thread->shared->write_rate_limiter.reset(
-            NewGenericRateLimiter(static_cast<int64_t>(write_rate)));
-        thread->shared->read_rate_limiter.reset(NewGenericRateLimiter(
-            static_cast<int64_t>(read_rate),
-            FLAGS_sine_mix_rate_interval_milliseconds * uint64_t{1000}, 10,
-            RateLimiter::Mode::kReadsOnly));
-      }
-      
-      */	    
-      
       // TODO Step 0: decide the QPS
       
       uint64_t now = Env::Default()->NowMicros();
@@ -1334,22 +1328,10 @@ class Benchmark {
 	//double mix_rate_with_noise = SineRate(usecs_since_start / 1000000.0);
         //mix_rate_with_noise = SineRate(usecs_since_start / 1000.0);
         mix_rate_with_noise = SineRate(usecs_since_start / 500.0);
-        //mix_rate_with_noise = 32;
+        //mix_rate_with_noise = 24;
 	if (thread -> tid == 0)
           std::cout << "=== interval " << usecs_since_start << " " << mix_rate_with_noise << "\n";
         //std::cout << usecs_since_start << " " << mix_rate_with_noise << "\n";
-
-
-        // report performance of last interval
-        //if (thread->tid == 0) {
-		
-        //  for (int i = 1; i < n; i++) {
-        //    thread->stats.Merge(arg[i].thread->stats);
-        //  }
-        //    thread->stats.Report(name);
-	//}
-	//int last_finished = thread->stats.CheckInterval();
-        //std::cout << "... thread " << thread->tid << " last interval: " << (double) last_finished / usecs_since_last * 1000000 << "ops/s\n";	
       }
 
       running_threads = mix_rate_with_noise;
@@ -1384,7 +1366,7 @@ class Benchmark {
           found++;
 	  thread->stats.AddBytes(value.length());
         } else {
-	  std::cout << "Failed!\n";
+	  std::cout << key_rand << " Failed!\n";
 	  exit(1);
 	}
 	
@@ -1397,15 +1379,19 @@ class Benchmark {
         }*/
         //thread->stats.FinishedOps(db_with_cfh, db_with_cfh->db, 1, kRead);
       
-        thread->stats.FinishedSingleOp();
+        thread->stats.FinishedSingleOp(0);
       } else if (query_type == 1) {
         
 	//std::cout << "This will be a put\n";
 	// the Put query
 	puts++;
         
-        int64_t val_size = ParetoCdfInversion(
-            u, 0.0, FLAGS_value_k, FLAGS_value_sigma);
+        //int64_t val_size = ParetoCdfInversion(
+        //    u, 0.0, FLAGS_value_k, FLAGS_value_sigma);
+        
+	// slightly larger value size to get rid of memory influence
+	int64_t val_size = ParetoCdfInversion(
+            u, 4096, FLAGS_value_k, FLAGS_value_sigma);
         if (val_size < 0) {
           val_size = 10;
         } else if (val_size > value_max) {
@@ -1425,7 +1411,7 @@ class Benchmark {
           exit(1);
         }
         
-	thread->stats.FinishedSingleOp();
+	thread->stats.FinishedSingleOp(1);
 
 	// TODO tune the write rate?
         /*
@@ -1487,7 +1473,7 @@ class Benchmark {
             bytes += ksize + vsize;
             iter->Next();	
 	  }
-          thread->stats.FinishedSingleOp();
+          thread->stats.FinishedSingleOp(2);
         }
         delete iter;
       }
@@ -1522,7 +1508,7 @@ class Benchmark {
     int found = 0;
     int64_t bytes = 0;
     // init the zipfian random generator
-    double g_zipfian_theta = 0.99;
+    double g_zipfian_theta = 0.9;
     ZipfianRandom zipfian_rng(FLAGS_db_num, g_zipfian_theta, 1237 + thread->tid); 
 
     // warmup phase
@@ -1533,6 +1519,7 @@ class Benchmark {
       //Kan: for zipfian accesses
       //const int k = thread->rand.Next() % (FLAGS_db_num / 3);
       const int k = zipfian_rng.next() % (FLAGS_db_num);
+      //const int k = zipfian_rng.next() % (FLAGS_db_num/3);
       //std::cout << "key: " << k << "\n";
       snprintf(key, sizeof(key), "%016d", k);
       
@@ -1571,7 +1558,8 @@ class Benchmark {
         }
 
         //const int k = thread->rand.Next() % FLAGS_num;
-        const int k = zipfian_rng.next() % (FLAGS_db_num);
+        //const int k = zipfian_rng.next() % (FLAGS_db_num);
+        const int k = zipfian_rng.next() % (FLAGS_db_num/3);
         char key[100];
         snprintf(key, sizeof(key), "%016d", k);
         
@@ -1881,6 +1869,11 @@ int main(int argc, char** argv) {
     } else if (sscanf(argv[i], "--use_existing_db=%d%c", &n, &junk) == 1 &&
                (n == 0 || n == 1)) {
       FLAGS_use_existing_db = n;
+    } else if (sscanf(argv[i], "--monitor=%d%c", &n, &junk) == 1 &&
+               (n == 0 || n == 1)) {
+      FLAGS_monitor = n;
+      if (FLAGS_monitor)
+        std::cout << "Will monitor the cache!\n";
     } else if (sscanf(argv[i], "--num=%d%c", &n, &junk) == 1) {
       FLAGS_num = n;
       //ll: code; add db_num 
@@ -1903,6 +1896,9 @@ int main(int argc, char** argv) {
     } else if (sscanf(argv[i], "--frequency=%d%c", &n, &junk) == 1) {
       leveldb::scheduler_frequency = n;
       std::cout << "Scheduler frequency: " << leveldb::scheduler_frequency << "\n";
+    } else if (sscanf(argv[i], "--keyrange_num=%d%c", &n, &junk) == 1) {
+      FLAGS_keyrange_num = n;
+      std::cout << "MixGraph keyrange num: " << FLAGS_keyrange_num << "\n";
     } else if (sscanf(argv[i], "--step=%d%c", &n, &junk) == 1) {
       leveldb::scheduler_step = n;
       std::cout << "Scheduler step size: " << leveldb::scheduler_step << "\n";

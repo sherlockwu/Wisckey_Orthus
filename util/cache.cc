@@ -160,6 +160,7 @@ class HandleTable {
     while (new_length < elems_) {
       new_length *= 2;
     }
+    //std::cout << "!!!!!!!! Resize table " << new_length << "\n";
     LRUHandle** new_list = new LRUHandle*[new_length];
     memset(new_list, 0, sizeof(new_list[0]) * new_length);
     uint32_t count = 0;
@@ -243,6 +244,7 @@ class ObjectTable {
     while (new_length < elems_) {
       new_length *= 2;
     }
+    //std::cout << "!!!!!!!! Resize table " << new_length << "\n";
     object_location** new_list = new object_location*[new_length];
     memset(new_list, 0, sizeof(new_list[0]) * new_length);
     uint32_t count = 0;
@@ -565,6 +567,7 @@ Cache::Handle* LRUCache::BucketInsert(const Slice& key, uint32_t hash,
   // map key to the (bucket, gen, in-bucket offset, length)
   object_location* e = reinterpret_cast<object_location*>(
       malloc(sizeof(object_location)-1 + key.size()));
+  //std::cout << "malloc space for " << sizeof(object_location)-1 + key.size();
   e->key_length = key.size();
   e->hash = hash;
   memcpy(e->key_data, key.data(), key.size());

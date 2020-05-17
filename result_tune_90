@@ -1,0 +1,1772 @@
+MixGraph keyrange num: 7
+Keys:       16 bytes each
+Values:     1024 bytes each (1024 bytes after compression)
+Entries:    1000000
+RawSize:    991.8 MB (estimated)
+FileSize:   991.8 MB (estimated)
+WARNING: Snappy compression is not enabled
+------------------------------------------------
+========== here is to NewPersistLRUCache
+fadvise random works !!! 
+fadvise sequential works !!! 
+vlog size: 104722 MB, head: 109226666032, tail: 40 
+========== Here is in DB::Open, to start a thread to monitor Optane
+... 24 threads finished 268 ops, at time 1589695896176 ms, 64265.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 701 ops, at time 1589695896277 ms, 103717.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1179 ops, at time 1589695896377 ms, 114626.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1694 ops, at time 1589695896477 ms, 123495.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 2242 ops, at time 1589695896577 ms, 131403.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 2877 ops, at time 1589695896677 ms, 152361.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 3555 ops, at time 1589695896777 ms, 162698.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 4298 ops, at time 1589695896877 ms, 178211.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 5044 ops, at time 1589695896977 ms, 178727.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 5784 ops, at time 1589695897077 ms, 177247.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 6499 ops, at time 1589695897177 ms, 171497.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 7230 ops, at time 1589695897278 ms, 175053.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 7971 ops, at time 1589695897378 ms, 177646.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 8700 ops, at time 1589695897478 ms, 174732.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 9447 ops, at time 1589695897578 ms, 179072.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 10265 ops, at time 1589695897678 ms, 196288.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 11113 ops, at time 1589695897778 ms, 203347.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 11966 ops, at time 1589695897878 ms, 204464.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 12813 ops, at time 1589695897978 ms, 203225.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 13684 ops, at time 1589695898078 ms, 208895.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 14570 ops, at time 1589695898178 ms, 212489.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 15497 ops, at time 1589695898278 ms, 222466.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 16386 ops, at time 1589695898378 ms, 213291.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 17298 ops, at time 1589695898478 ms, 218860.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 18232 ops, at time 1589695898578 ms, 224014.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 19187 ops, at time 1589695898678 ms, 229037.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 20037 ops, at time 1589695898779 ms, 203904.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 51.8494
+51.8494
+51.8494
+51.8494
+51.8494
+51.8494
+51.8494
+51.8494
+51.849451.8494
+51.8494
+
+51.8494
+51.8494
+51.8494
+51.8494
+51.8494
+51.8494
+51.849451.8494
+
+51.8494
+51.8494
+51.8494
+51.8494
+... 24 threads finished 20973 ops, at time 1589695898923 ms, 155237.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+51.8494
+... 24 threads finished 21896 ops, at time 1589695899023 ms, 221415.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 22871 ops, at time 1589695899123 ms, 233981.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 23901 ops, at time 1589695899223 ms, 246743.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 24847 ops, at time 1589695899324 ms, 226614.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 25797 ops, at time 1589695899424 ms, 227938.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 26762 ops, at time 1589695899524 ms, 231590.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 27730 ops, at time 1589695899624 ms, 232282.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 28719 ops, at time 1589695899724 ms, 237151.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 29793 ops, at time 1589695899824 ms, 257566.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 30808 ops, at time 1589695899924 ms, 243118.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 31822 ops, at time 1589695900024 ms, 243238.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 32862 ops, at time 1589695900124 ms, 249535.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 33892 ops, at time 1589695900224 ms, 247177.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 34859 ops, at time 1589695900324 ms, 231561.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 35861 ops, at time 1589695900424 ms, 240326.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 36862 ops, at time 1589695900525 ms, 239743.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 37877 ops, at time 1589695900625 ms, 243300.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 38977 ops, at time 1589695900725 ms, 263820.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 40000 ops, at time 1589695900825 ms, 245321.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 41031 ops, at time 1589695900925 ms, 247138.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 36.646436.6467
+
+36.6467
+36.6462
+36.6473
+36.6462
+36.647
+36.6462
+36.6466
+36.6467
+36.6473
+36.6462
+36.6464
+36.6466
+36.6462
+36.6455
+36.6467
+... 24 threads finished 42053 ops, at time 1589695901025 ms, 245167.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 43164 ops, at time 1589695901125 ms, 266139.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 44214 ops, at time 1589695901225 ms, 251554.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 45286 ops, at time 1589695901325 ms, 257269.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 46393 ops, at time 1589695901426 ms, 265361.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 47453 ops, at time 1589695901526 ms, 254303.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 48564 ops, at time 1589695901626 ms, 266613.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 49619 ops, at time 1589695901726 ms, 253157.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 50647 ops, at time 1589695901826 ms, 246050.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 51681 ops, at time 1589695901926 ms, 247823.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 52739 ops, at time 1589695902026 ms, 253712.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 53798 ops, at time 1589695902126 ms, 254081.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 54892 ops, at time 1589695902226 ms, 262365.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 55914 ops, at time 1589695902326 ms, 245015.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 57030 ops, at time 1589695902426 ms, 267789.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 58160 ops, at time 1589695902527 ms, 270656.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 59272 ops, at time 1589695902627 ms, 266506.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 60361 ops, at time 1589695902727 ms, 261255.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 61480 ops, at time 1589695902827 ms, 268323.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 62632 ops, at time 1589695902927 ms, 276377.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 32.888232.8882
+
+32.888232.8882
+
+32.8882
+32.8882
+32.8882
+32.8882
+32.8882
+32.8882
+32.8882
+32.888232.8882
+
+32.8882
+32.8882
+32.8882
+32.8882
+32.8882
+32.8882
+32.8882
+32.8882
+32.8882
+32.8882
+32.8882
+... 24 threads finished 63544 ops, at time 1589695903027 ms, 218834.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 64674 ops, at time 1589695903127 ms, 271183.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 65822 ops, at time 1589695903227 ms, 275459.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 66935 ops, at time 1589695903327 ms, 266975.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 68099 ops, at time 1589695903427 ms, 279256.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 69183 ops, at time 1589695903527 ms, 260079.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 70304 ops, at time 1589695903627 ms, 268414.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 71447 ops, at time 1589695903727 ms, 274284.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 72596 ops, at time 1589695903827 ms, 275605.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 73758 ops, at time 1589695903927 ms, 278762.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 74877 ops, at time 1589695904027 ms, 268337.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 76048 ops, at time 1589695904128 ms, 280551.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 77241 ops, at time 1589695904228 ms, 286268.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 78421 ops, at time 1589695904328 ms, 283180.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 79640 ops, at time 1589695904428 ms, 292504.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 80804 ops, at time 1589695904528 ms, 279301.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 81980 ops, at time 1589695904628 ms, 282118.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 83154 ops, at time 1589695904728 ms, 281712.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 29.8365
+29.836529.8365
+
+29.8365
+29.8365
+29.8365
+29.8365
+29.8365
+29.8365
+29.8365
+29.837
+29.8365
+29.8354
+29.8359
+29.8367
+29.8363
+29.8365
+29.8351
+29.834
+29.836529.8365
+
+... 24 threads finished 84202 ops, at time 1589695904828 ms, 251437.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 85439 ops, at time 1589695904928 ms, 296862.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 86633 ops, at time 1589695905028 ms, 286328.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 87838 ops, at time 1589695905128 ms, 288752.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 89041 ops, at time 1589695905228 ms, 288379.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 90295 ops, at time 1589695905328 ms, 300908.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 91572 ops, at time 1589695905428 ms, 306388.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 92750 ops, at time 1589695905528 ms, 282575.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 93933 ops, at time 1589695905628 ms, 283494.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 95118 ops, at time 1589695905729 ms, 284098.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 96307 ops, at time 1589695905829 ms, 285263.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 97550 ops, at time 1589695905929 ms, 298185.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 98743 ops, at time 1589695906029 ms, 286099.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 99975 ops, at time 1589695906129 ms, 295612.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 101199 ops, at time 1589695906229 ms, 293589.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 102423 ops, at time 1589695906329 ms, 293742.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 103652 ops, at time 1589695906429 ms, 294762.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 27.6358
+27.6358
+27.635827.635827.6358
+
+27.6358
+
+27.6358
+27.6358
+27.6358
+27.6358
+27.6358
+27.6358
+27.6358
+27.6358
+27.6358
+27.6358
+27.6358
+27.6358
+27.635827.6358
+
+27.6358
+27.6358
+27.6358
+27.6358
+... 24 threads finished 104500 ops, at time 1589695906529 ms, 203115.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 105694 ops, at time 1589695906629 ms, 286459.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 106876 ops, at time 1589695906729 ms, 283660.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 108099 ops, at time 1589695906829 ms, 293440.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 109283 ops, at time 1589695906929 ms, 283791.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 110478 ops, at time 1589695907029 ms, 286765.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 111690 ops, at time 1589695907129 ms, 290691.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 112973 ops, at time 1589695907229 ms, 307735.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 114275 ops, at time 1589695907330 ms, 312018.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 115512 ops, at time 1589695907430 ms, 296871.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 116794 ops, at time 1589695907530 ms, 307643.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 118130 ops, at time 1589695907630 ms, 320495.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 119404 ops, at time 1589695907730 ms, 305506.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 120703 ops, at time 1589695907830 ms, 311750.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 121948 ops, at time 1589695907930 ms, 298734.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 123243 ops, at time 1589695908030 ms, 310452.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 124503 ops, at time 1589695908130 ms, 302170.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 25.496325.4964
+
+25.4964
+25.4962
+25.4964
+25.4963
+25.496
+25.4964
+25.4965
+25.4963
+25.4965
+25.4964
+25.4965
+25.4963
+25.496
+25.4964
+25.4961
+25.496
+25.4961
+25.4961
+25.496
+25.4961
+25.4961
+25.4961
+... 24 threads finished 125738 ops, at time 1589695908230 ms, 296364.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 126951 ops, at time 1589695908330 ms, 290954.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 128125 ops, at time 1589695908430 ms, 281607.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 129197 ops, at time 1589695908530 ms, 256925.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 130222 ops, at time 1589695908630 ms, 245808.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 131468 ops, at time 1589695908730 ms, 299031.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 132753 ops, at time 1589695908830 ms, 308285.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 134061 ops, at time 1589695908930 ms, 313794.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 135377 ops, at time 1589695909030 ms, 315773.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 136689 ops, at time 1589695909130 ms, 314710.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 137987 ops, at time 1589695909231 ms, 310907.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 139265 ops, at time 1589695909331 ms, 306331.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 140583 ops, at time 1589695909431 ms, 315761.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 141955 ops, at time 1589695909531 ms, 329069.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 143329 ops, at time 1589695909631 ms, 329736.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 144665 ops, at time 1589695909731 ms, 320422.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 23.5088
+23.5088
+23.508823.508823.5088
+23.5088
+
+
+23.5088
+... 24 threads finished 145800 ops, at time 1589695909857 ms, 216070.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+23.5088
+23.5088
+23.508823.5088
+
+23.5088
+23.5088
+23.5088
+23.5088
+23.5088
+23.5088
+23.5088
+23.5088
+23.5088
+23.5088
+23.5088
+23.5088
+23.5088
+... 24 threads finished 147130 ops, at time 1589695909957 ms, 319002.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 148404 ops, at time 1589695910057 ms, 305714.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 149749 ops, at time 1589695910157 ms, 322796.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 151088 ops, at time 1589695910257 ms, 321318.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 152479 ops, at time 1589695910357 ms, 333633.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 153846 ops, at time 1589695910457 ms, 327834.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 155125 ops, at time 1589695910558 ms, 306182.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 156480 ops, at time 1589695910658 ms, 325180.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 157773 ops, at time 1589695910758 ms, 310155.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 159085 ops, at time 1589695910858 ms, 314706.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 160433 ops, at time 1589695910958 ms, 323264.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 161911 ops, at time 1589695911058 ms, 354454.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 163387 ops, at time 1589695911158 ms, 353896.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 164808 ops, at time 1589695911258 ms, 340811.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 166201 ops, at time 1589695911358 ms, 334209.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 21.909321.9092
+
+21.9093
+21.9093
+21.9093
+21.9093
+21.9093
+21.9093
+21.9093
+21.9093
+21.9093
+21.9095
+21.9093
+21.9093
+21.9093
+21.9092
+21.9093
+21.909721.9092
+
+21.9093
+... 24 threads finished 167461 ops, at time 1589695911458 ms, 302315.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 168832 ops, at time 1589695911558 ms, 328869.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 170248 ops, at time 1589695911658 ms, 339595.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 171631 ops, at time 1589695911758 ms, 331638.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 173032 ops, at time 1589695911858 ms, 336045.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 174447 ops, at time 1589695911958 ms, 339423.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 175810 ops, at time 1589695912058 ms, 326868.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 177120 ops, at time 1589695912159 ms, 314208.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 178603 ops, at time 1589695912259 ms, 355369.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 180017 ops, at time 1589695912359 ms, 339292.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 181422 ops, at time 1589695912459 ms, 336923.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 182867 ops, at time 1589695912559 ms, 346744.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 184265 ops, at time 1589695912659 ms, 335332.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 185619 ops, at time 1589695912759 ms, 324895.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 187023 ops, at time 1589695912859 ms, 336902.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 20.310720.3107
+
+20.310720.310720.3107
+
+
+20.3107
+20.3107
+20.3107
+20.3107
+20.3107
+20.3107
+20.3107
+20.3107
+20.3107
+20.3107
+20.3107
+20.3107
+20.3107
+20.310720.3107
+
+20.3107
+20.3107
+20.3107
+20.3107
+... 24 threads finished 188110 ops, at time 1589695912959 ms, 260679.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 189520 ops, at time 1589695913059 ms, 338315.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 190937 ops, at time 1589695913159 ms, 339950.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 192320 ops, at time 1589695913259 ms, 331552.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 193795 ops, at time 1589695913359 ms, 353801.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 195343 ops, at time 1589695913459 ms, 371360.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 196762 ops, at time 1589695913559 ms, 340434.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 198163 ops, at time 1589695913659 ms, 336162.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+==== thread17 warming up finished
+==== thread2 warming up finished
+==== thread18 warming up finished
+==== thread3 warming up finished
+==== thread14 warming up finished
+==== thread4 warming up finished
+==== thread21 warming up finished
+==== thread10 warming up finished
+==== thread19 warming up finished
+==== thread23 warming up finished
+==== thread6 warming up finished
+==== thread11 warming up finished
+==== thread15 warming up finished
+==== thread9 warming up finished
+==== thread1 warming up finished
+... 24 threads finished 199440 ops, at time 1589695913759 ms, 306179.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+==== thread22 warming up finished
+==== thread8 warming up finished
+==== thread12 warming up finished
+==== thread16 warming up finished
+==== thread7 warming up finished
+==== thread5 warming up finished
+==== thread13 warming up finished
+==== thread0 warming up finished
+=== interval 1.7724e+07 24
+==== thread20 warming up finished
+... 24 threads finished 200809 ops, at time 1589695913859 ms, 328402.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 202219 ops, at time 1589695913960 ms, 337926.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 203589 ops, at time 1589695914060 ms, 328770.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 205008 ops, at time 1589695914160 ms, 340437.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 206500 ops, at time 1589695914260 ms, 357954.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 207967 ops, at time 1589695914360 ms, 351752.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: 17.8628
+... 24 threads finished 209406 ops, at time 1589695914460 ms, 345046.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 210849 ops, at time 1589695914560 ms, 346005.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 212328 ops, at time 1589695914660 ms, 354945.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 213746 ops, at time 1589695914760 ms, 340071.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 1.87241e+07 24
+... 24 threads finished 215230 ops, at time 1589695914860 ms, 356152.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 216705 ops, at time 1589695914960 ms, 353950.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 218177 ops, at time 1589695915060 ms, 353071.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 219606 ops, at time 1589695915160 ms, 342864.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 221114 ops, at time 1589695915260 ms, 361869.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 222537 ops, at time 1589695915360 ms, 341359.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 224033 ops, at time 1589695915460 ms, 358935.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 225433 ops, at time 1589695915560 ms, 335811.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 226866 ops, at time 1589695915660 ms, 343652.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 228262 ops, at time 1589695915760 ms, 334748.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 1.97241e+07 24
+====== miss ratio: ====== miss ratio: 15.413
+15.4131
+... 24 threads finished 229759 ops, at time 1589695915860 ms, 359258.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 231217 ops, at time 1589695915960 ms, 349909.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 232742 ops, at time 1589695916060 ms, 365886.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 234144 ops, at time 1589695916161 ms, 336321.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 235610 ops, at time 1589695916261 ms, 351745.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 237074 ops, at time 1589695916361 ms, 350875.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 238577 ops, at time 1589695916461 ms, 360370.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 240014 ops, at time 1589695916561 ms, 344838.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 241508 ops, at time 1589695916661 ms, 358348.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 242983 ops, at time 1589695916761 ms, 353975.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 2.07242e+07 24
+... 24 threads finished 244396 ops, at time 1589695916861 ms, 339086.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 245850 ops, at time 1589695916961 ms, 348876.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 247417 ops, at time 1589695917061 ms, 375963.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 248892 ops, at time 1589695917161 ms, 353939.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: 14.5202
+... 24 threads finished 250365 ops, at time 1589695917261 ms, 352810.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 251863 ops, at time 1589695917361 ms, 359186.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 253418 ops, at time 1589695917461 ms, 373032.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 254916 ops, at time 1589695917561 ms, 359505.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 256427 ops, at time 1589695917661 ms, 362426.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 257897 ops, at time 1589695917761 ms, 352775.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 2.17243e+07 24
+... 24 threads finished 259374 ops, at time 1589695917861 ms, 354444.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 260868 ops, at time 1589695917961 ms, 358359.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 262327 ops, at time 1589695918061 ms, 350058.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 263834 ops, at time 1589695918162 ms, 361253.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 265329 ops, at time 1589695918262 ms, 358710.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 266828 ops, at time 1589695918362 ms, 359407.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 268287 ops, at time 1589695918462 ms, 349722.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 269876 ops, at time 1589695918562 ms, 381310.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: 13.7755
+... 24 threads finished 271405 ops, at time 1589695918662 ms, 366769.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 272909 ops, at time 1589695918762 ms, 360707.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 2.27244e+07 24
+... 24 threads finished 274374 ops, at time 1589695918862 ms, 351308.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 275904 ops, at time 1589695918962 ms, 366910.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 277394 ops, at time 1589695919062 ms, 357557.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 278910 ops, at time 1589695919162 ms, 363727.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 280422 ops, at time 1589695919262 ms, 362477.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 281927 ops, at time 1589695919362 ms, 360777.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 283458 ops, at time 1589695919462 ms, 366988.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 284891 ops, at time 1589695919563 ms, 343693.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 286423 ops, at time 1589695919663 ms, 367496.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 287930 ops, at time 1589695919763 ms, 361383.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 2.37245e+07 24
+... 24 threads finished 288869 ops, at time 1589695919863 ms, 225177.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 290503 ops, at time 1589695919963 ms, 392065.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: 13.139
+... 24 threads finished 292002 ops, at time 1589695920063 ms, 359634.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 293559 ops, at time 1589695920163 ms, 373217.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 295126 ops, at time 1589695920263 ms, 376049.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 296697 ops, at time 1589695920363 ms, 377017.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 298224 ops, at time 1589695920463 ms, 366062.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 299751 ops, at time 1589695920563 ms, 366318.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 301323 ops, at time 1589695920663 ms, 376835.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 302927 ops, at time 1589695920763 ms, 384894.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 2.47246e+07 24
+... 24 threads finished 304462 ops, at time 1589695920863 ms, 368223.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 306093 ops, at time 1589695920963 ms, 391307.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 307706 ops, at time 1589695921063 ms, 386829.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 309290 ops, at time 1589695921164 ms, 379859.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 310788 ops, at time 1589695921264 ms, 359444.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: 12.4033
+... 24 threads finished 312350 ops, at time 1589695921364 ms, 374846.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 313892 ops, at time 1589695921464 ms, 370057.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 315458 ops, at time 1589695921564 ms, 375363.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 317022 ops, at time 1589695921664 ms, 374674.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 318528 ops, at time 1589695921764 ms, 361353.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 2.57246e+07 24
+... 24 threads finished 320023 ops, at time 1589695921864 ms, 358785.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 321616 ops, at time 1589695921964 ms, 382113.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 323119 ops, at time 1589695922064 ms, 360237.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 324675 ops, at time 1589695922164 ms, 373313.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 326263 ops, at time 1589695922264 ms, 381070.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 327883 ops, at time 1589695922364 ms, 387950.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 329510 ops, at time 1589695922464 ms, 390031.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 331132 ops, at time 1589695922565 ms, 388937.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 332752 ops, at time 1589695922665 ms, 388733.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 11.8774
+11.877
+11.8779
+11.8779
+11.8779
+11.878
+11.8779
+11.8767
+11.8779
+11.8777
+11.8778
+11.8778
+11.8779
+11.8778
+11.8774
+11.8778
+11.8773
+11.8779
+11.8764
+... 24 threads finished 334223 ops, at time 1589695922765 ms, 352803.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 2.67246e+07 24
+... 24 threads finished 335884 ops, at time 1589695922865 ms, 398496.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 337481 ops, at time 1589695922965 ms, 382751.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 339046 ops, at time 1589695923065 ms, 375438.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 340733 ops, at time 1589695923165 ms, 404689.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 342322 ops, at time 1589695923265 ms, 381268.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 343914 ops, at time 1589695923365 ms, 381915.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 345607 ops, at time 1589695923465 ms, 405970.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 347168 ops, at time 1589695923565 ms, 374617.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 348760 ops, at time 1589695923665 ms, 381965.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 350374 ops, at time 1589695923765 ms, 387263.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 2.77247e+07 24
+... 24 threads finished 351441 ops, at time 1589695923865 ms, 256021.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 353012 ops, at time 1589695923965 ms, 376520.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: 11.2753
+... 24 threads finished 354632 ops, at time 1589695924065 ms, 388656.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 356217 ops, at time 1589695924165 ms, 380342.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 357791 ops, at time 1589695924265 ms, 377654.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 359425 ops, at time 1589695924365 ms, 391877.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 361048 ops, at time 1589695924466 ms, 388987.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 362693 ops, at time 1589695924566 ms, 394382.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 364354 ops, at time 1589695924666 ms, 398612.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 366004 ops, at time 1589695924766 ms, 395754.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 2.87248e+07 24
+... 24 threads finished 367612 ops, at time 1589695924866 ms, 385819.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 369225 ops, at time 1589695924966 ms, 386490.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 370729 ops, at time 1589695925066 ms, 360945.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 372347 ops, at time 1589695925166 ms, 388292.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 373969 ops, at time 1589695925266 ms, 389031.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: 10.7244
+... 24 threads finished 375660 ops, at time 1589695925366 ms, 405337.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 377226 ops, at time 1589695925466 ms, 375344.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 378836 ops, at time 1589695925566 ms, 386338.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 380430 ops, at time 1589695925666 ms, 382029.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 382082 ops, at time 1589695925766 ms, 396396.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 2.97249e+07 24
+... 24 threads finished 383730 ops, at time 1589695925866 ms, 395203.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 385428 ops, at time 1589695925967 ms, 407410.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 386969 ops, at time 1589695926067 ms, 369791.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 388653 ops, at time 1589695926167 ms, 404067.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 390290 ops, at time 1589695926267 ms, 392836.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 391913 ops, at time 1589695926367 ms, 388839.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 393631 ops, at time 1589695926467 ms, 412315.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 395280 ops, at time 1589695926567 ms, 395479.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: 10.2258
+... 24 threads finished 396983 ops, at time 1589695926667 ms, 408544.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 398578 ops, at time 1589695926767 ms, 382624.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 3.07249e+07 24
+... 24 threads finished 400204 ops, at time 1589695926867 ms, 390228.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 401766 ops, at time 1589695926967 ms, 374711.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 403534 ops, at time 1589695927067 ms, 423587.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 405153 ops, at time 1589695927167 ms, 388412.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 406814 ops, at time 1589695927267 ms, 398353.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 408482 ops, at time 1589695927367 ms, 399940.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 410182 ops, at time 1589695927467 ms, 407840.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 411771 ops, at time 1589695927567 ms, 381306.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 413399 ops, at time 1589695927667 ms, 390552.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 415019 ops, at time 1589695927768 ms, 387776.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 3.1725e+07 24
+====== miss ratio: 9.63072
+... 24 threads finished 416359 ops, at time 1589695927868 ms, 321336.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 418078 ops, at time 1589695927968 ms, 412337.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 419713 ops, at time 1589695928068 ms, 392286.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 421351 ops, at time 1589695928168 ms, 392794.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 422890 ops, at time 1589695928268 ms, 369256.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 424340 ops, at time 1589695928368 ms, 347993.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 425772 ops, at time 1589695928468 ms, 343429.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 426923 ops, at time 1589695928568 ms, 275933.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 428190 ops, at time 1589695928668 ms, 303909.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 429336 ops, at time 1589695928769 ms, 272012.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 3.27251e+07 24
+... 24 threads finished 430775 ops, at time 1589695928873 ms, 333755.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 432065 ops, at time 1589695928973 ms, 309544.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 433401 ops, at time 1589695929073 ms, 320611.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 434823 ops, at time 1589695929176 ms, 329522.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 436291 ops, at time 1589695929276 ms, 352066.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: 9.40024
+... 24 threads finished 437435 ops, at time 1589695929376 ms, 274480.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 438821 ops, at time 1589695929477 ms, 332297.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 440282 ops, at time 1589695929577 ms, 350633.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 441822 ops, at time 1589695929680 ms, 357647.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 443394 ops, at time 1589695929780 ms, 376850.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 3.37251e+07 24
+... 24 threads finished 444863 ops, at time 1589695929880 ms, 352394.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 446473 ops, at time 1589695929980 ms, 385990.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 448148 ops, at time 1589695930080 ms, 401955.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 449786 ops, at time 1589695930180 ms, 393084.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 451471 ops, at time 1589695930280 ms, 404125.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 453148 ops, at time 1589695930380 ms, 402045.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 454856 ops, at time 1589695930480 ms, 409883.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 456560 ops, at time 1589695930580 ms, 408767.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 8.996828.99678
+
+8.99675
+8.99682
+8.99675
+8.99686
+8.99701
+8.99689
+8.99687
+... 24 threads finished 458153 ops, at time 1589695930681 ms, 381831.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 459817 ops, at time 1589695930781 ms, 399136.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 3.47251e+07 24
+... 24 threads finished 461472 ops, at time 1589695930881 ms, 397084.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 463146 ops, at time 1589695930981 ms, 401470.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 464755 ops, at time 1589695931081 ms, 385955.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 466430 ops, at time 1589695931181 ms, 401787.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 468098 ops, at time 1589695931281 ms, 400203.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 469741 ops, at time 1589695931381 ms, 394217.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 471405 ops, at time 1589695931481 ms, 399344.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 473088 ops, at time 1589695931581 ms, 403025.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 474774 ops, at time 1589695931681 ms, 404280.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 476424 ops, at time 1589695931781 ms, 395675.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 3.57252e+07 24
+... 24 threads finished 477945 ops, at time 1589695931881 ms, 364915.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: 8.75015
+... 24 threads finished 479525 ops, at time 1589695931981 ms, 378609.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 481178 ops, at time 1589695932082 ms, 396355.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 482765 ops, at time 1589695932182 ms, 380853.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 484411 ops, at time 1589695932282 ms, 394736.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 486069 ops, at time 1589695932382 ms, 397816.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 487702 ops, at time 1589695932482 ms, 391861.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 489282 ops, at time 1589695932582 ms, 379074.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 490966 ops, at time 1589695932682 ms, 404006.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 492576 ops, at time 1589695932782 ms, 386241.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 3.67252e+07 24
+... 24 threads finished 494160 ops, at time 1589695932882 ms, 380008.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 495779 ops, at time 1589695932982 ms, 387564.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 497423 ops, at time 1589695933082 ms, 394437.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 499007 ops, at time 1589695933182 ms, 379708.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: 8.55282
+... 24 threads finished 500637 ops, at time 1589695933282 ms, 391094.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 502348 ops, at time 1589695933382 ms, 410463.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 503899 ops, at time 1589695933482 ms, 372225.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 505510 ops, at time 1589695933582 ms, 386392.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 507106 ops, at time 1589695933682 ms, 382948.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 508818 ops, at time 1589695933782 ms, 410654.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 3.77253e+07 24
+... 24 threads finished 510421 ops, at time 1589695933883 ms, 384666.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 512055 ops, at time 1589695933983 ms, 392034.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 513708 ops, at time 1589695934083 ms, 396438.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 515393 ops, at time 1589695934183 ms, 404290.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 517103 ops, at time 1589695934283 ms, 410330.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 518777 ops, at time 1589695934383 ms, 401507.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: 8.13813
+... 24 threads finished 520373 ops, at time 1589695934483 ms, 382603.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 522082 ops, at time 1589695934583 ms, 410061.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 523749 ops, at time 1589695934683 ms, 399888.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 525406 ops, at time 1589695934783 ms, 397672.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 3.87253e+07 24
+... 24 threads finished 527116 ops, at time 1589695934883 ms, 410379.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 528836 ops, at time 1589695934983 ms, 412128.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 530510 ops, at time 1589695935083 ms, 401703.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 532205 ops, at time 1589695935183 ms, 406413.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 533930 ops, at time 1589695935283 ms, 413417.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 535603 ops, at time 1589695935383 ms, 401503.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 537234 ops, at time 1589695935483 ms, 390990.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 538902 ops, at time 1589695935584 ms, 400052.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 540622 ops, at time 1589695935684 ms, 412511.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 7.63281
+7.632817.63281
+7.63281
+7.63281
+7.63281
+7.63281
+7.63281
+
+7.632817.63281
+
+7.63281
+7.63281
+7.63281
+7.632817.63281
+7.63281
+
+7.63281
+7.63281
+7.63281
+7.63281
+7.63281
+7.63281
+7.63281
+7.63281
+... 24 threads finished 541781 ops, at time 1589695935784 ms, 277907.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 3.97253e+07 24
+... 24 threads finished 543426 ops, at time 1589695935884 ms, 394642.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 545137 ops, at time 1589695935984 ms, 410471.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 546825 ops, at time 1589695936084 ms, 404731.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 548495 ops, at time 1589695936184 ms, 400519.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 550203 ops, at time 1589695936284 ms, 409678.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 551910 ops, at time 1589695936384 ms, 409409.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 553605 ops, at time 1589695936484 ms, 406564.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 555284 ops, at time 1589695936584 ms, 402919.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 557017 ops, at time 1589695936684 ms, 415724.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 558689 ops, at time 1589695936784 ms, 401239.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 4.07254e+07 24
+... 24 threads finished 560269 ops, at time 1589695936884 ms, 379158.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: 7.39788
+... 24 threads finished 562002 ops, at time 1589695936984 ms, 415845.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 563767 ops, at time 1589695937084 ms, 423439.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 565494 ops, at time 1589695937184 ms, 413586.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 567147 ops, at time 1589695937285 ms, 396117.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 568897 ops, at time 1589695937385 ms, 419882.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 570623 ops, at time 1589695937485 ms, 413789.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 572335 ops, at time 1589695937585 ms, 410830.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 574019 ops, at time 1589695937685 ms, 403998.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 575762 ops, at time 1589695937785 ms, 417601.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 4.17254e+07 24
+... 24 threads finished 577410 ops, at time 1589695937885 ms, 395488.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 579017 ops, at time 1589695937985 ms, 385402.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 580666 ops, at time 1589695938085 ms, 395688.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 582404 ops, at time 1589695938185 ms, 416824.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: 7.22025
+... 24 threads finished 584142 ops, at time 1589695938285 ms, 417111.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 585834 ops, at time 1589695938385 ms, 405787.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 587530 ops, at time 1589695938485 ms, 406991.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 589240 ops, at time 1589695938585 ms, 410248.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 590848 ops, at time 1589695938685 ms, 385858.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 592470 ops, at time 1589695938785 ms, 389128.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 4.27254e+07 24
+... 24 threads finished 594131 ops, at time 1589695938885 ms, 398365.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 595826 ops, at time 1589695938985 ms, 406698.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 597509 ops, at time 1589695939085 ms, 403516.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 599146 ops, at time 1589695939186 ms, 392452.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 600832 ops, at time 1589695939286 ms, 404579.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 602550 ops, at time 1589695939386 ms, 412303.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: 7.25591
+... 24 threads finished 604310 ops, at time 1589695939486 ms, 422037.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 606010 ops, at time 1589695939586 ms, 407898.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 607662 ops, at time 1589695939686 ms, 396365.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 609356 ops, at time 1589695939786 ms, 406231.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 4.37255e+07 24
+... 24 threads finished 611111 ops, at time 1589695939886 ms, 421073.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 612761 ops, at time 1589695939986 ms, 395972.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 614411 ops, at time 1589695940086 ms, 395505.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 616031 ops, at time 1589695940186 ms, 388788.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 617753 ops, at time 1589695940286 ms, 412900.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 619472 ops, at time 1589695940386 ms, 412444.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 621137 ops, at time 1589695940486 ms, 399532.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 622779 ops, at time 1589695940586 ms, 393403.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 6.83783
+6.837836.83783
+6.83783
+
+6.837836.83783
+
+6.83783
+6.83783
+6.83783
+6.83783
+6.83783
+6.83783
+6.83783
+6.83783
+6.83783
+6.83783
+6.83783
+6.83783
+6.83783
+... 24 threads finished 624046 ops, at time 1589695940695 ms, 280799.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+6.83783
+6.83783
+6.83783
+6.83783
+6.83783
+... 24 threads finished 625733 ops, at time 1589695940795 ms, 404677.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 4.47255e+07 24
+... 24 threads finished 627377 ops, at time 1589695940895 ms, 394236.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 629042 ops, at time 1589695940995 ms, 399093.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 630658 ops, at time 1589695941095 ms, 387348.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 632338 ops, at time 1589695941195 ms, 403119.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 634015 ops, at time 1589695941295 ms, 402407.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 635686 ops, at time 1589695941395 ms, 400951.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 637349 ops, at time 1589695941495 ms, 398916.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 639087 ops, at time 1589695941595 ms, 416753.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 640775 ops, at time 1589695941695 ms, 405063.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 642502 ops, at time 1589695941795 ms, 414343.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 4.57256e+07 24
+... 24 threads finished 644059 ops, at time 1589695941895 ms, 373034.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: ====== miss ratio: 6.826476.82654
+
+... 24 threads finished 645787 ops, at time 1589695941995 ms, 414711.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 647573 ops, at time 1589695942095 ms, 428627.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 649251 ops, at time 1589695942196 ms, 401727.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 650928 ops, at time 1589695942296 ms, 402367.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 652641 ops, at time 1589695942396 ms, 410943.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 654382 ops, at time 1589695942496 ms, 417426.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 656062 ops, at time 1589695942596 ms, 403099.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 657677 ops, at time 1589695942696 ms, 387479.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 659373 ops, at time 1589695942796 ms, 406856.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 4.67256e+07 24
+... 24 threads finished 660410 ops, at time 1589695942896 ms, 248867.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 662137 ops, at time 1589695942996 ms, 413277.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 663846 ops, at time 1589695943096 ms, 410147.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: 6.35901
+... 24 threads finished 665583 ops, at time 1589695943196 ms, 416692.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 667347 ops, at time 1589695943296 ms, 422586.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 669065 ops, at time 1589695943397 ms, 412105.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 670795 ops, at time 1589695943497 ms, 415150.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 672463 ops, at time 1589695943597 ms, 400284.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 674270 ops, at time 1589695943697 ms, 433186.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 676007 ops, at time 1589695943797 ms, 416871.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 4.77257e+07 24
+... 24 threads finished 677777 ops, at time 1589695943897 ms, 424362.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 679513 ops, at time 1589695943997 ms, 416590.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 681220 ops, at time 1589695944097 ms, 409450.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 682900 ops, at time 1589695944197 ms, 403063.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 684656 ops, at time 1589695944297 ms, 421296.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: 6.07034
+... 24 threads finished 686427 ops, at time 1589695944397 ms, 424721.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 688157 ops, at time 1589695944497 ms, 414375.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 689842 ops, at time 1589695944597 ms, 404230.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 691509 ops, at time 1589695944697 ms, 399920.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 693158 ops, at time 1589695944797 ms, 395502.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 4.87258e+07 24
+... 24 threads finished 694875 ops, at time 1589695944897 ms, 411861.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 696572 ops, at time 1589695944998 ms, 406678.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 698239 ops, at time 1589695945098 ms, 400024.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 699974 ops, at time 1589695945198 ms, 415763.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 701839 ops, at time 1589695945298 ms, 447555.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 703575 ops, at time 1589695945398 ms, 416560.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 705316 ops, at time 1589695945498 ms, 417310.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 6.01324
+6.0133
+6.01404
+6.01394
+6.01391
+6.01326
+6.0133
+6.01422
+6.0141
+6.01361
+6.01331
+6.01331
+6.01404
+6.01415
+6.01421
+6.01326
+6.01376
+6.0144
+6.0133
+6.01427
+6.01372
+6.01399
+... 24 threads finished 706893 ops, at time 1589695945598 ms, 378313.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 708617 ops, at time 1589695945698 ms, 413714.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 710336 ops, at time 1589695945798 ms, 412535.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 4.97259e+07 24
+... 24 threads finished 712099 ops, at time 1589695945898 ms, 422836.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 713785 ops, at time 1589695945998 ms, 403856.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 715615 ops, at time 1589695946098 ms, 439195.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 717383 ops, at time 1589695946198 ms, 423993.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 719101 ops, at time 1589695946298 ms, 412006.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 720813 ops, at time 1589695946398 ms, 410703.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 722598 ops, at time 1589695946498 ms, 427997.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 724460 ops, at time 1589695946598 ms, 446741.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 726214 ops, at time 1589695946699 ms, 420552.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 5.757875.75787
+5.757875.75787
+
+
+5.75787
+5.75787
+5.75787
+5.75787
+5.75787
+5.75787
+5.75787
+5.75787
+5.75787
+5.75787
+5.75787
+5.75787
+5.75787
+5.75787
+5.75787
+5.75787
+5.75787
+5.75787
+5.75787
+5.75787
+... 24 threads finished 727614 ops, at time 1589695946799 ms, 335959.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 5.0726e+07 24
+... 24 threads finished 729371 ops, at time 1589695946899 ms, 421090.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 731162 ops, at time 1589695946999 ms, 428708.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 732821 ops, at time 1589695947099 ms, 397925.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 734493 ops, at time 1589695947199 ms, 400975.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 736172 ops, at time 1589695947299 ms, 402899.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 737889 ops, at time 1589695947399 ms, 411960.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 739690 ops, at time 1589695947499 ms, 432054.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 741454 ops, at time 1589695947599 ms, 423114.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 743158 ops, at time 1589695947699 ms, 408919.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 744857 ops, at time 1589695947799 ms, 407682.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 5.1726e+07 24
+... 24 threads finished 746501 ops, at time 1589695947899 ms, 394524.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: 5.71111
+... 24 threads finished 748160 ops, at time 1589695947999 ms, 398056.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 749894 ops, at time 1589695948099 ms, 416001.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 751603 ops, at time 1589695948199 ms, 410041.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 753285 ops, at time 1589695948299 ms, 403643.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 754905 ops, at time 1589695948399 ms, 388609.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 756612 ops, at time 1589695948500 ms, 409352.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 758300 ops, at time 1589695948600 ms, 404998.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 759967 ops, at time 1589695948700 ms, 399652.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 761757 ops, at time 1589695948800 ms, 429188.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 5.2726e+07 24
+... 24 threads finished 762893 ops, at time 1589695948900 ms, 272561.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 764587 ops, at time 1589695949000 ms, 406454.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 766329 ops, at time 1589695949100 ms, 417699.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: 5.58976
+... 24 threads finished 768005 ops, at time 1589695949200 ms, 402115.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 769664 ops, at time 1589695949300 ms, 397980.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 771461 ops, at time 1589695949400 ms, 430483.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 773101 ops, at time 1589695949501 ms, 392227.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 774797 ops, at time 1589695949601 ms, 406942.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 776571 ops, at time 1589695949701 ms, 425683.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 778268 ops, at time 1589695949801 ms, 407223.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 5.37261e+07 24
+... 24 threads finished 780079 ops, at time 1589695949901 ms, 434518.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 781783 ops, at time 1589695950001 ms, 408788.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 783519 ops, at time 1589695950101 ms, 416506.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 785240 ops, at time 1589695950201 ms, 413027.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 787070 ops, at time 1589695950301 ms, 439169.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 5.473185.47343
+
+5.47325
+5.47256
+5.47264
+5.47244
+5.47263
+5.47241
+5.47268
+5.47271
+5.473855.47341
+
+5.47399
+... 24 threads finished 788804 ops, at time 1589695950401 ms, 416118.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 790510 ops, at time 1589695950501 ms, 409390.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 792263 ops, at time 1589695950601 ms, 420577.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 794002 ops, at time 1589695950701 ms, 417209.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 795731 ops, at time 1589695950801 ms, 414893.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 5.47262e+07 24
+... 24 threads finished 797475 ops, at time 1589695950901 ms, 418505.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 799262 ops, at time 1589695951001 ms, 428430.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 800924 ops, at time 1589695951101 ms, 398748.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 802789 ops, at time 1589695951201 ms, 447568.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 804487 ops, at time 1589695951301 ms, 407239.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 806154 ops, at time 1589695951401 ms, 400052.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 807868 ops, at time 1589695951501 ms, 410994.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 5.334165.334165.33416
+
+5.33416
+5.33416
+
+5.33416
+5.33416
+5.33416
+5.33416
+5.33416
+5.33416
+5.33416
+5.33416
+5.33416
+5.33416
+5.33416
+5.33416
+5.33416
+5.33416
+5.33416
+5.33416
+5.33416
+5.33416
+5.33416
+... 24 threads finished 809506 ops, at time 1589695951619 ms, 332178.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 811261 ops, at time 1589695951720 ms, 421061.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 5.57265e+07 24
+... 24 threads finished 813062 ops, at time 1589695951820 ms, 432218.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 814807 ops, at time 1589695951920 ms, 418135.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 816574 ops, at time 1589695952020 ms, 423986.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 818276 ops, at time 1589695952120 ms, 408459.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 819997 ops, at time 1589695952220 ms, 412891.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 821650 ops, at time 1589695952320 ms, 396462.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 823387 ops, at time 1589695952420 ms, 416800.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 825140 ops, at time 1589695952520 ms, 420711.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 826803 ops, at time 1589695952620 ms, 399116.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 828469 ops, at time 1589695952720 ms, 399448.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 5.67265e+07 24
+... 24 threads finished 830051 ops, at time 1589695952820 ms, 379626.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: 5.24925
+... 24 threads finished 831741 ops, at time 1589695952920 ms, 405482.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 833298 ops, at time 1589695953020 ms, 373485.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 834875 ops, at time 1589695953120 ms, 378253.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 836473 ops, at time 1589695953220 ms, 383428.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 838022 ops, at time 1589695953320 ms, 371756.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 839600 ops, at time 1589695953420 ms, 378648.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 841126 ops, at time 1589695953520 ms, 365896.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 842719 ops, at time 1589695953620 ms, 382209.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 844307 ops, at time 1589695953720 ms, 380823.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 5.77265e+07 24
+... 24 threads finished 845616 ops, at time 1589695953841 ms, 260960.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 847169 ops, at time 1589695953941 ms, 372243.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 848719 ops, at time 1589695954041 ms, 371609.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 850276 ops, at time 1589695954141 ms, 373422.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: 6.02372
+... 24 threads finished 851884 ops, at time 1589695954241 ms, 385812.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 853433 ops, at time 1589695954341 ms, 371674.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 855026 ops, at time 1589695954441 ms, 382312.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 856526 ops, at time 1589695954541 ms, 359661.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 858105 ops, at time 1589695954641 ms, 378956.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 859692 ops, at time 1589695954741 ms, 380868.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 5.87265e+07 24
+... 24 threads finished 861210 ops, at time 1589695954841 ms, 364185.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 862751 ops, at time 1589695954941 ms, 369688.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 864263 ops, at time 1589695955041 ms, 362742.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 865820 ops, at time 1589695955141 ms, 373650.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 867444 ops, at time 1589695955241 ms, 389686.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 869043 ops, at time 1589695955341 ms, 383472.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 870655 ops, at time 1589695955441 ms, 386717.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: ====== miss ratio: 5.859315.8593
+
+... 24 threads finished 872220 ops, at time 1589695955541 ms, 375521.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 873858 ops, at time 1589695955642 ms, 392845.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 875366 ops, at time 1589695955742 ms, 361836.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 5.97266e+07 24
+... 24 threads finished 876910 ops, at time 1589695955842 ms, 370045.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 878503 ops, at time 1589695955942 ms, 382174.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 880092 ops, at time 1589695956042 ms, 381135.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 881638 ops, at time 1589695956142 ms, 370965.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 883275 ops, at time 1589695956242 ms, 392750.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 884871 ops, at time 1589695956342 ms, 382986.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 886442 ops, at time 1589695956442 ms, 376953.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 887974 ops, at time 1589695956542 ms, 367613.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 889588 ops, at time 1589695956642 ms, 387278.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 891176 ops, at time 1589695956742 ms, 381097.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 6.07267e+07 24
+====== miss ratio: 5.63176
+... 24 threads finished 892561 ops, at time 1589695956842 ms, 332260.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 893970 ops, at time 1589695956942 ms, 338024.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 895477 ops, at time 1589695957042 ms, 361575.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 897126 ops, at time 1589695957142 ms, 395716.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 898691 ops, at time 1589695957242 ms, 375217.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 900190 ops, at time 1589695957342 ms, 359745.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 901772 ops, at time 1589695957442 ms, 379543.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 903345 ops, at time 1589695957542 ms, 377504.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 904974 ops, at time 1589695957642 ms, 390854.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 906616 ops, at time 1589695957742 ms, 393662.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 6.17268e+07 24
+... 24 threads finished 907586 ops, at time 1589695957843 ms, 232279.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 909163 ops, at time 1589695957943 ms, 378200.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 910753 ops, at time 1589695958043 ms, 381493.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 912221 ops, at time 1589695958143 ms, 352193.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: 5.42068
+... 24 threads finished 913737 ops, at time 1589695958243 ms, 363237.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 915308 ops, at time 1589695958343 ms, 376991.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 916805 ops, at time 1589695958443 ms, 359129.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 918345 ops, at time 1589695958543 ms, 369474.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 919933 ops, at time 1589695958643 ms, 380823.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 921524 ops, at time 1589695958743 ms, 381660.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 6.27268e+07 24
+... 24 threads finished 923078 ops, at time 1589695958843 ms, 372639.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 924576 ops, at time 1589695958943 ms, 359049.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 926040 ops, at time 1589695959043 ms, 351335.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 927513 ops, at time 1589695959143 ms, 353502.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 929075 ops, at time 1589695959243 ms, 374831.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 930611 ops, at time 1589695959343 ms, 368570.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 932109 ops, at time 1589695959443 ms, 359121.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: 5.46776
+... 24 threads finished 933699 ops, at time 1589695959544 ms, 380853.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 935225 ops, at time 1589695959644 ms, 366207.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 936812 ops, at time 1589695959744 ms, 380792.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 6.37268e+07 24
+... 24 threads finished 938366 ops, at time 1589695959844 ms, 372751.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 940007 ops, at time 1589695959944 ms, 393745.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 941619 ops, at time 1589695960044 ms, 386864.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 943189 ops, at time 1589695960144 ms, 376544.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 944787 ops, at time 1589695960244 ms, 383359.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 946359 ops, at time 1589695960344 ms, 377189.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 947942 ops, at time 1589695960444 ms, 379882.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 949480 ops, at time 1589695960544 ms, 369016.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 951016 ops, at time 1589695960644 ms, 368566.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 952645 ops, at time 1589695960744 ms, 390909.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 6.47269e+07 24
+====== miss ratio: 5.23031
+... 24 threads finished 954061 ops, at time 1589695960844 ms, 339799.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 955623 ops, at time 1589695960944 ms, 374576.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 957192 ops, at time 1589695961044 ms, 376213.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 958849 ops, at time 1589695961144 ms, 397608.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 960419 ops, at time 1589695961244 ms, 376743.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 962003 ops, at time 1589695961344 ms, 379825.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 963502 ops, at time 1589695961444 ms, 359742.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 965043 ops, at time 1589695961544 ms, 369570.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 966671 ops, at time 1589695961644 ms, 390571.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 968252 ops, at time 1589695961744 ms, 379383.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 6.57269e+07 24
+... 24 threads finished 969296 ops, at time 1589695961844 ms, 250540.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 970871 ops, at time 1589695961944 ms, 377920.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 972428 ops, at time 1589695962044 ms, 373541.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 973969 ops, at time 1589695962145 ms, 369304.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: 5.0456
+... 24 threads finished 975562 ops, at time 1589695962245 ms, 381938.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 977089 ops, at time 1589695962345 ms, 366179.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 978610 ops, at time 1589695962445 ms, 364442.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 980159 ops, at time 1589695962545 ms, 371678.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 981735 ops, at time 1589695962645 ms, 377488.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 983251 ops, at time 1589695962745 ms, 363810.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 6.67271e+07 24
+... 24 threads finished 984789 ops, at time 1589695962845 ms, 369031.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 986335 ops, at time 1589695962945 ms, 370991.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 987906 ops, at time 1589695963045 ms, 376573.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 989443 ops, at time 1589695963145 ms, 368865.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 990988 ops, at time 1589695963245 ms, 370759.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 992592 ops, at time 1589695963345 ms, 384840.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 994103 ops, at time 1589695963445 ms, 362393.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: 4.96306
+... 24 threads finished 995738 ops, at time 1589695963545 ms, 392207.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 997306 ops, at time 1589695963646 ms, 376282.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 998827 ops, at time 1589695963746 ms, 364373.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 6.77272e+07 24
+... 24 threads finished 1000411 ops, at time 1589695963846 ms, 379943.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1001923 ops, at time 1589695963946 ms, 362872.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1003494 ops, at time 1589695964046 ms, 376832.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1005000 ops, at time 1589695964146 ms, 361136.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1006614 ops, at time 1589695964246 ms, 387251.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1008113 ops, at time 1589695964346 ms, 359659.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1009729 ops, at time 1589695964446 ms, 387661.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1011364 ops, at time 1589695964546 ms, 391937.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1012917 ops, at time 1589695964646 ms, 372533.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1014535 ops, at time 1589695964746 ms, 388312.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: === interval ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 4.895224.89509
+
+4.89514
+4.89504
+4.89504
+4.89515
+4.89509
+4.8952
+4.89527
+6.87272e+07 4.89521
+4.8951124
+
+4.89516
+4.89522
+4.89517
+4.8952
+4.894794.89478
+
+4.89469
+... 24 threads finished 1016030 ops, at time 1589695964846 ms, 357983.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1017626 ops, at time 1589695964946 ms, 382967.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1019266 ops, at time 1589695965047 ms, 393057.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1020839 ops, at time 1589695965147 ms, 377384.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1022390 ops, at time 1589695965247 ms, 372094.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1023988 ops, at time 1589695965347 ms, 383439.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1025591 ops, at time 1589695965447 ms, 384485.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1027184 ops, at time 1589695965547 ms, 382186.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1028735 ops, at time 1589695965647 ms, 372061.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1030339 ops, at time 1589695965747 ms, 384886.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 6.97272e+07 24
+... 24 threads finished 1031740 ops, at time 1589695965847 ms, 336082.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1033380 ops, at time 1589695965947 ms, 393576.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1034955 ops, at time 1589695966047 ms, 377852.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: 4.66994
+... 24 threads finished 1036510 ops, at time 1589695966147 ms, 373170.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1038051 ops, at time 1589695966247 ms, 369706.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1039516 ops, at time 1589695966347 ms, 351027.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1041112 ops, at time 1589695966447 ms, 382359.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1042691 ops, at time 1589695966547 ms, 378581.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1044246 ops, at time 1589695966647 ms, 373144.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1045799 ops, at time 1589695966748 ms, 372176.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 7.07273e+07 24
+... 24 threads finished 1047323 ops, at time 1589695966848 ms, 365613.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1048991 ops, at time 1589695966948 ms, 399884.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1050556 ops, at time 1589695967048 ms, 375479.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1052165 ops, at time 1589695967148 ms, 385731.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1053849 ops, at time 1589695967248 ms, 404095.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1055407 ops, at time 1589695967348 ms, 373852.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1056966 ops, at time 1589695967448 ms, 374126.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 4.5434.5434.543014.5434.543
+
+
+
+
+4.54303
+4.54301
+... 24 threads finished 1058501 ops, at time 1589695967548 ms, 368127.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1060075 ops, at time 1589695967648 ms, 377322.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1061631 ops, at time 1589695967748 ms, 373208.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 7.17273e+07 24
+... 24 threads finished 1063229 ops, at time 1589695967848 ms, 383313.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1064841 ops, at time 1589695967948 ms, 386787.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1066385 ops, at time 1589695968048 ms, 370382.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1067980 ops, at time 1589695968148 ms, 382497.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1069645 ops, at time 1589695968248 ms, 399380.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1071216 ops, at time 1589695968348 ms, 376998.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1072795 ops, at time 1589695968448 ms, 378899.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1074360 ops, at time 1589695968548 ms, 375359.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1075935 ops, at time 1589695968648 ms, 377909.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1077511 ops, at time 1589695968749 ms, 378168.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 4.5869
+4.5869
+4.5869
+4.58694.5869
+
+4.5869
+4.5869
+4.5869
+4.5869
+4.5869
+4.5869
+4.5869
+4.5869
+=== interval 7.27368e+07 24
+4.5869
+4.5869
+4.5869
+4.5869
+4.5869
+4.5869
+4.5869
+4.5869
+4.5869
+4.5869
+4.5869
+... 24 threads finished 1078596 ops, at time 1589695968849 ms, 260389.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1080231 ops, at time 1589695968949 ms, 392356.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1081789 ops, at time 1589695969049 ms, 373875.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1083297 ops, at time 1589695969149 ms, 361851.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1084834 ops, at time 1589695969249 ms, 368725.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1086430 ops, at time 1589695969349 ms, 382787.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1088029 ops, at time 1589695969449 ms, 383667.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1089548 ops, at time 1589695969549 ms, 364388.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1091094 ops, at time 1589695969649 ms, 370939.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1092616 ops, at time 1589695969749 ms, 365269.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 7.37369e+07 24
+... 24 threads finished 1094126 ops, at time 1589695969849 ms, 362218.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1095642 ops, at time 1589695969949 ms, 363767.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1097124 ops, at time 1589695970049 ms, 355477.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: 4.58754
+... 24 threads finished 1098685 ops, at time 1589695970149 ms, 374258.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1100248 ops, at time 1589695970249 ms, 375067.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1101790 ops, at time 1589695970349 ms, 370068.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1103337 ops, at time 1589695970449 ms, 371250.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1104941 ops, at time 1589695970549 ms, 384621.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1106546 ops, at time 1589695970649 ms, 385130.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1108122 ops, at time 1589695970749 ms, 378202.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 7.4737e+07 24
+... 24 threads finished 1109680 ops, at time 1589695970849 ms, 373796.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1111193 ops, at time 1589695970949 ms, 362985.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1112719 ops, at time 1589695971049 ms, 366214.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1114196 ops, at time 1589695971149 ms, 353931.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1115721 ops, at time 1589695971249 ms, 365813.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1117276 ops, at time 1589695971349 ms, 372942.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1118801 ops, at time 1589695971450 ms, 365948.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 4.66692
+4.66692
+4.66692
+4.66692
+4.66692
+4.66692
+4.66692
+4.66692
+4.66692
+4.66692
+4.66692
+4.66692
+4.66692
+4.66692
+4.66692
+4.666924.66692
+
+4.66692
+4.66692
+4.66692
+4.66692
+4.66692
+4.66692
+4.66692
+... 24 threads finished 1119965 ops, at time 1589695971550 ms, 279318.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1121511 ops, at time 1589695971650 ms, 371010.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1123120 ops, at time 1589695971750 ms, 386113.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 7.5737e+07 24
+... 24 threads finished 1124689 ops, at time 1589695971850 ms, 376518.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1126261 ops, at time 1589695971950 ms, 377227.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1127780 ops, at time 1589695972050 ms, 364214.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1129343 ops, at time 1589695972150 ms, 375112.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1130948 ops, at time 1589695972250 ms, 385053.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1132502 ops, at time 1589695972350 ms, 372952.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1134031 ops, at time 1589695972450 ms, 366938.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1135567 ops, at time 1589695972550 ms, 368363.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1137095 ops, at time 1589695972650 ms, 366646.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1138717 ops, at time 1589695972750 ms, 389256.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 7.67371e+07 24
+... 24 threads finished 1140078 ops, at time 1589695972850 ms, 326636.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: 4.511
+... 24 threads finished 1141653 ops, at time 1589695972950 ms, 377852.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1143218 ops, at time 1589695973050 ms, 375427.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1144749 ops, at time 1589695973150 ms, 367296.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1146360 ops, at time 1589695973250 ms, 386276.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1147954 ops, at time 1589695973350 ms, 382468.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1149546 ops, at time 1589695973450 ms, 381728.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1151172 ops, at time 1589695973550 ms, 390060.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1152750 ops, at time 1589695973650 ms, 378591.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1154316 ops, at time 1589695973750 ms, 375652.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 7.77372e+07 24
+... 24 threads finished 1155633 ops, at time 1589695973850 ms, 316013.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1157163 ops, at time 1589695973950 ms, 366979.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1158753 ops, at time 1589695974050 ms, 381519.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1160406 ops, at time 1589695974150 ms, 396288.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: 4.28329
+... 24 threads finished 1161937 ops, at time 1589695974251 ms, 367172.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1163431 ops, at time 1589695974351 ms, 358262.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1165007 ops, at time 1589695974451 ms, 377869.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1166608 ops, at time 1589695974551 ms, 384109.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1168102 ops, at time 1589695974651 ms, 358223.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1169671 ops, at time 1589695974751 ms, 375373.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 7.87372e+07 24
+... 24 threads finished 1171262 ops, at time 1589695974851 ms, 381740.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1172831 ops, at time 1589695974951 ms, 376484.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1174356 ops, at time 1589695975051 ms, 365963.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1175907 ops, at time 1589695975151 ms, 372236.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1177442 ops, at time 1589695975251 ms, 368377.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1178945 ops, at time 1589695975351 ms, 360658.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1180479 ops, at time 1589695975451 ms, 368012.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 4.182764.18276
+
+4.18277
+4.18277
+4.18277
+4.18276
+4.18277
+4.18272
+4.18273
+4.18277
+4.18272
+4.18277
+4.18277
+4.18277
+4.18272
+4.18273
+4.18277
+4.18272
+4.18273
+4.18276
+4.182724.18272
+
+4.18277
+... 24 threads finished 1181971 ops, at time 1589695975551 ms, 357565.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1183497 ops, at time 1589695975651 ms, 366210.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1184983 ops, at time 1589695975751 ms, 356533.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 7.97373e+07 24
+... 24 threads finished 1186518 ops, at time 1589695975852 ms, 368267.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1188052 ops, at time 1589695975952 ms, 368023.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1189612 ops, at time 1589695976052 ms, 374295.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1191119 ops, at time 1589695976152 ms, 361672.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1192623 ops, at time 1589695976252 ms, 360945.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1194180 ops, at time 1589695976352 ms, 373672.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1195702 ops, at time 1589695976452 ms, 364576.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1197267 ops, at time 1589695976552 ms, 375089.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1198727 ops, at time 1589695976652 ms, 350375.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1200309 ops, at time 1589695976752 ms, 379399.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 8.07375e+07 24
+... 24 threads finished 1201386 ops, at time 1589695976852 ms, 258085.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: 4.31459
+... 24 threads finished 1202989 ops, at time 1589695976952 ms, 384477.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1204524 ops, at time 1589695977052 ms, 368359.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1206077 ops, at time 1589695977152 ms, 372716.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1207576 ops, at time 1589695977252 ms, 359698.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1209111 ops, at time 1589695977352 ms, 368171.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1210705 ops, at time 1589695977452 ms, 382250.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1212242 ops, at time 1589695977552 ms, 368522.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1213793 ops, at time 1589695977653 ms, 371764.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1215352 ops, at time 1589695977753 ms, 373689.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 8.17375e+07 24
+... 24 threads finished 1216750 ops, at time 1589695977853 ms, 334546.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1218312 ops, at time 1589695977953 ms, 374591.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1219860 ops, at time 1589695978053 ms, 371460.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1221318 ops, at time 1589695978153 ms, 349755.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: 4.32376
+... 24 threads finished 1222857 ops, at time 1589695978253 ms, 369219.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1224399 ops, at time 1589695978353 ms, 370046.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1225890 ops, at time 1589695978453 ms, 357604.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1227467 ops, at time 1589695978553 ms, 378188.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1229044 ops, at time 1589695978653 ms, 378256.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1230593 ops, at time 1589695978753 ms, 371637.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 8.27376e+07 24
+... 24 threads finished 1232149 ops, at time 1589695978854 ms, 373268.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1233674 ops, at time 1589695978954 ms, 365861.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1235289 ops, at time 1589695979054 ms, 387549.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1236840 ops, at time 1589695979154 ms, 372054.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1238382 ops, at time 1589695979254 ms, 369906.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1239884 ops, at time 1589695979354 ms, 360361.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1241471 ops, at time 1589695979454 ms, 380872.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1243107 ops, at time 1589695979554 ms, 392173.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 4.11214.1121
+
+4.1121
+4.1121
+4.1121
+4.1121
+4.1121
+4.1121
+4.1121
+4.1121
+4.1121
+4.1121
+4.1121
+4.1121
+4.1121
+4.1121
+4.1121
+4.1121
+4.1121
+4.1121
+4.1121
+4.1121
+4.1121
+4.1121
+... 24 threads finished 1244298 ops, at time 1589695979654 ms, 285734.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1245969 ops, at time 1589695979754 ms, 400987.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 8.37377e+07 24
+... 24 threads finished 1247503 ops, at time 1589695979854 ms, 368130.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1249056 ops, at time 1589695979954 ms, 372619.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1250511 ops, at time 1589695980054 ms, 349140.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1252040 ops, at time 1589695980154 ms, 366912.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1253574 ops, at time 1589695980254 ms, 367979.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1255145 ops, at time 1589695980354 ms, 376704.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1256781 ops, at time 1589695980454 ms, 392098.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1258341 ops, at time 1589695980554 ms, 374298.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1259882 ops, at time 1589695980654 ms, 369766.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1261499 ops, at time 1589695980754 ms, 388056.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 8.47377e+07 24
+... 24 threads finished 1263033 ops, at time 1589695980854 ms, 368042.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1264548 ops, at time 1589695980954 ms, 363530.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: 3.98178
+... 24 threads finished 1266112 ops, at time 1589695981054 ms, 375104.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1267663 ops, at time 1589695981154 ms, 372098.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1269259 ops, at time 1589695981254 ms, 382687.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1270760 ops, at time 1589695981355 ms, 360153.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1272341 ops, at time 1589695981455 ms, 379390.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1273878 ops, at time 1589695981555 ms, 368854.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1275494 ops, at time 1589695981655 ms, 387483.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1277027 ops, at time 1589695981755 ms, 367765.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 8.57378e+07 24
+... 24 threads finished 1277983 ops, at time 1589695981855 ms, 229403.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1279498 ops, at time 1589695981955 ms, 363483.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1281021 ops, at time 1589695982055 ms, 365319.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1282589 ops, at time 1589695982155 ms, 376165.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1284172 ops, at time 1589695982255 ms, 379752.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: ====== miss ratio: 4.047014.04702
+
+... 24 threads finished 1285734 ops, at time 1589695982355 ms, 374760.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1287296 ops, at time 1589695982455 ms, 373963.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1288813 ops, at time 1589695982555 ms, 363825.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1290373 ops, at time 1589695982655 ms, 374231.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1291970 ops, at time 1589695982755 ms, 383180.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 8.67378e+07 24
+... 24 threads finished 1293478 ops, at time 1589695982855 ms, 361522.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1294979 ops, at time 1589695982955 ms, 360009.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1296571 ops, at time 1589695983056 ms, 381835.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1298100 ops, at time 1589695983156 ms, 366637.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1299678 ops, at time 1589695983256 ms, 378632.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1301263 ops, at time 1589695983356 ms, 380346.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1302877 ops, at time 1589695983456 ms, 387305.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1304393 ops, at time 1589695983556 ms, 363738.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ... 24 threads finished 1305976 ops, at time 1589695983656 ms, 379851.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: 3.773463.77344
+
+3.77325
+3.77345
+3.77345
+3.77348
+3.77346
+3.77344
+3.77344
+3.77344
+3.77313
+3.77345
+3.77345
+3.77327
+3.77347
+3.77348
+3.77345
+3.77348
+3.77349
+3.773443.77344
+
+3.77349
+... 24 threads finished 1307460 ops, at time 1589695983756 ms, 355839.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 8.77378e+07 24
+... 24 threads finished 1308981 ops, at time 1589695983856 ms, 364861.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1310494 ops, at time 1589695983956 ms, 363072.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1312035 ops, at time 1589695984056 ms, 369828.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1313555 ops, at time 1589695984156 ms, 364643.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1315098 ops, at time 1589695984256 ms, 369739.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1316644 ops, at time 1589695984356 ms, 370562.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1318175 ops, at time 1589695984456 ms, 367109.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1319697 ops, at time 1589695984556 ms, 365112.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1321274 ops, at time 1589695984656 ms, 378313.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1322858 ops, at time 1589695984756 ms, 379977.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 8.8738e+07 24
+... 24 threads finished 1323949 ops, at time 1589695984857 ms, 261288.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1325421 ops, at time 1589695984957 ms, 353202.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: ====== miss ratio: 3.812863.81287
+
+... 24 threads finished 1326895 ops, at time 1589695985057 ms, 353615.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1328475 ops, at time 1589695985157 ms, 379105.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1329961 ops, at time 1589695985257 ms, 356440.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1331595 ops, at time 1589695985357 ms, 392046.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1333128 ops, at time 1589695985457 ms, 367732.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1334656 ops, at time 1589695985557 ms, 366577.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1336182 ops, at time 1589695985657 ms, 366042.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1337649 ops, at time 1589695985757 ms, 352051.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 8.9738e+07 24
+... 24 threads finished 1339081 ops, at time 1589695985857 ms, 343631.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1340607 ops, at time 1589695985957 ms, 365614.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1342087 ops, at time 1589695986057 ms, 355040.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1343548 ops, at time 1589695986157 ms, 350608.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1345130 ops, at time 1589695986257 ms, 379649.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1346762 ops, at time 1589695986357 ms, 391183.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 3.943663.94366
+
+3.94366
+3.94366
+3.94366
+3.94366
+3.94366
+3.94366
+3.94366
+3.94366
+3.94366
+3.94366
+3.94366
+3.94366
+3.94366
+3.94366
+3.94366
+3.94366
+3.94366
+3.94366
+3.94366
+3.943663.94366
+
+3.94366
+... 24 threads finished 1347950 ops, at time 1589695986457 ms, 284946.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1349540 ops, at time 1589695986557 ms, 381409.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1351075 ops, at time 1589695986657 ms, 368274.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1352598 ops, at time 1589695986758 ms, 365392.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 9.0738e+07 24
+... 24 threads finished 1354143 ops, at time 1589695986858 ms, 370585.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1355620 ops, at time 1589695986958 ms, 354458.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1357155 ops, at time 1589695987058 ms, 368355.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1358656 ops, at time 1589695987158 ms, 360052.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1360227 ops, at time 1589695987258 ms, 377017.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1361816 ops, at time 1589695987358 ms, 381276.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1363397 ops, at time 1589695987458 ms, 379007.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1364908 ops, at time 1589695987558 ms, 362357.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1366373 ops, at time 1589695987658 ms, 351241.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1367964 ops, at time 1589695987758 ms, 381614.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 3.885023.88502
+3.885023.88502
+3.885023.88502
+3.885023.88502
+3.88502
+
+
+
+
+3.88502
+3.88502
+3.88502
+3.88502
+3.88502
+3.885023.88502
+
+3.88502
+3.88502
+3.88502
+3.88502
+3.88502
+3.88502
+3.88502
+3.88502
+=== interval 9.17381e+07 24
+... 24 threads finished 1368914 ops, at time 1589695987858 ms, 227929.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1370527 ops, at time 1589695987958 ms, 386899.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1372012 ops, at time 1589695988058 ms, 356104.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1373569 ops, at time 1589695988158 ms, 373646.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1375149 ops, at time 1589695988258 ms, 378934.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1376695 ops, at time 1589695988358 ms, 370988.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1378229 ops, at time 1589695988458 ms, 368079.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1379749 ops, at time 1589695988558 ms, 364708.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1381271 ops, at time 1589695988658 ms, 365028.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1382796 ops, at time 1589695988758 ms, 365934.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 9.27381e+07 24
+... 24 threads finished 1384267 ops, at time 1589695988858 ms, 352800.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1385824 ops, at time 1589695988959 ms, 373538.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1387331 ops, at time 1589695989059 ms, 361474.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1388864 ops, at time 1589695989159 ms, 367284.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: 3.86725
+... 24 threads finished 1390401 ops, at time 1589695989259 ms, 368806.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1391949 ops, at time 1589695989359 ms, 371471.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1393456 ops, at time 1589695989459 ms, 361633.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1394942 ops, at time 1589695989559 ms, 356212.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1396498 ops, at time 1589695989659 ms, 373029.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1397998 ops, at time 1589695989759 ms, 359726.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 9.37382e+07 24
+... 24 threads finished 1399088 ops, at time 1589695989859 ms, 261309.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1400654 ops, at time 1589695989959 ms, 375753.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1402144 ops, at time 1589695990059 ms, 357499.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1403678 ops, at time 1589695990159 ms, 367979.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1405200 ops, at time 1589695990259 ms, 365272.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1406703 ops, at time 1589695990359 ms, 360615.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1408214 ops, at time 1589695990459 ms, 362310.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: 3.76858
+... 24 threads finished 1409738 ops, at time 1589695990559 ms, 365734.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1411228 ops, at time 1589695990660 ms, 356936.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1412734 ops, at time 1589695990760 ms, 361411.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 9.47382e+07 24
+... 24 threads finished 1414185 ops, at time 1589695990860 ms, 348128.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1415732 ops, at time 1589695990960 ms, 371157.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1417243 ops, at time 1589695991060 ms, 362538.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1418764 ops, at time 1589695991160 ms, 364617.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1420328 ops, at time 1589695991260 ms, 375224.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1421812 ops, at time 1589695991360 ms, 356135.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1423345 ops, at time 1589695991460 ms, 367875.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1424840 ops, at time 1589695991560 ms, 358441.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1426341 ops, at time 1589695991660 ms, 359923.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1427860 ops, at time 1589695991760 ms, 364538.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 9.57382e+07 24
+... 24 threads finished 1429299 ops, at time 1589695991860 ms, 345242.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: 3.67021
+... 24 threads finished 1430802 ops, at time 1589695991960 ms, 359730.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1432275 ops, at time 1589695992060 ms, 353219.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1433845 ops, at time 1589695992161 ms, 376694.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1435375 ops, at time 1589695992261 ms, 366748.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1436920 ops, at time 1589695992361 ms, 370685.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1438393 ops, at time 1589695992461 ms, 353043.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1439888 ops, at time 1589695992561 ms, 358681.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1441476 ops, at time 1589695992661 ms, 381097.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1443032 ops, at time 1589695992761 ms, 373100.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 9.67383e+07 24
+... 24 threads finished 1443878 ops, at time 1589695992861 ms, 202689.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1445401 ops, at time 1589695992961 ms, 365399.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1446867 ops, at time 1589695993061 ms, 351780.2 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1448357 ops, at time 1589695993161 ms, 356953.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1449889 ops, at time 1589695993261 ms, 367566.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: 3.62904
+... 24 threads finished 1451426 ops, at time 1589695993361 ms, 368784.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1453039 ops, at time 1589695993461 ms, 387077.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1454520 ops, at time 1589695993561 ms, 355312.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1455995 ops, at time 1589695993661 ms, 353876.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1457501 ops, at time 1589695993761 ms, 361403.9 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 9.77383e+07 24
+... 24 threads finished 1458906 ops, at time 1589695993862 ms, 337159.5 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1460467 ops, at time 1589695993962 ms, 374550.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1461937 ops, at time 1589695994062 ms, 352644.8 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1463372 ops, at time 1589695994162 ms, 344252.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1464950 ops, at time 1589695994262 ms, 378697.3 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1466405 ops, at time 1589695994362 ms, 348868.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1467920 ops, at time 1589695994462 ms, 363211.4 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1469429 ops, at time 1589695994562 ms, 361997.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1470892 ops, at time 1589695994662 ms, 350927.0 ops/s 0.0 puts/s 0.0 scans/s                                         
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 3.69374
+3.69374
+3.69374
+3.69374
+3.69374
+3.693743.69374
+
+3.69374
+3.69374
+3.69374
+3.69374
+3.69374
+3.69374
+3.69374
+3.69374
+3.69374
+3.69374
+3.69374
+3.69374
+3.69374
+3.69374
+3.69374
+3.69374
+3.69374
+... 24 threads finished 1471913 ops, at time 1589695994762 ms, 244866.1 ops/s 0.0 puts/s 0.0 scans/s                                         
+=== interval 9.87383e+07 24
+... 24 threads finished 1473364 ops, at time 1589695994862 ms, 347572.7 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads finished 1474835 ops, at time 1589695994962 ms, 352648.6 ops/s 0.0 puts/s 0.0 scans/s                                         
+... 24 threads f========================= overall  1  experiments =============================
+==================== results in  /home/kanwu/Research/results/leveldb/zippydb/test  ============================
+                ********* Configured with **********
+{'keyrange_num': 7, 'swapiness': 0, 'threads': 24, 'memory': 1610612736, 'type': 'test', 'readahead': 128}
+Doing: echo 128 > /sys/class/block/nvme0n1/queue/read_ahead_kb
+Returned 0 echo 128 > /sys/class/block/nvme0n1/queue/read_ahead_kb
+Doing: echo 128 > /sys/class/block/nvme1n1/queue/read_ahead_kb
+Returned 0 echo 128 > /sys/class/block/nvme1n1/queue/read_ahead_kb
+Doing: cgcreate -g memory:charlie
+Returned 0 cgcreate -g memory:charlie
+Doing: sync; echo 3 > /proc/sys/vm/drop_caches; sleep 1
+Returned 0 sync; echo 3 > /proc/sys/vm/drop_caches; sleep 1
+Doing: pkill iostat
+Returned 1 pkill iostat
+Doing: iostat -mx 1 /dev/nvme0n1 /dev/nvme1n1  > /dev/shm//iostat.out &
+Returned 0 iostat -mx 1 /dev/nvme0n1 /dev/nvme1n1  > /dev/shm//iostat.out &
+Doing: sudo pkill blkparse
+Returned 1 sudo pkill blkparse
+Doing: sudo pkill blktrace
+Returned 1 sudo pkill blktrace
+              *********** start running ***********
+/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/970/db_1024 --value_size=1024 --write_buffer_size=134217728 --cache_size=0 --compression_ratio=1 --benchmarks=mixgraph --use_existing_db=1 --db_num=80000000 --reads=5000000 --threads=24 --keyrange_num=7
+Doing: cgexec -g memory:charlie --sticky /home/kanwu/Research/739-wisckey/db_bench --db=/mnt/970/db_1024 --value_size=1024 --write_buffer_size=134217728 --cache_size=0 --compression_ratio=1 --benchmarks=mixgraph --use_existing_db=1 --db_num=80000000 --reads=5000000 --threads=24 --keyrange_num=7 &
+Returned 0 cgexec -g memory:charlie --sticky /home/kanwu/Research/739-wisckey/db_bench --db=/mnt/970/db_1024 --value_size=1024 --write_buffer_size=134217728 --cache_size=0 --compression_ratio=1 --benchmarks=mixgraph --use_existing_db=1 --db_num=80000000 --reads=5000000 --threads=24 --keyrange_num=7 &
+Doing: sleep 100; pkill db_bench
+Returned 0 sleep 100; pkill db_bench
+              **************** done ***************
+Doing: sleep 1; sync; sleep 1
+Returned 0 sleep 1; sync; sleep 1
+Doing: pkill iostat; sleep 1
+Returned 0 pkill iostat; sleep 1
+Doing: sync; sleep 1
+Returned 0 sync; sleep 1
+Doing: cp /dev/shm//running /home/kanwu/Research/results/leveldb/zippydb/test/01-11-33_20200517/running
+Returned 0 cp /dev/shm//running /home/kanwu/Research/results/leveldb/zippydb/test/01-11-33_20200517/running
+Doing: cp /dev/shm//iostat.out /home/kanwu/Research/results/leveldb/zippydb/test/01-11-33_20200517/iostat.out
+Returned 0 cp /dev/shm//iostat.out /home/kanwu/Research/results/leveldb/zippydb/test/01-11-33_20200517/iostat.out
+==== utilization statistics ====
+iowait  system  user  idle
+38.5137623762 18.859009901 9.29603960396 33.3315841584
+1447.3977451 292.12
+=================================

@@ -5,29 +5,33 @@ report_file_name = sys.argv[1]
 
 end_to_end_throughput = dict()
 
+
+def split(line):
+    items = line.split(',')
+    throughput_timing =  int(re.sub("[^0-9]", "", line.split('ms,')[0]))
+    for i in range(0, len(items)):
+        items[i] = int(re.sub("[^0-9]", "", items[i]))
+    return items 
+
 with open(report_file_name, 'r')  as report_file:
     for line in report_file:
-        if 'miss' in line:
+        if 'miss ratio' in line:
             continue
         # parse throughput vs time
         #if '... finished' in line:
-        if '...' in line and 'finished' in line:
+        if 'finished' in line:
             #throughput_num =  line.split('ops,')[-1].replace('ops\/s', '')
             #throughput_timing =  int(re.sub("[^0-9]", "", line.split('ops,')[0]))
             #throughput_num =  float(re.sub("[^0-9.]", "", line.split('ops,')[-1]))
-            line = line.split('ops,')[-1]
-            throughput_timing =  int(re.sub("[^0-9]", "", line.split('ms,')[0]))
-            throughput_num =  float(re.sub("[^0-9.]", "", line.split('ms,')[-1]))
-            if (throughput_timing not in end_to_end_throughput):
-                end_to_end_throughput[throughput_timing] = throughput_num
-            else:
-                end_to_end_throughput[throughput_timing] += throughput_num
-            #print throughput_timing, throughput_num
+            items = split(line)
+            print items
+
+            print items[0], items[1], items[3], items[7], items[8] # #threads, timing, throughput_num, data admission ratio, load admission ratio
 
         if 'Data admit ratio' in line:
             data_admit_ratio =  int(re.sub("[^0-9]", "", line.split('Load')[0]))
             load_admit_ratio =  int(re.sub("[^0-9.]", "", line.split('Load')[-1]))
-            print data_admit_ratio, load_admit_ratio
+            #print data_admit_ratio, load_admit_ratio
         
         if 'Optane read throughput' in line:
             line = re.sub("-nan", "0", line)
@@ -36,9 +40,6 @@ with open(report_file_name, 'r')  as report_file:
             flash_read_throughput =  float(re.sub("[^0-9.]", "", line.split(';')[2]))
             overall_read_throughput =  float(re.sub("[^0-9.]", "", line.split(';')[3]))
             #print optane_read_throughput, optane_write_throughput, flash_read_throughput, overall_read_throughput
-        if 'slope' in line:
-            print line.strip('\n')
-            #continue
         if 'ran for' in line:
             #continue
             for time in sorted(end_to_end_throughput):
