@@ -253,8 +253,9 @@ void * monitor_func(void *vargp) {
       int ratio1, ratio2, ratio3;   // indicating a window eg. [45, 50, 55]
       float tp1, tp2, tp3;
 
-      data_admit_ratio = 0;
-      //data_admit_ratio = 100;
+      //data_admit_ratio = 0;
+      data_admit_ratio = 100;
+      bool second_chance = true;
       for (int iteration = 0; ; iteration++) {
 	
 	//load_admit_ratio = 100;
@@ -268,7 +269,7 @@ void * monitor_func(void *vargp) {
         ratio3 = *to_change_ratio + step;
        
 	//if (true && iteration % 20  == 0) {
-	if (false && iteration % 5  == 0) {   // 5 * 4 * frequency = 100 ms
+	if (true && iteration % 10  == 0) {   // 5 * 4 * frequency = 100 ms
 	  std::cout << "After iteration " << iteration << " : " << data_admit_ratio << " " << load_admit_ratio << std::endl;
 	  tp2 = check_throughput(true);
 	} else {
@@ -335,7 +336,12 @@ void * monitor_func(void *vargp) {
 
 	// TODO if it gets stable to 100\%
 	if  (*to_change_ratio == 100) {
+          if (second_chance) {
+	    second_chance = false;
+	    continue;
+          }
 	  std::cout << "====== Found the optimal is 100%, hit rate < w0\n";
+	  second_chance = true;
 	  goto reoptimize;
 	}
 

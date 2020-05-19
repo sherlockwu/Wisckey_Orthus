@@ -1,0 +1,1434 @@
+Will monitor the cache!
+zipfian theta 0.99
+Keys:       16 bytes each
+Values:     1024 bytes each (1024 bytes after compression)
+Entries:    1000000
+RawSize:    991.8 MB (estimated)
+FileSize:   991.8 MB (estimated)
+WARNING: Snappy compression is not enabled
+------------------------------------------------
+========== here is to NewPersistLRUCache
+fadvise random works !!! 
+fadvise sequential works !!! 
+vlog size: 104166 MB, head: 109226666032, tail: 40 
+========== Here is in DB::Open, to start a thread to monitor Optane
+... 32 threads, finished 1 ops, at time 1589852235372 ms, 5.6 ops/s, 5.6 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+====== miss ratio: 224.496
+... 32 threads, finished 779 ops, at time 1589852235472 ms, 248651.7 ops/s, 248651.7 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 1633 ops, at time 1589852235572 ms, 273170.7 ops/s, 273170.7 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 2625 ops, at time 1589852235672 ms, 317319.4 ops/s, 317319.4 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 3670 ops, at time 1589852235772 ms, 334186.1 ops/s, 334186.1 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 4846 ops, at time 1589852235872 ms, 376289.9 ops/s, 376289.9 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 5999 ops, at time 1589852235972 ms, 368153.7 ops/s, 368153.7 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 7184 ops, at time 1589852236072 ms, 378995.3 ops/s, 378995.3 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 8286 ops, at time 1589852236172 ms, 352537.8 ops/s, 352537.8 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 9472 ops, at time 1589852236273 ms, 378630.2 ops/s, 378630.2 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 10616 ops, at time 1589852236373 ms, 366054.4 ops/s, 366054.4 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 11882 ops, at time 1589852236473 ms, 404954.0 ops/s, 404954.0 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 13210 ops, at time 1589852236573 ms, 424361.7 ops/s, 424361.7 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 14461 ops, at time 1589852236673 ms, 400135.9 ops/s, 400135.9 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 15739 ops, at time 1589852236773 ms, 408661.7 ops/s, 408661.7 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+====== miss ratio: 28.6323
+... 32 threads, finished 17059 ops, at time 1589852236873 ms, 422340.9 ops/s, 422340.9 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 18346 ops, at time 1589852236973 ms, 411461.5 ops/s, 411461.5 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 19752 ops, at time 1589852237073 ms, 449129.5 ops/s, 449129.5 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 20896 ops, at time 1589852237173 ms, 366014.1 ops/s, 366014.1 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 22337 ops, at time 1589852237273 ms, 460806.7 ops/s, 460806.7 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 23641 ops, at time 1589852237373 ms, 416592.6 ops/s, 416592.6 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 24969 ops, at time 1589852237474 ms, 423777.7 ops/s, 423777.7 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 26347 ops, at time 1589852237574 ms, 440682.4 ops/s, 440682.4 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 27799 ops, at time 1589852237674 ms, 464579.6 ops/s, 464579.6 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 29194 ops, at time 1589852237774 ms, 446368.8 ops/s, 446368.8 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 30616 ops, at time 1589852237874 ms, 454849.0 ops/s, 454849.0 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+====== miss ratio: 21.1124
+... 32 threads, finished 31992 ops, at time 1589852237974 ms, 440196.7 ops/s, 440196.7 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 33429 ops, at time 1589852238074 ms, 459784.8 ops/s, 459784.8 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 34792 ops, at time 1589852238174 ms, 435089.7 ops/s, 435089.7 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 36325 ops, at time 1589852238274 ms, 490295.2 ops/s, 490295.2 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 37844 ops, at time 1589852238374 ms, 485095.3 ops/s, 485095.3 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 39334 ops, at time 1589852238474 ms, 476204.7 ops/s, 476204.7 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 40856 ops, at time 1589852238574 ms, 486957.2 ops/s, 486957.2 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 42348 ops, at time 1589852238675 ms, 477249.1 ops/s, 477249.1 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 43829 ops, at time 1589852238775 ms, 473792.1 ops/s, 473792.1 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 45423 ops, at time 1589852238875 ms, 508762.3 ops/s, 508762.3 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 46984 ops, at time 1589852238975 ms, 498468.2 ops/s, 498468.2 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+====== miss ratio: 18.3214
+... 32 threads, finished 48480 ops, at time 1589852239075 ms, 478308.7 ops/s, 478308.7 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 50073 ops, at time 1589852239175 ms, 509627.5 ops/s, 509627.5 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 51571 ops, at time 1589852239275 ms, 478938.5 ops/s, 478938.5 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 53190 ops, at time 1589852239375 ms, 517940.2 ops/s, 517940.2 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 54716 ops, at time 1589852239475 ms, 488134.5 ops/s, 488134.5 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 56247 ops, at time 1589852239575 ms, 489606.7 ops/s, 489606.7 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 57776 ops, at time 1589852239675 ms, 489250.6 ops/s, 489250.6 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 59312 ops, at time 1589852239775 ms, 491063.3 ops/s, 491063.3 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 60866 ops, at time 1589852239876 ms, 496183.4 ops/s, 496183.4 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+====== miss ratio: 16.6421
+... 32 threads, finished 62501 ops, at time 1589852239976 ms, 523105.8 ops/s, 523105.8 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 64190 ops, at time 1589852240076 ms, 540469.2 ops/s, 540469.2 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 65783 ops, at time 1589852240176 ms, 508767.9 ops/s, 508767.9 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 67387 ops, at time 1589852240276 ms, 512378.2 ops/s, 512378.2 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 68935 ops, at time 1589852240376 ms, 494391.0 ops/s, 494391.0 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 70552 ops, at time 1589852240477 ms, 516077.6 ops/s, 516077.6 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 72076 ops, at time 1589852240577 ms, 487563.0 ops/s, 487563.0 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 73726 ops, at time 1589852240677 ms, 527984.2 ops/s, 527984.2 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 75396 ops, at time 1589852240777 ms, 534058.2 ops/s, 534058.2 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 77002 ops, at time 1589852240877 ms, 513437.4 ops/s, 513437.4 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+====== miss ratio: 15.3481
+... 32 threads, finished 78581 ops, at time 1589852240977 ms, 505259.8 ops/s, 505259.8 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 80251 ops, at time 1589852241077 ms, 533652.9 ops/s, 533652.9 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 82029 ops, at time 1589852241177 ms, 568187.3 ops/s, 568187.3 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 83581 ops, at time 1589852241277 ms, 496347.2 ops/s, 496347.2 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 85196 ops, at time 1589852241377 ms, 516769.0 ops/s, 516769.0 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 86863 ops, at time 1589852241477 ms, 532524.1 ops/s, 532524.1 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 88614 ops, at time 1589852241577 ms, 559218.3 ops/s, 559218.3 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 90340 ops, at time 1589852241678 ms, 551564.4 ops/s, 551564.4 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 91979 ops, at time 1589852241778 ms, 524427.6 ops/s, 524427.6 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 93661 ops, at time 1589852241878 ms, 537519.7 ops/s, 537519.7 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+====== miss ratio: 14.2981
+... 32 threads, finished 95315 ops, at time 1589852241978 ms, 528899.2 ops/s, 528899.2 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 97033 ops, at time 1589852242078 ms, 549721.5 ops/s, 549721.5 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 98778 ops, at time 1589852242178 ms, 558204.6 ops/s, 558204.6 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 100572 ops, at time 1589852242278 ms, 574034.1 ops/s, 574034.1 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 102315 ops, at time 1589852242378 ms, 557291.9 ops/s, 557291.9 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 104067 ops, at time 1589852242478 ms, 560595.2 ops/s, 560595.2 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 105811 ops, at time 1589852242578 ms, 557561.5 ops/s, 557561.5 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 107402 ops, at time 1589852242678 ms, 508423.5 ops/s, 508423.5 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 109018 ops, at time 1589852242778 ms, 516902.9 ops/s, 516902.9 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 13.4742
+13.474213.4742
+
+13.4742
+13.474213.4742
+
+13.4742
+13.4742
+13.474213.4742
+
+13.4742
+13.4742
+13.4742
+13.4742
+13.4742
+13.4742
+13.4742
+13.4742
+13.4742
+13.4742
+13.4742
+13.4742
+13.4742
+13.4742
+13.4742
+13.4742
+13.4742
+13.4742
+13.4742
+13.4742
+13.4742
+13.4742
+... 32 threads, finished 110242 ops, at time 1589852242878 ms, 391652.6 ops/s, 391652.6 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 112027 ops, at time 1589852242978 ms, 569929.1 ops/s, 569929.1 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 113849 ops, at time 1589852243078 ms, 582981.7 ops/s, 582981.7 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 115624 ops, at time 1589852243179 ms, 567171.9 ops/s, 567171.9 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 117359 ops, at time 1589852243279 ms, 554711.9 ops/s, 554711.9 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 119048 ops, at time 1589852243379 ms, 540420.6 ops/s, 540420.6 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 120783 ops, at time 1589852243479 ms, 554728.5 ops/s, 554728.5 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 122606 ops, at time 1589852243579 ms, 583074.3 ops/s, 583074.3 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 124385 ops, at time 1589852243679 ms, 569234.5 ops/s, 569234.5 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+====== miss ratio: 12.8071
+... 32 threads, finished 126230 ops, at time 1589852243779 ms, 589721.8 ops/s, 589721.8 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 127957 ops, at time 1589852243879 ms, 552225.8 ops/s, 552225.8 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 129753 ops, at time 1589852243979 ms, 574484.5 ops/s, 574484.5 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 131503 ops, at time 1589852244079 ms, 559474.1 ops/s, 559474.1 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 133370 ops, at time 1589852244179 ms, 596950.5 ops/s, 596950.5 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 135190 ops, at time 1589852244279 ms, 581690.3 ops/s, 581690.3 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 137040 ops, at time 1589852244379 ms, 591917.1 ops/s, 591917.1 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 138922 ops, at time 1589852244479 ms, 602173.8 ops/s, 602173.8 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 140727 ops, at time 1589852244579 ms, 577294.0 ops/s, 577294.0 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+====== miss ratio: 12.3122
+... 32 threads, finished 142590 ops, at time 1589852244680 ms, 595261.2 ops/s, 595261.2 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 144310 ops, at time 1589852244780 ms, 549608.6 ops/s, 549608.6 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 146081 ops, at time 1589852244880 ms, 566533.0 ops/s, 566533.0 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 147906 ops, at time 1589852244980 ms, 582880.9 ops/s, 582880.9 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 149736 ops, at time 1589852245080 ms, 585237.2 ops/s, 585237.2 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 151485 ops, at time 1589852245180 ms, 558931.0 ops/s, 558931.0 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 153260 ops, at time 1589852245280 ms, 567897.8 ops/s, 567897.8 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 155065 ops, at time 1589852245380 ms, 576763.7 ops/s, 576763.7 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+====== miss ratio: 11.7894
+... 32 threads, finished 156833 ops, at time 1589852245480 ms, 564991.6 ops/s, 564991.6 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 158624 ops, at time 1589852245581 ms, 571861.9 ops/s, 571861.9 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 160350 ops, at time 1589852245681 ms, 551895.0 ops/s, 551895.0 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 162311 ops, at time 1589852245781 ms, 627319.3 ops/s, 627319.3 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 164132 ops, at time 1589852245881 ms, 582324.0 ops/s, 582324.0 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 165954 ops, at time 1589852245981 ms, 582626.3 ops/s, 582626.3 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 167740 ops, at time 1589852246081 ms, 571285.8 ops/s, 571285.8 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 169584 ops, at time 1589852246181 ms, 589143.3 ops/s, 589143.3 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 171478 ops, at time 1589852246281 ms, 605801.3 ops/s, 605801.3 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 11.363511.3636
+
+11.3633
+11.3634
+11.3635
+11.3635
+11.3625
+11.3626
+11.3626
+11.3635
+11.3635
+11.3635
+11.363611.3635
+
+11.3623
+11.3625
+11.3636
+11.3635
+11.3635
+11.3635
+11.3634
+11.3635
+11.3635
+11.3636
+11.3635
+11.3635
+11.362
+11.362
+11.3623
+11.3623
+11.3635
+11.3634
+... 32 threads, finished 173117 ops, at time 1589852246381 ms, 524244.1 ops/s, 524244.1 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 175002 ops, at time 1589852246481 ms, 602826.2 ops/s, 602826.2 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 176764 ops, at time 1589852246581 ms, 563806.2 ops/s, 563806.2 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 178605 ops, at time 1589852246681 ms, 588949.2 ops/s, 588949.2 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 180430 ops, at time 1589852246781 ms, 583259.3 ops/s, 583259.3 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 182345 ops, at time 1589852246881 ms, 612744.9 ops/s, 612744.9 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 184171 ops, at time 1589852246981 ms, 583957.9 ops/s, 583957.9 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 185989 ops, at time 1589852247082 ms, 581643.7 ops/s, 581643.7 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 187885 ops, at time 1589852247182 ms, 606653.3 ops/s, 606653.3 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+====== miss ratio: 10.9273
+... 32 threads, finished 189751 ops, at time 1589852247282 ms, 596511.6 ops/s, 596511.6 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 191643 ops, at time 1589852247382 ms, 605155.6 ops/s, 605155.6 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 193510 ops, at time 1589852247482 ms, 596628.6 ops/s, 596628.6 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 195361 ops, at time 1589852247582 ms, 592083.2 ops/s, 592083.2 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 197151 ops, at time 1589852247682 ms, 572439.4 ops/s, 572439.4 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 199150 ops, at time 1589852247782 ms, 639379.5 ops/s, 639379.5 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 201063 ops, at time 1589852247882 ms, 611890.8 ops/s, 611890.8 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 202938 ops, at time 1589852247982 ms, 599454.5 ops/s, 599454.5 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+====== miss ratio: 10.6114
+... 32 threads, finished 204923 ops, at time 1589852248082 ms, 632707.1 ops/s, 632707.1 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 206851 ops, at time 1589852248183 ms, 615857.6 ops/s, 615857.6 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 208710 ops, at time 1589852248283 ms, 594677.8 ops/s, 594677.8 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 210540 ops, at time 1589852248383 ms, 585126.0 ops/s, 585126.0 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 212475 ops, at time 1589852248483 ms, 619020.5 ops/s, 619020.5 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 214414 ops, at time 1589852248583 ms, 620182.3 ops/s, 620182.3 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 216132 ops, at time 1589852248683 ms, 549639.1 ops/s, 549639.1 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 217897 ops, at time 1589852248783 ms, 564788.7 ops/s, 564788.7 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 219617 ops, at time 1589852248883 ms, 550179.9 ops/s, 550179.9 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 10.24110.241
+10.241
+
+10.241
+10.241
+10.241
+10.241
+10.241
+10.241
+10.241
+10.241
+10.241
+10.241
+10.241
+10.241
+10.241
+10.241
+10.241
+10.241
+10.241
+10.241
+10.241
+10.241
+10.241
+10.241
+10.241
+10.241
+10.241
+10.241
+10.241
+10.241
+10.241
+... 32 threads, finished 220816 ops, at time 1589852248983 ms, 382814.8 ops/s, 382814.8 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 222596 ops, at time 1589852249083 ms, 569383.6 ops/s, 569383.6 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 224167 ops, at time 1589852249183 ms, 502584.3 ops/s, 502584.3 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 225956 ops, at time 1589852249283 ms, 572422.8 ops/s, 572422.8 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 227851 ops, at time 1589852249383 ms, 605310.4 ops/s, 605310.4 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 229715 ops, at time 1589852249483 ms, 596378.6 ops/s, 596378.6 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 231572 ops, at time 1589852249584 ms, 593326.3 ops/s, 593326.3 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 233365 ops, at time 1589852249684 ms, 573645.3 ops/s, 573645.3 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 235318 ops, at time 1589852249784 ms, 624891.3 ops/s, 624891.3 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 9.975179.97802
+
+9.97801
+9.9782
+9.97814
+9.978
+9.97821
+9.97791
+9.97816
+9.97819
+9.97816
+9.97823
+9.97818
+9.97805
+9.97801
+9.97824
+9.97822
+9.97723
+9.97799
+9.97794
+9.97785
+9.97799
+9.97808
+9.97753
+9.97797
+9.97793
+9.97796
+9.9751
+9.97446
+... 32 threads, finished 237048 ops, at time 1589852249884 ms, 553118.8 ops/s, 553118.8 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 238827 ops, at time 1589852249984 ms, 568631.8 ops/s, 568631.8 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 240687 ops, at time 1589852250084 ms, 594314.5 ops/s, 594314.5 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 242543 ops, at time 1589852250184 ms, 593546.1 ops/s, 593546.1 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 244382 ops, at time 1589852250284 ms, 587980.2 ops/s, 587980.2 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 246232 ops, at time 1589852250384 ms, 591982.2 ops/s, 591982.2 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 248079 ops, at time 1589852250484 ms, 590484.9 ops/s, 590484.9 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 249996 ops, at time 1589852250584 ms, 613384.8 ops/s, 613384.8 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 9.685719.68578
+9.68569
+
+9.68576
+9.68574
+9.68575
+9.68573
+9.68573
+9.68574
+9.68579
+9.68569
+9.68566
+9.68565
+9.68618
+9.68568
+9.686149.6865
+
+9.68592
+... 32 threads, finished 251917 ops, at time 1589852250684 ms, 613682.9 ops/s, 613682.9 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 253817 ops, at time 1589852250785 ms, 606284.2 ops/s, 606284.2 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 255707 ops, at time 1589852250885 ms, 604238.1 ops/s, 604238.1 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 257675 ops, at time 1589852250985 ms, 629596.3 ops/s, 629596.3 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 259648 ops, at time 1589852251085 ms, 631265.3 ops/s, 631265.3 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 261494 ops, at time 1589852251185 ms, 590708.2 ops/s, 590708.2 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 263375 ops, at time 1589852251285 ms, 601895.9 ops/s, 601895.9 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 265238 ops, at time 1589852251385 ms, 596076.5 ops/s, 596076.5 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 267088 ops, at time 1589852251485 ms, 591556.3 ops/s, 591556.3 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 9.43183
+9.431839.43183
+
+9.43183
+9.43183
+9.43183
+9.43183
+9.43183
+9.43183
+9.43183
+9.43183
+9.43183
+9.43183
+9.43183
+9.43183
+9.43183
+9.43183
+9.43183
+9.43183
+9.43183
+9.43183
+9.43183
+9.43183
+9.43183
+9.43183
+9.43183
+9.43183
+9.43183
+9.43183
+9.43183
+9.43183
+9.43183
+... 32 threads, finished 268153 ops, at time 1589852251585 ms, 340578.6 ops/s, 340578.6 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 270075 ops, at time 1589852251685 ms, 615027.7 ops/s, 615027.7 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 272066 ops, at time 1589852251785 ms, 636941.7 ops/s, 636941.7 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 273874 ops, at time 1589852251885 ms, 578265.1 ops/s, 578265.1 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 275779 ops, at time 1589852251985 ms, 609563.4 ops/s, 609563.4 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 277746 ops, at time 1589852252085 ms, 629200.9 ops/s, 629200.9 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 279709 ops, at time 1589852252185 ms, 627977.9 ops/s, 627977.9 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 281514 ops, at time 1589852252285 ms, 577403.7 ops/s, 577403.7 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 9.211139.21236
+
+9.21139
+9.21175
+9.21248
+9.21254
+9.21207
+9.21193
+9.21209
+9.21159
+9.21239
+9.21244
+9.21233
+9.21245
+9.21159
+9.21239
+9.2125
+9.20985
+9.20996
+9.21045
+9.21044
+... 32 threads, finished 283372 ops, at time 1589852252385 ms, 594203.5 ops/s, 594203.5 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 285280 ops, at time 1589852252485 ms, 610029.3 ops/s, 610029.3 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 287057 ops, at time 1589852252585 ms, 568543.3 ops/s, 568543.3 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 288983 ops, at time 1589852252685 ms, 615821.2 ops/s, 615821.2 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 290920 ops, at time 1589852252786 ms, 619115.6 ops/s, 619115.6 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 292795 ops, at time 1589852252886 ms, 599280.9 ops/s, 599280.9 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 294732 ops, at time 1589852252986 ms, 619809.0 ops/s, 619809.0 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 296568 ops, at time 1589852253086 ms, 587508.2 ops/s, 587508.2 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 298426 ops, at time 1589852253186 ms, 594399.5 ops/s, 594399.5 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 9.004099.00409
+
+9.00409
+9.00409
+9.00409
+9.00409
+9.00409
+9.00409
+9.00409
+9.00409
+9.00409
+9.00409
+9.00409
+9.00409
+9.00409
+9.00409
+9.00409
+9.00409
+9.00409
+9.00409
+9.00409
+9.00409
+9.00409
+9.00409
+9.00409
+9.00409
+9.004099.00409
+
+9.00409
+9.004099.00409
+
+9.00409
+... 32 threads, finished 299818 ops, at time 1589852253286 ms, 445266.3 ops/s, 445266.3 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 301804 ops, at time 1589852253386 ms, 635342.1 ops/s, 635342.1 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 303789 ops, at time 1589852253486 ms, 634514.7 ops/s, 634514.7 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 305768 ops, at time 1589852253586 ms, 633001.5 ops/s, 633001.5 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 307739 ops, at time 1589852253686 ms, 630430.0 ops/s, 630430.0 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 309759 ops, at time 1589852253786 ms, 646251.4 ops/s, 646251.4 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 311646 ops, at time 1589852253886 ms, 603483.9 ops/s, 603483.9 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 313570 ops, at time 1589852253986 ms, 615483.0 ops/s, 615483.0 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 8.810818.81083
+8.81076
+
+8.81083
+8.81081
+8.81077
+8.81074
+8.81059
+8.81078
+8.81088
+8.81085
+8.81073
+8.81082
+8.81078
+8.81083
+8.81087
+8.81073
+8.81083
+8.81085
+8.81083
+8.8108
+8.8108
+8.81079
+8.81072
+8.81076
+8.81087
+8.81083
+8.81083
+8.810558.81084
+
+8.81083
+... 32 threads, finished 315343 ops, at time 1589852254086 ms, 567093.5 ops/s, 567093.5 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 317191 ops, at time 1589852254186 ms, 590550.9 ops/s, 590550.9 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 319026 ops, at time 1589852254286 ms, 586519.6 ops/s, 586519.6 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 320972 ops, at time 1589852254386 ms, 622346.6 ops/s, 622346.6 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 322828 ops, at time 1589852254486 ms, 593842.8 ops/s, 593842.8 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 324722 ops, at time 1589852254586 ms, 605746.8 ops/s, 605746.8 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 326709 ops, at time 1589852254687 ms, 635052.5 ops/s, 635052.5 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 328588 ops, at time 1589852254787 ms, 601207.9 ops/s, 601207.9 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 330528 ops, at time 1589852254887 ms, 620713.1 ops/s, 620713.1 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 8.61762
+8.61762
+8.61762
+8.61762
+8.61762
+8.61762
+8.61762
+8.61762
+8.617628.61762
+
+8.61762
+8.61762
+8.61762
+8.617628.61762
+
+8.61762
+8.61762
+8.61762
+8.61762
+8.61762
+8.61762
+8.61762
+8.61762
+8.61762
+8.61762
+8.61762
+8.61762
+8.61762
+8.61762
+8.61762
+8.61762
+8.61762
+... 32 threads, finished 331851 ops, at time 1589852254987 ms, 423241.5 ops/s, 423241.5 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 333727 ops, at time 1589852255087 ms, 600008.0 ops/s, 600008.0 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 335760 ops, at time 1589852255187 ms, 649481.9 ops/s, 649481.9 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 337842 ops, at time 1589852255287 ms, 666053.5 ops/s, 666053.5 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 339705 ops, at time 1589852255387 ms, 595695.4 ops/s, 595695.4 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 341691 ops, at time 1589852255487 ms, 635500.9 ops/s, 635500.9 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 343529 ops, at time 1589852255587 ms, 587789.7 ops/s, 587789.7 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 345483 ops, at time 1589852255687 ms, 624443.2 ops/s, 624443.2 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 8.4294
+8.42925
+8.42984
+8.42971
+8.42906
+8.42945
+8.42971
+8.42975
+8.42964
+8.42955
+8.4297
+8.42918
+8.42952
+8.42963
+8.42959
+8.42965
+8.42956
+8.42947
+8.429588.42954
+
+8.42979
+8.42955
+8.42957
+8.4296
+8.42981
+8.42944
+... 32 threads, finished 347377 ops, at time 1589852255787 ms, 604731.4 ops/s, 604731.4 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 349230 ops, at time 1589852255887 ms, 592728.8 ops/s, 592728.8 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 351118 ops, at time 1589852255987 ms, 603840.0 ops/s, 603840.0 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 353091 ops, at time 1589852256087 ms, 631334.7 ops/s, 631334.7 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 355036 ops, at time 1589852256188 ms, 621709.9 ops/s, 621709.9 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 356893 ops, at time 1589852256288 ms, 594115.2 ops/s, 594115.2 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 358795 ops, at time 1589852256388 ms, 607370.6 ops/s, 607370.6 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 360725 ops, at time 1589852256488 ms, 616822.8 ops/s, 616822.8 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 8.293398.29339
+
+8.29339
+8.29339
+8.29339
+8.29339
+8.29339
+8.29339
+8.29339
+8.29339
+8.29339
+8.293398.29339
+
+8.293398.29339
+
+8.29339
+8.29339
+8.29339
+8.29339
+8.29339
+8.29339
+8.29339
+8.29339
+8.29339
+8.29339
+8.29339
+8.29339
+8.29339
+8.29339
+8.29339
+8.29339
+8.29339
+... 32 threads, finished 362037 ops, at time 1589852256594 ms, 396891.7 ops/s, 396891.7 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 364018 ops, at time 1589852256694 ms, 633495.6 ops/s, 633495.6 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 365903 ops, at time 1589852256794 ms, 603067.3 ops/s, 603067.3 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 367809 ops, at time 1589852256894 ms, 609426.4 ops/s, 609426.4 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 369780 ops, at time 1589852256994 ms, 630562.4 ops/s, 630562.4 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 371742 ops, at time 1589852257094 ms, 627488.6 ops/s, 627488.6 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 373738 ops, at time 1589852257194 ms, 638668.9 ops/s, 638668.9 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 375695 ops, at time 1589852257294 ms, 626096.0 ops/s, 626096.0 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 377635 ops, at time 1589852257394 ms, 619987.8 ops/s, 619987.8 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 8.15009
+8.15025
+8.15012
+8.15027
+8.15029
+8.15007
+8.15024
+8.15012
+8.15014
+8.15009
+8.15057
+8.1501
+8.15032
+8.15018
+8.15021
+8.15015
+8.15021
+8.15018
+8.15023
+8.15024
+8.1502
+8.15021
+8.1503
+8.15024
+8.15031
+8.150168.15016
+
+8.15015
+... 32 threads, finished 379498 ops, at time 1589852257494 ms, 595885.9 ops/s, 595885.9 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 381493 ops, at time 1589852257594 ms, 637768.6 ops/s, 637768.6 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 383519 ops, at time 1589852257694 ms, 647646.4 ops/s, 647646.4 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 385563 ops, at time 1589852257794 ms, 653557.2 ops/s, 653557.2 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 387504 ops, at time 1589852257895 ms, 619027.7 ops/s, 619027.7 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 389467 ops, at time 1589852257995 ms, 628047.0 ops/s, 628047.0 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 391368 ops, at time 1589852258095 ms, 607918.8 ops/s, 607918.8 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 393302 ops, at time 1589852258195 ms, 618607.8 ops/s, 618607.8 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 7.92578
+7.92578
+7.925787.925787.92578
+
+
+7.92578
+7.92578
+7.92578
+7.92578
+7.92578
+7.92578
+7.92578
+7.92578
+7.92578
+7.92578
+7.92578
+7.92578
+7.92578
+7.92578
+7.92578
+7.92578
+7.92578
+7.92578
+7.92578
+7.92578
+7.92578
+7.92578
+7.92578
+7.92578
+7.92578
+7.92578
+7.92578
+... 32 threads, finished 394948 ops, at time 1589852258295 ms, 526020.4 ops/s, 526020.4 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 396918 ops, at time 1589852258395 ms, 630355.9 ops/s, 630355.9 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 398911 ops, at time 1589852258495 ms, 637575.1 ops/s, 637575.1 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 400904 ops, at time 1589852258595 ms, 637632.5 ops/s, 637632.5 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 402771 ops, at time 1589852258695 ms, 597207.1 ops/s, 597207.1 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 404776 ops, at time 1589852258795 ms, 641465.3 ops/s, 641465.3 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 406747 ops, at time 1589852258895 ms, 630581.3 ops/s, 630581.3 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 408788 ops, at time 1589852258995 ms, 652415.4 ops/s, 652415.4 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 7.766587.76659
+
+7.76517
+7.767
+7.76652
+7.76611
+7.76673
+7.7652
+7.76537
+7.76526
+7.76522
+7.76533
+7.76521
+7.76626
+7.76528
+7.76515
+7.76526
+7.76529
+7.76526
+7.76518
+7.76536
+7.76515
+7.76524
+7.76523
+7.76531
+7.76516
+7.766
+7.76527
+7.76519
+... 32 threads, finished 410693 ops, at time 1589852259095 ms, 609325.8 ops/s, 609325.8 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 412666 ops, at time 1589852259195 ms, 630886.8 ops/s, 630886.8 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 414610 ops, at time 1589852259295 ms, 622042.7 ops/s, 622042.7 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 416563 ops, at time 1589852259395 ms, 624666.4 ops/s, 624666.4 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 418500 ops, at time 1589852259496 ms, 619703.7 ops/s, 619703.7 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 420535 ops, at time 1589852259596 ms, 650998.2 ops/s, 650998.2 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 422462 ops, at time 1589852259696 ms, 616541.4 ops/s, 616541.4 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 424412 ops, at time 1589852259796 ms, 623887.7 ops/s, 623887.7 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 7.6949
+7.69497.6949
+
+7.6949
+7.6949
+7.6949
+7.6949
+7.6949
+7.69497.6949
+
+7.6949
+7.6949
+7.6949
+7.6949
+7.6949
+7.6949
+7.6949
+7.6949
+7.6949
+7.6949
+7.6949
+7.6949
+7.6949
+7.6949
+7.6949
+7.6949
+7.6949
+7.6949
+7.6949
+7.6949
+7.6949
+7.6949
+... 32 threads, finished 425955 ops, at time 1589852259896 ms, 493045.1 ops/s, 493045.1 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 427996 ops, at time 1589852259996 ms, 652624.0 ops/s, 652624.0 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 429956 ops, at time 1589852260096 ms, 627143.6 ops/s, 627143.6 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 431948 ops, at time 1589852260196 ms, 637414.5 ops/s, 637414.5 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 433911 ops, at time 1589852260296 ms, 628021.8 ops/s, 628021.8 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 435943 ops, at time 1589852260396 ms, 650207.5 ops/s, 650207.5 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 437997 ops, at time 1589852260496 ms, 657128.9 ops/s, 657128.9 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 439992 ops, at time 1589852260596 ms, 638329.8 ops/s, 638329.8 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 7.495917.49604
+
+7.49592
+7.49589
+7.49614
+7.49598
+7.4961
+7.49597.4962
+
+7.49604
+7.4961
+7.49585
+7.49609
+7.49607
+7.49604
+7.49604
+7.49604
+7.49599
+7.49587
+7.49606
+7.49602
+7.49594
+7.49604
+7.49595
+7.49591
+7.49596
+7.49589
+7.49604
+7.49625
+7.49612
+7.49624
+7.49591
+... 32 threads, finished 441786 ops, at time 1589852260696 ms, 573942.3 ops/s, 573942.3 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 443773 ops, at time 1589852260796 ms, 635096.9 ops/s, 635096.9 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 445785 ops, at time 1589852260896 ms, 642862.8 ops/s, 642862.8 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 447696 ops, at time 1589852260996 ms, 611513.9 ops/s, 611513.9 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 449672 ops, at time 1589852261096 ms, 631587.4 ops/s, 631587.4 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 451655 ops, at time 1589852261196 ms, 634154.1 ops/s, 634154.1 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 453636 ops, at time 1589852261296 ms, 633704.5 ops/s, 633704.5 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 455616 ops, at time 1589852261397 ms, 632771.1 ops/s, 632771.1 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 7.38281
+7.38281
+7.38281
+7.382817.382817.382817.382817.38281
+7.382817.382817.38281
+7.38281
+7.38281
+7.38281
+
+7.382817.382817.38281
+
+
+7.382817.38281
+
+
+7.38281
+7.38281
+
+
+
+7.38281
+
+7.38281... 32 threads, finished 457206 ops, at time 1589852261503 ms, 476542.8 ops/s, 476542.8 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+7.382817.382817.38281
+
+
+7.382817.38281
+7.38281
+
+7.38281
+7.382817.38281
+
+
+... 32 threads, finished 459178 ops, at time 1589852261603 ms, 630737.2 ops/s, 630737.2 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 461146 ops, at time 1589852261703 ms, 628967.5 ops/s, 628967.5 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 463172 ops, at time 1589852261804 ms, 648034.9 ops/s, 648034.9 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 465149 ops, at time 1589852261904 ms, 632557.8 ops/s, 632557.8 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 467180 ops, at time 1589852262004 ms, 649757.6 ops/s, 649757.6 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 469168 ops, at time 1589852262104 ms, 635651.5 ops/s, 635651.5 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 471163 ops, at time 1589852262204 ms, 637049.5 ops/s, 637049.5 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 7.283487.283
+
+7.28305
+7.28294
+7.28297
+7.28307
+7.28302
+7.28346
+7.28298
+7.28301
+7.283
+7.28324
+7.28309
+7.28305
+7.28325
+7.28303
+7.28305
+7.28305
+7.28304
+7.28305
+7.28332
+7.28294
+7.28298
+7.28304
+7.28307
+7.28308
+7.28308
+7.283017.28278
+
+... 32 threads, finished 473022 ops, at time 1589852262304 ms, 594868.1 ops/s, 594868.1 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 475033 ops, at time 1589852262404 ms, 643204.8 ops/s, 643204.8 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 477076 ops, at time 1589852262504 ms, 653753.5 ops/s, 653753.5 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 479052 ops, at time 1589852262604 ms, 631947.2 ops/s, 631947.2 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 480953 ops, at time 1589852262704 ms, 607505.9 ops/s, 607505.9 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 482712 ops, at time 1589852262804 ms, 562728.1 ops/s, 562728.1 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 484740 ops, at time 1589852262904 ms, 648370.0 ops/s, 648370.0 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 486699 ops, at time 1589852263004 ms, 626141.2 ops/s, 626141.2 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 7.163057.16305
+7.16305
+
+7.16305
+7.16305
+7.163057.163057.16305
+
+
+7.16305
+... 32 threads, finished 488508 ops, at time 1589852263129 ms, 464956.4 ops/s, 464956.4 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+7.163057.16305
+
+7.16305
+7.16305
+7.16305
+7.16305
+7.16305
+7.16305
+7.16305
+7.16305
+7.16305
+7.16305
+7.16305
+7.16305
+7.16305
+7.16305
+7.16305
+7.16305
+7.16305
+7.16305
+7.16305
+7.16305
+7.16305
+... 32 threads, finished 490525 ops, at time 1589852263229 ms, 645381.9 ops/s, 645381.9 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 492573 ops, at time 1589852263329 ms, 654568.0 ops/s, 654568.0 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 494616 ops, at time 1589852263429 ms, 653622.7 ops/s, 653622.7 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 496558 ops, at time 1589852263529 ms, 621154.3 ops/s, 621154.3 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 498431 ops, at time 1589852263629 ms, 598749.3 ops/s, 598749.3 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 500444 ops, at time 1589852263729 ms, 643413.6 ops/s, 643413.6 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 502331 ops, at time 1589852263829 ms, 603827.9 ops/s, 603827.9 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 7.02027.02022
+
+7.0202
+7.0202
+7.02022
+7.02022
+7.02022
+7.02022
+7.02022
+7.02022
+7.02025
+7.02025
+7.0202
+7.02022
+7.0202
+7.02024
+7.02019
+7.02022
+7.0202
+7.02017
+7.02025
+7.02023
+7.02021
+7.02022
+7.02022
+7.02022
+7.02018
+7.020257.02022
+
+7.02021
+... 32 threads, finished 504268 ops, at time 1589852263929 ms, 619747.0 ops/s, 619747.0 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 506259 ops, at time 1589852264029 ms, 636502.6 ops/s, 636502.6 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 508271 ops, at time 1589852264129 ms, 642927.0 ops/s, 642927.0 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 510238 ops, at time 1589852264230 ms, 629156.9 ops/s, 629156.9 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 512202 ops, at time 1589852264330 ms, 628461.1 ops/s, 628461.1 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 514138 ops, at time 1589852264430 ms, 619408.5 ops/s, 619408.5 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 516106 ops, at time 1589852264530 ms, 628986.3 ops/s, 628986.3 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 518068 ops, at time 1589852264630 ms, 627513.7 ops/s, 627513.7 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 6.90423
+6.90423
+6.90423
+6.90423
+6.90423
+6.904236.90423
+
+6.904236.904236.90423
+
+
+6.90423
+6.904236.90423
+
+6.904236.90423
+
+6.90423
+... 32 threads, finished 520038 ops, at time 1589852264738 ms, 583190.7 ops/s, 583190.7 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+6.90423
+6.90423
+6.90423
+6.90423
+6.904236.90423
+
+6.90423
+6.90423
+6.90423
+6.90423
+6.90423
+6.90423
+6.904236.90423
+
+6.904236.90423
+
+... 32 threads, finished 522022 ops, at time 1589852264838 ms, 634822.9 ops/s, 634822.9 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 524089 ops, at time 1589852264938 ms, 661221.8 ops/s, 661221.8 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 526028 ops, at time 1589852265038 ms, 620076.9 ops/s, 620076.9 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 528043 ops, at time 1589852265138 ms, 643699.3 ops/s, 643699.3 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 530024 ops, at time 1589852265238 ms, 633780.6 ops/s, 633780.6 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 532037 ops, at time 1589852265338 ms, 643941.1 ops/s, 643941.1 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 534061 ops, at time 1589852265438 ms, 647621.7 ops/s, 647621.7 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 6.850856.85086
+
+6.85084
+6.85092
+6.85087
+6.85101
+6.85067
+6.85069
+6.85071
+6.85083
+6.85068
+6.85082
+6.8507
+6.85079
+6.85078
+6.85071
+6.85075
+6.85068
+6.85076
+6.85089
+6.85089
+6.85072
+6.85073
+6.85067
+6.85093
+6.85066
+6.850886.85069
+
+6.85071
+... 32 threads, finished 536023 ops, at time 1589852265538 ms, 627770.9 ops/s, 627770.9 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 538004 ops, at time 1589852265638 ms, 633742.6 ops/s, 633742.6 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 540014 ops, at time 1589852265738 ms, 642621.6 ops/s, 642621.6 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 542043 ops, at time 1589852265838 ms, 649111.2 ops/s, 649111.2 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 543916 ops, at time 1589852265938 ms, 599168.3 ops/s, 599168.3 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 545984 ops, at time 1589852266039 ms, 660755.7 ops/s, 660755.7 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 547977 ops, at time 1589852266139 ms, 637600.6 ops/s, 637600.6 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 549949 ops, at time 1589852266239 ms, 630894.9 ops/s, 630894.9 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 6.694786.694786.69478
+
+
+6.69478
+6.694786.69478
+
+... 32 threads, finished 551741 ops, at time 1589852266356 ms, 489454.5 ops/s, 489454.5 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+6.694786.694786.69478
+
+6.694786.69478
+
+6.69478
+
+6.69478
+6.69478
+6.69478
+6.69478
+6.69478
+6.69478
+6.69478
+6.69478
+6.69478
+6.69478
+6.694786.69478
+
+6.69478
+6.69478
+6.69478
+6.69478
+6.69478
+6.69478
+6.69478
+6.69478
+... 32 threads, finished 553732 ops, at time 1589852266456 ms, 636808.0 ops/s, 636808.0 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 555623 ops, at time 1589852266556 ms, 604424.9 ops/s, 604424.9 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 557570 ops, at time 1589852266656 ms, 622940.3 ops/s, 622940.3 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 559519 ops, at time 1589852266756 ms, 623243.7 ops/s, 623243.7 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 561508 ops, at time 1589852266856 ms, 635914.0 ops/s, 635914.0 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+562500 : 56250032 :  5625007031232 :  32 7031270312562500562500 :  : 32562500 3270312  : 7031232 70312
+
+
+
+
+
+562500 : 32 70312
+... 32 threads, finished 175 ops, at time 1589852266956 ms, 55979.8 ops/s, 55979.8 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+562500 : 32 70312
+562500 : 32 70312
+562500 : 32 70312
+562500 : 32 70312
+562500 : 32 70312
+562500 : 32 70312
+562500 : 32 70312
+562500 : 32 70312
+562500 : 32 70312
+562500 : 32 70312
+562500 : 32 70312
+562500 : 32 70312
+562500 : 32 70312
+562500 : 32 70312
+562500 : 32 70312
+562500 : 32 70312
+562500 : 32 70312
+... 32 threads, finished 2274 ops, at time 1589852267056 ms, 671653.1 ops/s, 671653.1 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+562500 : 32 70312
+562500 : 32 70312
+562500 : 32 70312
+562500 : 32 70312
+562500 : 32 70312
+562500 : 32 70312
+562500 : 32 70312
+562500 : 32 70312
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 6.616226.61614
+6.61629
+
+6.61617
+6.61613
+6.61607
+6.61553
+6.61611
+6.61598
+6.61633
+6.61614
+6.61585
+6.615836.61522
+
+6.61484
+... 32 threads, finished 4341 ops, at time 1589852267156 ms, 660871.7 ops/s, 660871.7 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 6471 ops, at time 1589852267256 ms, 681456.9 ops/s, 681456.9 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 8390 ops, at time 1589852267356 ms, 614067.7 ops/s, 614067.7 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 10371 ops, at time 1589852267456 ms, 633432.3 ops/s, 633432.3 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 12340 ops, at time 1589852267556 ms, 629350.0 ops/s, 629350.0 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+... 32 threads, finished 14342 ops, at time 1589852267656 ms, 640275.0 ops/s, 640275.0 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+
+
+================ Re optimize for a new workload
+... 32 threads, finished 16375 ops, at time 1589852267756 ms, 650553.5 ops/s, 650553.5 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+detect miss ratio: 6.46802 110
+... 32 threads, finished 18345 ops, at time 1589852267857 ms, 629839.4 ops/s, 629839.4 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+detect miss ratio: 6.46277 6.46802
+================ Classic Caching gets stable
+====== miss ratio: ====== miss ratio: ====== miss ratio: 6.46161
+6.46157
+====== miss ratio: 0
+====== miss ratio: 0
+====== miss ratio: 50
+====== miss ratio: 0
+====== miss ratio: 0
+====== miss ratio: ====== miss ratio: 0
+====== miss ratio: 0
+====== miss ratio: -nan
+====== miss ratio: ====== miss ratio: 33.3333
+====== miss ratio: 00====== miss ratio: 
+====== miss ratio: 0
+0
+
+00
+
+... 32 threads, finished 20409 ops, at time 1589852267957 ms, 660453.6 ops/s, 660453.6 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 0, load admission ratio: 96                               
+... 32 threads, finished 22753 ops, at time 1589852268057 ms, 749607.7 ops/s, 749607.7 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 0, load admission ratio: 98                               
+====== Found the optimal is 100%, hit rate < w0
+
+
+================ Re optimize for a new workload
+... 32 threads, finished 24952 ops, at time 1589852268157 ms, 703229.9 ops/s, 703229.9 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+detect miss ratio: 6.50853 110
+... 32 threads, finished 26862 ops, at time 1589852268257 ms, 610461.3 ops/s, 610461.3 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+detect miss ratio: 6.47493 6.50853
+================ Classic Caching gets stable
+====== Found the optimal is 100%, hit rate < w0
+
+
+================ Re optimize for a new workload
+... 32 threads, finished 28980 ops, at time 1589852268357 ms, 677164.1 ops/s, 677164.1 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+detect miss ratio: 6.48643 110
+... 32 threads, finished 30902 ops, at time 1589852268457 ms, 615021.5 ops/s, 615021.5 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+detect miss ratio: 6.45621 6.48643
+================ Classic Caching gets stable
+... 32 threads, finished 33027 ops, at time 1589852268557 ms, 679748.5 ops/s, 679748.5 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 0, load admission ratio: 92                               
+... 32 threads, finished 35280 ops, at time 1589852268657 ms, 720794.2 ops/s, 720794.2 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 0, load admission ratio: 88                               
+====== miss ratio: ====== miss ratio: ====== miss ratio: 6.42707
+====== miss ratio: 6.42697
+6.42703
+6.42703
+... 32 threads, finished 37491 ops, at time 1589852268757 ms, 707399.7 ops/s, 707399.7 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 0, load admission ratio: 90                               
+... 32 threads, finished 39716 ops, at time 1589852268857 ms, 711900.3 ops/s, 711900.3 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 0, load admission ratio: 94                               
+... 32 threads, finished 41999 ops, at time 1589852268957 ms, 730267.9 ops/s, 730267.9 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 0, load admission ratio: 92                               
+====== Found the optimal is 100%, hit rate < w0
+
+
+================ Re optimize for a new workload
+... 32 threads, finished 44047 ops, at time 1589852269057 ms, 655340.3 ops/s, 655340.3 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+detect miss ratio: 6.45233 110
+... 32 threads, finished 46021 ops, at time 1589852269157 ms, 631440.1 ops/s, 631440.1 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+detect miss ratio: 6.44918 6.45233
+================ Classic Caching gets stable
+====== Found the optimal is 100%, hit rate < w0
+
+
+================ Re optimize for a new workload
+... 32 threads, finished 48094 ops, at time 1589852269257 ms, 663273.8 ops/s, 663273.8 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+detect miss ratio: 6.45102 110
+... 32 threads, finished 49979 ops, at time 1589852269357 ms, 603103.5 ops/s, 603103.5 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 6.456296.456276.456256.45626
+
+
+
+detect miss ratio: 6.24934 6.45102
+================ Classic Caching gets stable
+... 32 threads, finished 52017 ops, at time 1589852269457 ms, 651410.9 ops/s, 651410.9 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 0, load admission ratio: 96                               
+... 32 threads, finished 54318 ops, at time 1589852269557 ms, 736099.2 ops/s, 736099.2 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 0, load admission ratio: 86                               
+... 32 threads, finished 56571 ops, at time 1589852269657 ms, 720203.8 ops/s, 720203.8 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 0, load admission ratio: 82                               
+... 32 threads, finished 58754 ops, at time 1589852269757 ms, 698490.2 ops/s, 698490.2 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 0, load admission ratio: 80                               
+... 32 threads, finished 60965 ops, at time 1589852269857 ms, 707321.9 ops/s, 707321.9 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 0, load admission ratio: 92                               
+... 32 threads, finished 63166 ops, at time 1589852269957 ms, 704256.6 ops/s, 704256.6 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 0, load admission ratio: 92                               
+... 32 threads, finished 65477 ops, at time 1589852270058 ms, 738147.0 ops/s, 738147.0 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 0, load admission ratio: 88                               
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 6.381416.38141
+
+6.38141
+6.38141
+6.38141
+6.38141
+6.38141
+6.38141
+6.38141
+6.38141
+6.38141
+6.38141
+6.38141
+6.38141
+6.38141
+6.38141
+6.38141
+6.38141
+6.38141
+6.38141
+6.38141
+6.38141
+6.38141
+6.38141
+6.38141
+6.38141
+6.38141
+6.38141
+6.38141
+6.38141
+6.38141
+6.38141
+... 32 threads, finished 67373 ops, at time 1589852270158 ms, 606017.0 ops/s, 606017.0 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 0, load admission ratio: 86                               
+... 32 threads, finished 69672 ops, at time 1589852270258 ms, 735106.6 ops/s, 735106.6 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 0, load admission ratio: 92                               
+... 32 threads, finished 71973 ops, at time 1589852270358 ms, 735996.2 ops/s, 735996.2 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 0, load admission ratio: 98                               
+... 32 threads, finished 74248 ops, at time 1589852270458 ms, 727970.9 ops/s, 727970.9 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 0, load admission ratio: 86                               
+... 32 threads, finished 76465 ops, at time 1589852270558 ms, 709397.4 ops/s, 709397.4 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 0, load admission ratio: 84                               
+... 32 threads, finished 78732 ops, at time 1589852270658 ms, 725382.0 ops/s, 725382.0 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 0, load admission ratio: 90                               
+... 32 threads, finished 81046 ops, at time 1589852270758 ms, 739695.9 ops/s, 739695.9 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 0, load admission ratio: 96                               
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 6.36386.36377
+
+6.36386
+6.36379
+6.36394
+6.36389
+6.36382
+6.36376
+6.36393
+6.36382
+6.36381
+6.3639
+6.36388
+6.36393
+6.36406
+6.36391
+6.36409
+6.36404
+6.36404
+6.36385
+6.36385
+6.36383
+6.36381
+6.36377
+6.36357
+6.36376
+6.36317
+... 32 threads, finished 83255 ops, at time 1589852270858 ms, 706816.4 ops/s, 706816.4 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 0, load admission ratio: 100                               
+... 32 threads, finished 85606 ops, at time 1589852270958 ms, 751696.1 ops/s, 751696.1 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 0, load admission ratio: 92                               
+... 32 threads, finished 87872 ops, at time 1589852271058 ms, 724960.5 ops/s, 724960.5 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 0, load admission ratio: 94                               
+... 32 threads, finished 90222 ops, at time 1589852271158 ms, 751759.4 ops/s, 751759.4 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 0, load admission ratio: 90                               
+... 32 threads, finished 92642 ops, at time 1589852271258 ms, 774260.6 ops/s, 774260.6 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 0, load admission ratio: 98                               
+... 32 threads, finished 94948 ops, at time 1589852271358 ms, 737853.6 ops/s, 737853.6 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 0, load admission ratio: 92                               
+... 32 threads, finished 97257 ops, at time 1589852271458 ms, 738621.5 ops/s, 738621.5 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 0, load admission ratio: 96                               
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 6.397396.397276.3972
+
+
+6.39699
+6.39698
+6.39719
+6.39703
+6.39723
+6.3973
+6.39697
+6.39727
+6.39736
+6.39701
+6.3969
+6.3972
+6.3973
+6.39707
+6.39694
+6.39691
+6.39671
+6.39656
+6.39669
+6.39735
+6.39748
+... 32 threads, finished 99581 ops, at time 1589852271558 ms, 743538.7 ops/s, 743538.7 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 0, load admission ratio: 94                               
+... 32 threads, finished 101932 ops, at time 1589852271658 ms, 752297.4 ops/s, 752297.4 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 0, load admission ratio: 92                               
+====== Found the optimal is 100%, hit rate < w0
+
+
+================ Re optimize for a new workload
+... 32 threads, finished 104016 ops, at time 1589852271758 ms, 666713.3 ops/s, 666713.3 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+detect miss ratio: 6.38732 110
+... 32 threads, finished 105944 ops, at time 1589852271858 ms, 616085.2 ops/s, 616085.2 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 100, load admission ratio: 100                               
+detect miss ratio: 6.39121 6.38732
+================ Classic Caching gets stable
+... 32 threads, finished 108093 ops, at time 1589852271958 ms, 687515.0 ops/s, 687515.0 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 0, load admission ratio: 94                               
+... 32 threads, finished 110337 ops, at time 1589852272058 ms, 718065.6 ops/s, 718065.6 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 0, load admission ratio: 94                               
+... 32 threads, finished 112612 ops, at time 1589852272158 ms, 727585.3 ops/s, 727585.3 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 0, load admission ratio: 90                               
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 6.384546.384516.384516.38447
+
+
+====== miss ratio: 
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: -nan
+====== miss ratio: ====== miss ratio: ====== miss ratio: -nan====== miss ratio: 0
+====== miss ratio: ====== miss ratio: 16.666725====== miss ratio: ====== miss ratio: 020
+
+
+====== miss ratio: ====== miss ratio: 
+-nan
+14.285725-nan0
+0
+-nan
+
+====== miss ratio: 
+
+0
+====== miss ratio: 0
+
+-nan
+... 32 threads, finished 114902 ops, at time 1589852272258 ms, 732499.7 ops/s, 732499.7 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 0, load admission ratio: 90                               
+... 32 threads, finished 117241 ops, at time 1589852272358 ms, 748300.4 ops/s, 748300.4 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 0, load admission ratio: 90                               
+... 32 threads, finished 119641 ops, at time 1589852272459 ms, 767777.3 ops/s, 767777.3 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 0, load admission ratio: 92                               
+... 32 threads, finished 122016 ops, at time 1589852272559 ms, 759438.0 ops/s, 759438.0 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 0, load admission ratio: 88                               
+... 32 threads, finished 124262 ops, at time 1589852272659 ms, 717478.8 ops/s, 717478.8 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 0, load admission ratio: 86                               
+... 32 threads, finished 126532 ops, at time 1589852272759 ms, 726392.7 ops/s, 726392.7 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 0, load admission ratio: 86                               
+... 32 threads, finished 128805 ops, at time 1589852272859 ms, 726640.6 ops/s, 726640.6 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 0, load admission ratio: 94                               
+====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: ====== miss ratio: 6.37816.37808
+
+6.3781
+6.37809
+6.3781
+6.37801
+6.37809
+6.3781
+6.37809
+6.37809
+6.3781
+6.37807
+6.37809
+6.37807
+6.37807
+6.37807
+6.37807
+6.37806
+6.37806
+6.37806
+6.37806
+6.37805
+6.37805
+6.37805
+6.37805
+6.37805
+6.37805
+6.37804
+6.378046.37804
+
+6.37826
+... 32 threads, finished 131033 ops, at time 1589852272959 ms, 712924.4 ops/s, 712924.4 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 0, load admission ratio: 98                               
+... 32 threads, finished 133347 ops, at time 1589852273059 ms, 740302.3 ops/s, 740302.3 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 0, load admission ratio: 98                               
+... 32 threads, finished 135663 ops, at time 1589852273159 ms, 740690.4 ops/s, 740690.4 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 0, load admission ratio: 96                               
+... 32 threads, finished 137856 ops, at time 1589852273259 ms, 701381.3 ops/s, 701381.3 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 0, load admission ratio: 94                               
+... 32 threads, finished 140216 ops, at time 1589852273359 ms, 755003.7 ops/s, 755003.7 gets/s, 0.0 puts/s, 0.0 scans/s, data admission ratio: 0, load admission ratio: 92                               
+ran for 6.61754 s, fetched 23040000000 B
+=========== Rate: 3320.4 MB/s
+ycsb         : 4500000 ops;  700724.679 ops/s;     45.667 micros/op; 3320.4 MB/s (703125 of 1000000 found);   205.502
+Kan!!!! 3320.4 MB/s (703125 of 1000000 found) 205.502
+
+                 Compactions
+Level  Files Size(MB) Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  2        2       64         0        0         0
+  3       17      947         0        0         0
+  4       17      947         0        0         0
+
+wait: 0.000, vlog: 0.000, log: 0.000, mem: 0.000 
+
+index: 0.032, meta: 0.000, block: 343.118
+
+gc quits ! 
+flush mem_ at end 
+vlog writer fsync: 0.000 
+========================= overall  1  experiments =============================
+==================== results in  /home/kanwu/Research/results/leveldb/ycsb/C/test/  ============================
+                ********* Configured with **********
+{'zipfian_thea': 99, 'monitor': 1, 'swapiness': 0, 'threads': 32, 'memory': 1073741824, 'type': '1kb', 'readahead': 128}
+Doing: echo 128 > /sys/class/block/nvme0n1/queue/read_ahead_kb
+Returned 0 echo 128 > /sys/class/block/nvme0n1/queue/read_ahead_kb
+Doing: echo 128 > /sys/class/block/nvme1n1/queue/read_ahead_kb
+Returned 0 echo 128 > /sys/class/block/nvme1n1/queue/read_ahead_kb
+Doing: cgcreate -g memory:charlie
+Returned 0 cgcreate -g memory:charlie
+Doing: sync; echo 3 > /proc/sys/vm/drop_caches; sleep 1
+Returned 0 sync; echo 3 > /proc/sys/vm/drop_caches; sleep 1
+Doing: pkill iostat
+Returned 1 pkill iostat
+Doing: iostat -mx 1 /dev/nvme0n1 /dev/nvme1n1  > /dev/shm//iostat.out &
+Returned 0 iostat -mx 1 /dev/nvme0n1 /dev/nvme1n1  > /dev/shm//iostat.out &
+Doing: sudo pkill blkparse
+Returned 1 sudo pkill blkparse
+Doing: sudo pkill blktrace
+Returned 1 sudo pkill blktrace
+              *********** start running ***********
+{'zipfian_thea': 99, 'monitor': 1, 'swapiness': 0, 'threads': 32, 'memory': 1073741824, 'type': '1kb', 'readahead': 128}
+/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/970/db_1024 --value_size=1024 --cache_size=0 --compression_ratio=1 --benchmarks=ycsb --use_existing_db=1 --db_num=80000000 --reads=18000000 --write_buffer_size=134217728 --threads=32 --monitor=1 --ycsb_theta=99
+Doing: cgexec -g memory:charlie --sticky /home/kanwu/Research/739-wisckey/db_bench --db=/mnt/970/db_1024 --value_size=1024 --cache_size=0 --compression_ratio=1 --benchmarks=ycsb --use_existing_db=1 --db_num=80000000 --reads=18000000 --write_buffer_size=134217728 --threads=32 --monitor=1 --ycsb_theta=99 &
+Returned 0 cgexec -g memory:charlie --sticky /home/kanwu/Research/739-wisckey/db_bench --db=/mnt/970/db_1024 --value_size=1024 --cache_size=0 --compression_ratio=1 --benchmarks=ycsb --use_existing_db=1 --db_num=80000000 --reads=18000000 --write_buffer_size=134217728 --threads=32 --monitor=1 --ycsb_theta=99 &
+Doing: sleep 120; pkill db_bench
+Returned 1 sleep 120; pkill db_bench
+              **************** done ***************
+Doing: sleep 1; sync; sleep 1
+Returned 0 sleep 1; sync; sleep 1
+Doing: pkill iostat; sleep 1
+Returned 0 pkill iostat; sleep 1
+Doing: sync; sleep 1
+Returned 0 sync; sleep 1
+Doing: cp /dev/shm//running /home/kanwu/Research/results/leveldb/ycsb/C/test//20-37-07_20200518/running
+Returned 0 cp /dev/shm//running /home/kanwu/Research/results/leveldb/ycsb/C/test//20-37-07_20200518/running
+Doing: cp /dev/shm//iostat.out /home/kanwu/Research/results/leveldb/ycsb/C/test//20-37-07_20200518/iostat.out
+Returned 0 cp /dev/shm//iostat.out /home/kanwu/Research/results/leveldb/ycsb/C/test//20-37-07_20200518/iostat.out
+==== utilization statistics ====
+iowait  system  user  idle
+34.7724444444 22.6575555556 26.3653333333 16.204
+1260.58725 429.6475
+=================================

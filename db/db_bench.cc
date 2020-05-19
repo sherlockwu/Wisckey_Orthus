@@ -122,6 +122,7 @@ static const char* FLAGS_db = NULL;
 // Kan: For general benchmark
 int num_threads_measure = 1;
 static bool FLAGS_monitor = false;
+double g_zipfian_theta = 0.99;
 
 // Kan: For zippydb
 //  key:
@@ -163,7 +164,7 @@ static double FLAGS_sine_d = 20;
 static uint64_t FLAGS_sine_mix_rate_interval_milliseconds = 1000;
 static uint64_t throughput_report_interval = 100; // 100 ms report once
 
-int running_threads = 24;
+int running_threads = 32;
 
 
 
@@ -657,7 +658,7 @@ class Benchmark {
         method = &Benchmark::MixGraph;
       } else if (name == Slice("ycsb")) {
 	num_threads_measure = num_threads;
-	num_threads = 32;
+	running_threads = num_threads = 32;
 	reads_ = reads_ / num_threads;
 	
 	flag_monitor = false;
@@ -1511,10 +1512,13 @@ class Benchmark {
     int found = 0;
     int64_t bytes = 0;
     // init the zipfian random generator
-    double g_zipfian_theta = 0.9;
-    ZipfianRandom zipfian_rng(FLAGS_db_num, g_zipfian_theta, 1237 + thread->tid); 
+    //double g_zipfian_theta = 0.9;
+    //ZipfianRandom zipfian_rng(FLAGS_db_num, g_zipfian_theta, 1237 + thread->tid); 
+    //ZipfianRandom zipfian_rng((int)FLAGS_db_num*0.8, g_zipfian_theta, 1237 + thread->tid); 
+    ZipfianRandom zipfian_rng((int)FLAGS_db_num, g_zipfian_theta, 1237 + thread->tid); 
 
     // warmup phase
+    flag_monitor = false;
     for (int i = 0; i < reads_; i++) {
     //for (int i = 0; i < 0; i++) {
       char key[100];
@@ -1538,10 +1542,11 @@ class Benchmark {
       std::cout << "Thread " << thread->tid << " finished warming up\n";
       return; 
     }
+    running_threads = num_threads_measure;
     thread->stats.ClearStats();
 
     // TO test classic cache or tuned cache
-    flag_monitor = true;
+    flag_monitor = FLAGS_monitor;
     
     double read_ratio = 1.0;
     double scan_ratio = 0.0;
@@ -1588,7 +1593,7 @@ class Benchmark {
     
     //for (int i = 0; i < (reads_*32/num_threads_measure/4); i++) {
     std::cout << reads_ << " : " << num_threads_measure << " " << (reads_*32/num_threads_measure/8) << std::endl;
-    for (int i = 0; i < (reads_*32/num_threads_measure/8); i++) {
+    for (int i = 0; i < (reads_*32/num_threads_measure/4); i++) {
       char key[100];
 
       //Kan: decide key to access, zipfian distributions
@@ -1905,6 +1910,9 @@ int main(int argc, char** argv) {
     } else if (sscanf(argv[i], "--step=%d%c", &n, &junk) == 1) {
       leveldb::scheduler_step = n;
       std::cout << "Scheduler step size: " << leveldb::scheduler_step << "\n";
+    } else if (sscanf(argv[i], "--ycsb_theta=%d%c", &n, &junk) == 1) {
+      g_zipfian_theta = (double)n / 100.0;
+      std::cout << "zipfian theta " << g_zipfian_theta << "\n";
     } else if (strncmp(argv[i], "--db=", 5) == 0) {
       FLAGS_db = argv[i] + 5;
     } else {
