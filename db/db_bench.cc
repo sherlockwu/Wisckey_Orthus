@@ -1518,7 +1518,8 @@ class Benchmark {
     ZipfianRandom zipfian_rng((int)FLAGS_db_num, g_zipfian_theta, 1237 + thread->tid); 
 
     // warmup phase
-    flag_monitor = false;
+    //flag_monitor = false;
+    flag_monitor = true;
     for (int i = 0; i < reads_; i++) {
     //for (int i = 0; i < 0; i++) {
       char key[100];

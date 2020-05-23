@@ -233,6 +233,8 @@ void * monitor_func(void *vargp) {
       std::vector<uint64_t> stats_optane, stats_flash, last_stats_optane, last_stats_flash;
       float last_throughput, detected_throughput, optane_read_throughput, optane_write_throughput, flash_read_throughput;
       float detect_miss_ratio, last_miss_ratio;
+      /*
+      
       last_miss_ratio = -10;
       detect_miss_ratio = 110;
       
@@ -247,21 +249,17 @@ void * monitor_func(void *vargp) {
       }
 
       std::cout << "================ Classic Caching gets stable\n";
-      
       // it's time to optimize Max(L1 + L2) based on Max(L1)
       float basic_miss_ratio = detect_miss_ratio; 
+      */
       int ratio1, ratio2, ratio3;   // indicating a window eg. [45, 50, 55]
       float tp1, tp2, tp3;
 
-      data_admit_ratio = 0;
+      //data_admit_ratio = 0;
       //data_admit_ratio = 100;
       bool second_chance = true;
       for (int iteration = 0; ; iteration++) {
 	
-	//load_admit_ratio = 100;
-	//usleep(100000);
-	//continue;
-
 	int * to_change_ratio = &load_admit_ratio;
 	
         ratio1 = *to_change_ratio - step;
@@ -343,6 +341,11 @@ void * monitor_func(void *vargp) {
 	  std::cout << "====== Found the optimal is 100%, hit rate < w0\n";
 	  second_chance = true;
 	  goto reoptimize;
+	}
+
+	if  (*to_change_ratio <= 90 && data_admit_ratio > 0) {
+          std::cout << "====== Found pretty unbalanced load\n";
+	  data_admit_ratio = 0;
 	}
 
       }

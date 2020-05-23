@@ -52,7 +52,7 @@ class Experiment(object):
           #'threads': [32],
           #'threads': [32],
           #'monitor': [0, 1],  # 1 is to open tuning 
-          'monitor': [0, 1],  # 1 is to open tuning 
+          'monitor': [1],  # 1 is to open tuning 
           #'zipfian_thea': [60, 80],  
           'zipfian_thea': [60],
           #'ycsb_write': [10, 30, 50],
