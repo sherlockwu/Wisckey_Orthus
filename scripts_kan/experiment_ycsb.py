@@ -48,15 +48,17 @@ class Experiment(object):
           #'threads': [1, 4, 8, 16, 24, 32],
           #'threads': [1, 8, 16, 24, 32],
           #'threads': [16, 24, 32],
+          #'threads': [32],
           'threads': [32],
           #'threads': [32],
           #'threads': [32],
           #'monitor': [0, 1],  # 1 is to open tuning 
           'monitor': [1],  # 1 is to open tuning 
           #'zipfian_thea': [60, 80],  
-          'zipfian_thea': [60],
+          'zipfian_thea': [80],
           #'ycsb_write': [10, 30, 50],
-          'ycsb_write': [0],
+          'ycsb_write': [5],
+          'report_interval': [100, 200, 400],
           #'threads': [32],
           #'threads': [1, 4, 8, 16],
           'memory': [int(1.0*GB)],    #'memory limit'
@@ -121,7 +123,7 @@ class Experiment(object):
 
         #shcmd('rm -r /mnt/970/db_1024 ; cp -r /mnt/970/db_1024_backup /mnt/970/db_1024')
         #shcmd('rm -r /mnt/970/db_16384 ; cp -r /mnt/970/db_16384_backup /mnt/970/db_16384')
-        if False and config['ycsb_write'] > 0:
+        if True and config['ycsb_write'] > 0:
             if config['type'] == '1kb':
                 shcmd('rm -r /mnt/970/db_1024 ; cp -r /mnt/970/db_1024_backup /mnt/970/db_1024')
             if config['type'] == '16kb':
@@ -131,7 +133,7 @@ class Experiment(object):
             #Small: 1KB value
             #cmd = '/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/970/db_1024 --value_size=1024 --cache_size=0 --compression_ratio=1 --benchmarks=ycsb --use_existing_db=1 --db_num=80000000 --reads=18000000 --write_buffer_size=134217728 ' + '--threads=' + str(config['threads']) #+ ' > /dev/shm/running'
             #cmd = '/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/970/db_1024 --value_size=1024 --cache_size=0 --compression_ratio=1 --benchmarks=ycsb --use_existing_db=1 --db_num=80000000 --reads=18000000 --write_buffer_size=134217728 ' + '--threads=' + str(config['threads']) + ' --monitor=' + str(config['monitor'])  + ' --ycsb_theta=' + str(config['zipfian_thea']) + ' > /dev/shm/running'
-            cmd = '/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/970/db_1024 --value_size=1024 --cache_size=0 --compression_ratio=1 --benchmarks=ycsb --use_existing_db=1 --db_num=80000000 --reads=12000000 --write_buffer_size=134217728 ' + '--threads=' + str(config['threads']) + ' --monitor=' + str(config['monitor'])  + ' --ycsb_theta=' + str(config['zipfian_thea']) + ' --ycsb_write=' + str(config['ycsb_write']) + ' > /dev/shm/running'
+            cmd = '/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/970/db_1024 --value_size=1024 --cache_size=0 --compression_ratio=1 --benchmarks=ycsb --use_existing_db=1 --db_num=80000000 --reads=12000000 --write_buffer_size=134217728 ' + '--threads=' + str(config['threads']) + ' --monitor=' + str(config['monitor'])  + ' --ycsb_theta=' + str(config['zipfian_thea']) + ' --ycsb_write=' + str(config['ycsb_write']) + ' --report_interval=' + str(config['report_interval']) + ' > /dev/shm/running'
         
         #Large: 64KB value
         #cmd = '/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/970/db_65536 --value_size=65536 --cache_size=0 --compression_ratio=1 --benchmarks=ycsb --use_existing_db=1 --db_num=1700000 --reads=5000000 --write_buffer_size=134217728 ' + '--threads=' + str(config['threads']) #+ ' > /dev/shm/running'
@@ -139,7 +141,7 @@ class Experiment(object):
         #Medium: 16KB value
         if config['type'] == '16kb':
             #cmd = '/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/970/db_16384 --value_size=16384 --cache_size=0 --compression_ratio=1 --benchmarks=ycsb --use_existing_db=1 --db_num=6600000 --reads=10000000 --write_buffer_size=134217728 ' + '--threads=' + str(config['threads']) + ' --monitor=' + str(config['monitor'])  + ' --ycsb_theta=' + str(config['zipfian_thea'])  + ' > /dev/shm/running'
-            cmd = '/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/970/db_16384 --value_size=16384 --cache_size=0 --compression_ratio=1 --benchmarks=ycsb --use_existing_db=1 --db_num=6600000 --reads=8000000 --write_buffer_size=134217728 ' + '--threads=' + str(config['threads']) + ' --monitor=' + str(config['monitor'])  + ' --ycsb_theta=' + str(config['zipfian_thea'])  + ' > /dev/shm/running'
+            cmd = '/home/kanwu/Research/739-wisckey/db_bench --db=/mnt/970/db_16384 --value_size=16384 --cache_size=0 --compression_ratio=1 --benchmarks=ycsb --use_existing_db=1 --db_num=6600000 --reads=8000000 --write_buffer_size=134217728 ' + '--threads=' + str(config['threads']) + ' --monitor=' + str(config['monitor'])  + ' --ycsb_theta=' + str(config['zipfian_thea'])  + ' --report_interval=' + str(config['report_interval']) + ' > /dev/shm/running'
         
         print cmd
         

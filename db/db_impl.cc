@@ -233,14 +233,15 @@ void * monitor_func(void *vargp) {
       std::vector<uint64_t> stats_optane, stats_flash, last_stats_optane, last_stats_flash;
       float last_throughput, detected_throughput, optane_read_throughput, optane_write_throughput, flash_read_throughput;
       float detect_miss_ratio, last_miss_ratio;
-      /*
+      ///*
       
       last_miss_ratio = -10;
       detect_miss_ratio = 110;
       
       // detect whether cache is stable
       //while ( !( detect_miss_ratio >= last_miss_ratio - 0.25 && detect_miss_ratio <= last_miss_ratio + 0.25) ){// || detect_miss_ratio >= 15.0) {
-      while ( !( detect_miss_ratio >= last_miss_ratio - 0.25 && detect_miss_ratio <= last_miss_ratio + 0.25) ){// || detect_miss_ratio >= 15.0) {
+      while ( !( detect_miss_ratio >= last_miss_ratio - 0.5 && detect_miss_ratio <= last_miss_ratio + 0.5) ){// || detect_miss_ratio >= 15.0) {
+      //while ( !( detect_miss_ratio >= last_miss_ratio - 0.5) ){// || detect_miss_ratio >= 15.0) {
 	//usleep(1000000);
 	usleep(100000);
 	last_miss_ratio = detect_miss_ratio;
@@ -251,11 +252,13 @@ void * monitor_func(void *vargp) {
       std::cout << "================ Classic Caching gets stable\n";
       // it's time to optimize Max(L1 + L2) based on Max(L1)
       float basic_miss_ratio = detect_miss_ratio; 
-      */
+      
+      data_admit_ratio = 0;
+      //*/
+      
       int ratio1, ratio2, ratio3;   // indicating a window eg. [45, 50, 55]
       float tp1, tp2, tp3;
 
-      //data_admit_ratio = 0;
       //data_admit_ratio = 100;
       bool second_chance = true;
       for (int iteration = 0; ; iteration++) {
@@ -267,7 +270,7 @@ void * monitor_func(void *vargp) {
         ratio3 = *to_change_ratio + step;
        
 	//if (true && iteration % 20  == 0) {
-	if (true && iteration % 10  == 0) {   // 5 * 4 * frequency = 100 ms
+	if (false && iteration % 10  == 0) {   // 5 * 4 * frequency = 100 ms
 	  std::cout << "After iteration " << iteration << " : " << data_admit_ratio << " " << load_admit_ratio << std::endl;
 	  tp2 = check_throughput(true);
 	} else {
@@ -343,10 +346,13 @@ void * monitor_func(void *vargp) {
 	  goto reoptimize;
 	}
 
+	/*
 	if  (*to_change_ratio <= 90 && data_admit_ratio > 0) {
           std::cout << "====== Found pretty unbalanced load\n";
 	  data_admit_ratio = 0;
 	}
+
+	*/
 
       }
     } else {

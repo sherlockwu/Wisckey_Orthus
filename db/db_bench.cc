@@ -18,6 +18,7 @@
 #include "util/random.h"
 #include "util/testutil.h"
 #include <iostream>
+#include <atomic>
 
 // Comma-separated list of operations to run in the specified order
 //   Actual benchmarks:
@@ -124,7 +125,7 @@ int num_threads_measure = 1;
 static bool FLAGS_monitor = false;
 double g_zipfian_theta = 0.99;
 double g_ycsb_write = 0.0;
-
+std::atomic<int> inserted_largest_key; // insert new keys
 // Kan: For zippydb
 //  key:
 //static int FLAGS_keyrange_num = 10;
@@ -163,10 +164,10 @@ static double FLAGS_sine_c = 0;
 static double FLAGS_sine_d = 20;
 //static uint64_t FLAGS_sine_mix_rate_interval_milliseconds = 5000;
 static uint64_t FLAGS_sine_mix_rate_interval_milliseconds = 1000;
-static uint64_t throughput_report_interval = 100; // 100 ms report once
+//static uint64_t throughput_report_interval = 100; // 100 ms report once
+static uint64_t throughput_report_interval = 400; // this is good for zippydb
 
 int running_threads = 32;
-
 
 
 namespace leveldb {
@@ -664,6 +665,8 @@ class Benchmark {
 	
 	flag_monitor = false;
 	flag_tune_load_admit = true;
+
+	inserted_largest_key = FLAGS_db_num;
         method = &Benchmark::YCSB;
       } else if (name == Slice("ycsb_warmup")) {
         std::cout << "====== This is to warm up for YCSB\n";
@@ -1516,17 +1519,33 @@ class Benchmark {
     //ZipfianRandom zipfian_rng(FLAGS_db_num, g_zipfian_theta, 1237 + thread->tid); 
     //ZipfianRandom zipfian_rng((int)FLAGS_db_num*0.8, g_zipfian_theta, 1237 + thread->tid); 
     ZipfianRandom zipfian_rng((int)FLAGS_db_num, g_zipfian_theta, 1237 + thread->tid); 
+    
+    
+    // some setup
+    //double scan_ratio = 0.95;
+    double scan_ratio = 0;
+    double read_ratio = 1.0 - scan_ratio - g_ycsb_write;
+    //double read_ratio = 0;
+    double write_ratio = g_ycsb_write;
+    bool rmw = false;    // whether the write is read modify write
+    bool insert_new = true;
+    bool temporal_distributed = true;
+
 
     // warmup phase
     //flag_monitor = false;
-    flag_monitor = true;
+    flag_monitor = false;
     for (int i = 0; i < reads_; i++) {
     //for (int i = 0; i < 0; i++) {
       char key[100];
 
       //Kan: for zipfian accesses
       //const int k = thread->rand.Next() % (FLAGS_db_num / 3);
-      const int k = zipfian_rng.next() % (FLAGS_db_num);
+      int k = zipfian_rng.next() % (FLAGS_db_num);
+      if (temporal_distributed) {
+        k = FLAGS_db_num - k;
+      } 
+      
       //const int k = zipfian_rng.next() % (FLAGS_db_num/3);
       //std::cout << "key: " << k << "\n";
       snprintf(key, sizeof(key), "%016d", k);
@@ -1548,19 +1567,9 @@ class Benchmark {
 
     // TO test classic cache or tuned cache
     flag_monitor = FLAGS_monitor;
-    
-    //double scan_ratio = 0.95;
-    double scan_ratio = 0;
-    double read_ratio = 1.0 - scan_ratio - g_ycsb_write;
-    //double read_ratio = 0;
-    double write_ratio = g_ycsb_write;
-    bool rmw = false;    // whether the write is read modify write
-    bool insert_new = false;
+    //data_admit_ratio = 0; 
 
     std::cout << "YCSB is gonna test with " << read_ratio << " reads " << write_ratio << " writes\n";
-    // NOTE: need this to run different experiments
-
-
     // measurement phase
     // handle write speically
     if (false && write_ratio == 0.5 && thread->tid == 0) {
@@ -1575,7 +1584,7 @@ class Benchmark {
 
         //const int k = thread->rand.Next() % FLAGS_num;
         //const int k = zipfian_rng.next() % (FLAGS_db_num);
-        const int k = zipfian_rng.next() % (FLAGS_db_num/3);
+        int k = zipfian_rng.next() % (FLAGS_db_num);
         char key[100];
         snprintf(key, sizeof(key), "%016d", k);
         
@@ -1601,13 +1610,19 @@ class Benchmark {
     
     
     std::cout << reads_ << " : " << num_threads_measure << " " << (reads_*32/num_threads_measure/8) << std::endl;
-    for (int i = 0; i < (reads_*32/num_threads_measure/4); i++) {
+    //for (int i = 0; i < (reads_*32/num_threads_measure/4); i++) {
+    //for (int i = 0; i < (reads_*32/num_threads_measure/2); i++) {
+    for (int i = 0; i < (reads_*32/num_threads_measure); i++) {
     //for (int i = 0; i < (reads_*32/num_threads_measure*2); i++) {
       char key[100];
 
       //Kan: decide key to access, zipfian distributions
-      //const int k = thread->rand.Next() % (FLAGS_db_num / 3);
-      const int k = zipfian_rng.next() % (FLAGS_db_num);
+      //int k = zipfian_rng.next() % (FLAGS_db_num);
+      int k = zipfian_rng.next() % (inserted_largest_key);
+      if (temporal_distributed) {
+        k = inserted_largest_key - k;
+      }
+
       snprintf(key, sizeof(key), "%016d", k);
 
       //TODO decide operation type
@@ -1633,7 +1648,7 @@ class Benchmark {
           iter->Seek(key);
           if (iter->Valid() && iter->key() == key) found++;
       
-          int64_t scan_length = 60;
+          int64_t scan_length = 10;
 	  for (int j = 0; j < scan_length && iter->Valid(); j++) {
             int64_t ksize = 0, vsize = 0;
             ksize = iter->key().ToString().size();
@@ -1658,7 +1673,8 @@ class Benchmark {
 	}
 
 	if (insert_new) {    // YCSB E
-          const int k_insert = zipfian_rng.next() % (FLAGS_db_num) + FLAGS_db_num;
+          //const int k_insert = zipfian_rng.next() % (FLAGS_db_num) + FLAGS_db_num;
+          const int k_insert = inserted_largest_key.fetch_add(1);
           snprintf(key, sizeof(key), "%016d", k_insert);
 	}
 	
@@ -1925,6 +1941,9 @@ int main(int argc, char** argv) {
     } else if (sscanf(argv[i], "--step=%d%c", &n, &junk) == 1) {
       leveldb::scheduler_step = n;
       std::cout << "Scheduler step size: " << leveldb::scheduler_step << "\n";
+    } else if (sscanf(argv[i], "--report_interval=%d%c", &n, &junk) == 1) {
+      throughput_report_interval = n; // how many ms to report 
+      std::cout << "Throughput report interval: " << throughput_report_interval << "\n";
     } else if (sscanf(argv[i], "--ycsb_theta=%d%c", &n, &junk) == 1) {
       g_zipfian_theta = (double)n / 100.0;
       std::cout << "zipfian theta " << g_zipfian_theta << "\n";
