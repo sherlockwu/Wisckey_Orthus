@@ -123,6 +123,7 @@ static const char* FLAGS_db = NULL;
 int num_threads_measure = 1;
 static bool FLAGS_monitor = false;
 double g_zipfian_theta = 0.99;
+double g_ycsb_write = 0.0;
 
 // Kan: For zippydb
 //  key:
@@ -920,7 +921,6 @@ class Benchmark {
     
     options.use_persist_cache = true;
     options.persist_block_cache = NewPersistLRUCache(((size_t)34)*1024*1024*1024);
-    //options.persist_block_cache = NewPersistLRUCache(((size_t)100)*1024*1024*1024);
     
     // zippydb is so skewed, use a 1/10 cache size 
     //options.persist_block_cache = NewPersistLRUCache(((size_t)4)*1024*1024*1024);
@@ -1330,8 +1330,8 @@ class Benchmark {
 	double usecs_since_start = static_cast<double>(now - thread->stats.GetStart());
          thread->stats.ResetSineInterval();
 	//double mix_rate_with_noise = SineRate(usecs_since_start / 1000000.0);
-        //mix_rate_with_noise = SineRate(usecs_since_start / 500.0);
-        mix_rate_with_noise = SineRate(usecs_since_start / 1000.0);
+        mix_rate_with_noise = SineRate(usecs_since_start / 500.0);
+        //mix_rate_with_noise = SineRate(usecs_since_start / 1000.0);
         //mix_rate_with_noise = 24;
 	if (thread -> tid == 0)
           std::cout << "=== interval " << usecs_since_start << " " << mix_rate_with_noise << "\n";
@@ -1548,10 +1548,17 @@ class Benchmark {
     // TO test classic cache or tuned cache
     flag_monitor = FLAGS_monitor;
     
-    double read_ratio = 1.0;
-    double scan_ratio = 0.0;
-    double write_ratio = 0.5;
-    bool rmw = true;    // whether the write is read modify write
+    //double scan_ratio = 0.95;
+    double scan_ratio = 0;
+    double read_ratio = 1.0 - scan_ratio - g_ycsb_write;
+    //double read_ratio = 0;
+    double write_ratio = g_ycsb_write;
+    bool rmw = false;    // whether the write is read modify write
+    bool insert_new = false;
+
+    std::cout << "YCSB is gonna test with " << read_ratio << " reads " << write_ratio << " writes\n";
+    // NOTE: need this to run different experiments
+
 
     // measurement phase
     // handle write speically
@@ -1574,6 +1581,7 @@ class Benchmark {
 	
 	if (rmw) {
 	  db_->Get(options, key, &value);
+          thread->stats.FinishedSingleOp(0);
 	}
 	
 	s = db_->Put(write_options_, key, gen.Generate(value_size_));
@@ -1584,16 +1592,16 @@ class Benchmark {
         }
         //
         thread->stats.AddBytes(value.length());
-        thread->stats.FinishedSingleOp();
+        thread->stats.FinishedSingleOp(1);
       }
     
       return;
     }
     
     
-    //for (int i = 0; i < (reads_*32/num_threads_measure/4); i++) {
     std::cout << reads_ << " : " << num_threads_measure << " " << (reads_*32/num_threads_measure/8) << std::endl;
     for (int i = 0; i < (reads_*32/num_threads_measure/4); i++) {
+    //for (int i = 0; i < (reads_*32/num_threads_measure*2); i++) {
       char key[100];
 
       //Kan: decide key to access, zipfian distributions
@@ -1614,7 +1622,7 @@ class Benchmark {
           found++;
           thread->stats.AddBytes(value.length());
         }
-        thread->stats.FinishedSingleOp();
+        thread->stats.FinishedSingleOp(0);
       } else if (query_ratio < read_ratio + scan_ratio) {
         // TODO scan
         Iterator* iter = db_->NewIterator(options);
@@ -1624,7 +1632,7 @@ class Benchmark {
           iter->Seek(key);
           if (iter->Valid() && iter->key() == key) found++;
       
-          int64_t scan_length = 10;
+          int64_t scan_length = 60;
 	  for (int j = 0; j < scan_length && iter->Valid(); j++) {
             int64_t ksize = 0, vsize = 0;
             ksize = iter->key().ToString().size();
@@ -1632,7 +1640,7 @@ class Benchmark {
             bytes += ksize + vsize;
             iter->Next();	
 	  }
-          thread->stats.FinishedSingleOp();
+          thread->stats.FinishedSingleOp(2);
         }
         delete iter;
       } else {
@@ -1645,6 +1653,12 @@ class Benchmark {
 	
 	if (rmw) {
 	  db_->Get(options, key, &value);
+          thread->stats.FinishedSingleOp(0);
+	}
+
+	if (insert_new) {    // YCSB E
+          const int k_insert = zipfian_rng.next() % (FLAGS_db_num) + FLAGS_db_num;
+          snprintf(key, sizeof(key), "%016d", k_insert);
 	}
 	
 	s = db_->Put(write_options_, key, gen.Generate(value_size_));
@@ -1655,7 +1669,7 @@ class Benchmark {
         }
         //
         thread->stats.AddBytes(value.length());
-        thread->stats.FinishedSingleOp();
+        thread->stats.FinishedSingleOp(1);
       }
 	
     }
@@ -1913,6 +1927,9 @@ int main(int argc, char** argv) {
     } else if (sscanf(argv[i], "--ycsb_theta=%d%c", &n, &junk) == 1) {
       g_zipfian_theta = (double)n / 100.0;
       std::cout << "zipfian theta " << g_zipfian_theta << "\n";
+    } else if (sscanf(argv[i], "--ycsb_write=%d%c", &n, &junk) == 1) {
+      g_ycsb_write = (double)n / 100.0;
+      std::cout << "ycsb write rate " << g_ycsb_write << "\n";
     } else if (strncmp(argv[i], "--db=", 5) == 0) {
       FLAGS_db = argv[i] + 5;
     } else {

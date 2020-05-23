@@ -25,7 +25,7 @@ with open(report_file_name, 'r')  as report_file:
             #throughput_timing =  int(re.sub("[^0-9]", "", line.split('ops,')[0]))
             #throughput_num =  float(re.sub("[^0-9.]", "", line.split('ops,')[-1]))
             items = split(line)
-            print items[0], items[2], items[3], items[7], items[8] # #threads, timing, throughput_num, data admission ratio, load admission ratio
+            print items[0], items[2], items[3]/10.0, items[7], items[8] # #threads, timing, throughput_num, data admission ratio, load admission ratio
 
         if 'Data admit ratio' in line:
             data_admit_ratio =  int(re.sub("[^0-9]", "", line.split('Load')[0]))
