@@ -201,9 +201,9 @@ float check_throughput(bool flag_print=false) {
 
 
 void * monitor_func(void *vargp) {
-  // create a monitor file on Optane SSD to detect
   Cache * cache_ptr = (Cache *) vargp;
-	
+
+  // monitor nvme0n1 nvme1n1 block level stats 
   fd_optane = open("/sys/block/nvme1n1/stat", O_RDONLY);
   if (fd_optane < 0) {
     std::cout << "unable to open file" << fd_optane << " " << errno << std::endl;
@@ -222,41 +222,39 @@ void * monitor_func(void *vargp) {
 
   int step = scheduler_step;
   
+  // the monitor is basically a loop for tuning 
   while(true) {
     if (flag_monitor) {
      
      reoptimize:
       // start to optimize for a workload
       std::cout << "\n\n================ Re optimize for a new workload\n";
+      
+      // Phase 1: init state: classic caching
       load_admit_ratio = data_admit_ratio = 100;
       
+      // some statistic helper data structure
       std::vector<uint64_t> stats_optane, stats_flash, last_stats_optane, last_stats_flash;
       float last_throughput, detected_throughput, optane_read_throughput, optane_write_throughput, flash_read_throughput;
       float detect_miss_ratio, last_miss_ratio;
-      ///*
       
       last_miss_ratio = -10;
       detect_miss_ratio = cache_ptr->check_miss_ratio();
-      //detect_miss_ratio = 110;
       
-      // detect whether cache is stable
-      while ( !( detect_miss_ratio >= last_miss_ratio - 0.25 && detect_miss_ratio <= last_miss_ratio + 0.25) ){// || detect_miss_ratio >= 15.0) {
-      //while ( !( detect_miss_ratio >= last_miss_ratio - 0.5 && detect_miss_ratio <= last_miss_ratio + 0.5) ){// || detect_miss_ratio >= 15.0) {
-      //while ( !( detect_miss_ratio >= last_miss_ratio - 0.5) ){// || detect_miss_ratio >= 15.0) {
-	//usleep(1000000);
+      // monitor whether cache is stable
+      while ( !( detect_miss_ratio >= last_miss_ratio - 0.25 && detect_miss_ratio <= last_miss_ratio + 0.25) ){
 	usleep(100000);
 	last_miss_ratio = detect_miss_ratio;
 	detect_miss_ratio = cache_ptr->check_miss_ratio();
 	std::cout << "detect miss ratio: " << detect_miss_ratio << " " << last_miss_ratio << std::endl;
       }
 
+      // Phase 2: start to tune load admit ratio when hit rate is stable
       std::cout << "================ Classic Caching gets stable\n";
-      // it's time to optimize Max(L1 + L2) based on Max(L1)
       float basic_miss_ratio = detect_miss_ratio; 
       
+      // turn off the data admission
       data_admit_ratio = 0;
-      //data_admit_ratio = 100;
-      //*/
       
       int ratio1, ratio2, ratio3;   // indicating a window eg. [45, 50, 55]
       float tp1, tp2, tp3;
@@ -270,8 +268,8 @@ void * monitor_func(void *vargp) {
         ratio2 = *to_change_ratio;
         ratio3 = *to_change_ratio + step;
        
-	//if (true && iteration % 20  == 0) {
 	if (false && iteration % 10  == 0) {   // 5 * 4 * frequency = 100 ms
+	  // print out info after some iterations
 	  std::cout << "After iteration " << iteration << " : " << data_admit_ratio << " " << load_admit_ratio << std::endl;
 	  tp2 = check_throughput(true);
 	} else {
@@ -279,6 +277,7 @@ void * monitor_func(void *vargp) {
 	}
 	
 
+	// get f(ratio1), f(ratio3)
 	if (ratio1 < 0) {
 	  tp1 = -10;
 	} else {
@@ -336,7 +335,7 @@ void * monitor_func(void *vargp) {
             }
         }
 
-	// TODO if it gets stable to 100\%
+	// if detect load admission ratio gets stable to 100%, jump back to Phase 1
 	if  (*to_change_ratio == 100) {
           if (second_chance) {
 	    second_chance = false;
@@ -346,15 +345,6 @@ void * monitor_func(void *vargp) {
 	  second_chance = true;
 	  goto reoptimize;
 	}
-
-	/*
-	if  (*to_change_ratio <= 90 && data_admit_ratio > 0) {
-          std::cout << "====== Found pretty unbalanced load\n";
-	  data_admit_ratio = 0;
-	}
-
-	*/
-
       }
     } else {
       usleep(1000000);
