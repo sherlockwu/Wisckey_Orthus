@@ -75,6 +75,7 @@ class Cache {
   virtual Handle* Lookup(const Slice& key, char * scratch) = 0;
 
   virtual float check_miss_ratio() = 0;
+  virtual void clear_miss_ratio() = 0;
   
   // Release a mapping returned by a previous Lookup().
   // REQUIRES: handle must not have been released yet.

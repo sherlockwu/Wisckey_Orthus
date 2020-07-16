@@ -236,11 +236,12 @@ void * monitor_func(void *vargp) {
       ///*
       
       last_miss_ratio = -10;
-      detect_miss_ratio = 110;
+      detect_miss_ratio = cache_ptr->check_miss_ratio();
+      //detect_miss_ratio = 110;
       
       // detect whether cache is stable
-      //while ( !( detect_miss_ratio >= last_miss_ratio - 0.25 && detect_miss_ratio <= last_miss_ratio + 0.25) ){// || detect_miss_ratio >= 15.0) {
-      while ( !( detect_miss_ratio >= last_miss_ratio - 0.5 && detect_miss_ratio <= last_miss_ratio + 0.5) ){// || detect_miss_ratio >= 15.0) {
+      while ( !( detect_miss_ratio >= last_miss_ratio - 0.25 && detect_miss_ratio <= last_miss_ratio + 0.25) ){// || detect_miss_ratio >= 15.0) {
+      //while ( !( detect_miss_ratio >= last_miss_ratio - 0.5 && detect_miss_ratio <= last_miss_ratio + 0.5) ){// || detect_miss_ratio >= 15.0) {
       //while ( !( detect_miss_ratio >= last_miss_ratio - 0.5) ){// || detect_miss_ratio >= 15.0) {
 	//usleep(1000000);
 	usleep(100000);
@@ -254,12 +255,12 @@ void * monitor_func(void *vargp) {
       float basic_miss_ratio = detect_miss_ratio; 
       
       data_admit_ratio = 0;
+      //data_admit_ratio = 100;
       //*/
       
       int ratio1, ratio2, ratio3;   // indicating a window eg. [45, 50, 55]
       float tp1, tp2, tp3;
 
-      //data_admit_ratio = 100;
       bool second_chance = true;
       for (int iteration = 0; ; iteration++) {
 	
@@ -295,11 +296,11 @@ void * monitor_func(void *vargp) {
 
         while (true) {
             // detect whether workload has changed -> reoptimize
-	    /*detect_miss_ratio = cache_ptr->check_miss_ratio();
-	    if ( true && !( detect_miss_ratio <= basic_miss_ratio + 10) )  {
-	      std::cout <<  "detect miss ratio: " << detect_miss_ratio << ", basic miss ratio: " << basic_miss_ratio << std::endl;  
+	    detect_miss_ratio = cache_ptr->check_miss_ratio();
+	    if ( true && detect_miss_ratio > 0 && !( detect_miss_ratio <= basic_miss_ratio + 20) )  {
+	      std::cout <<  "Detect hit rate change, detect miss ratio: " << detect_miss_ratio << ", basic miss ratio: " << basic_miss_ratio << std::endl;  
               goto reoptimize;
-            }*/
+            }
             float max_tp = std::max(tp1, std::max(tp2, tp3));
             if (tp2 == max_tp) {
                 *to_change_ratio = ratio2;

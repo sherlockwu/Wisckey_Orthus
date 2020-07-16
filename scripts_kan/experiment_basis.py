@@ -23,7 +23,7 @@ class Experiment(object):
         # config something
         #self.exp_name = 'leveldb/rerun/cache_automatic'
         #self.exp_name = 'leveldb/64Bvalue/cache_only_tune_data_admit'
-        self.exp_name = 'leveldb/testing/feedback_analysis'
+        self.exp_name = 'leveldb/testing/'
         self.home_dir = '/home/kanwu/Research/'
         self.res_dir = self.home_dir + 'results/' + self.exp_name
         self.tmp_dir = '/dev/shm/'
@@ -45,7 +45,7 @@ class Experiment(object):
           #'threads': [1, 4, 8, 16, 24, 32],
           'threads': [32],
           #'threads': [1, 4, 8, 16],
-          'memory': [2*GB],    #'memory limit'
+          'memory': [1*GB],    #'memory limit'
           'swapiness': [0],
           #'readahead': [128, 0, 16]    # default 128KB
           'readahead': [128]    # default 128KB

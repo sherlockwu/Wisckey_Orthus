@@ -636,6 +636,7 @@ class ShardedLRUCache : public Cache {
   }
   virtual Handle* Lookup(const Slice& key, char * scratch) {}; // this is for persistent cache
   virtual float check_miss_ratio() {return 100;};
+  virtual void clear_miss_ratio() {};
   virtual void Release(Handle* handle) {
     LRUHandle* h = reinterpret_cast<LRUHandle*>(handle);
     shard_[Shard(h->hash)].Release(handle);
@@ -742,7 +743,8 @@ class ShardedBucketLRUCache : public Cache {
     }
 
 
-    if (bucket == 0 && cache_access > 1000000) {
+    //if (bucket == 0 && cache_access > 1000000) {
+    if (bucket == 0 && cache_access > 100000) {
       //std::cout << total_capacity << " Cache access: " << cache_access << ", miss: " << cache_miss << ", miss ratio: " << (double) cache_miss / cache_access * 100 << "\n";
       std::cout << "====== miss ratio: " << (double) cache_miss / cache_access * 100 << "\n";
       cache_access = 0;
@@ -755,7 +757,15 @@ class ShardedBucketLRUCache : public Cache {
     return shard_[Shard(hash)].Lookup(key, hash);
   }
   virtual float check_miss_ratio() {
-    return (double) cache_miss / cache_access * 100;
+    float ratio = (double) cache_miss / cache_access * 100;
+    if (cache_access > 10000) {
+      cache_access = 1;
+      cache_miss = 0;
+    }
+    return ratio;
+  }
+  virtual void clear_miss_ratio() {
+    cache_miss = cache_access = 0;
   }
   virtual void Release(Handle* handle) {
     LRUHandle* h = reinterpret_cast<LRUHandle*>(handle);

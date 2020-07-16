@@ -168,7 +168,7 @@ static uint64_t FLAGS_sine_mix_rate_interval_milliseconds = 1000;
 static uint64_t throughput_report_interval = 400; // this is good for zippydb
 
 int running_threads = 32;
-
+leveldb::Cache * db_cache_ptr = NULL;
 
 namespace leveldb {
 
@@ -292,6 +292,9 @@ class Stats {
     done_scan_ = last_done_scan_ = 0;
     next_report_ = 10000;
     start_ = Env::Default()->NowMicros();
+    if (db_cache_ptr != NULL) {
+      db_cache_ptr->clear_miss_ratio();
+    }
   }
 
   void ResetSineInterval() {
@@ -676,11 +679,11 @@ class Benchmark {
 	reads_ = 500000;
         method = &Benchmark::YCSB;
       } else if (name == Slice("readrandom")) {
-	flag_monitor = true;
+	flag_monitor = false;
 	//flag_tune_load_admit = true;
         method = &Benchmark::ReadRandom;
       } else if (name == Slice("readrandom_1")) {
-	flag_monitor = true;
+	flag_monitor = false;
         method = &Benchmark::ReadRandomChangeWorkset;
       } else if (name == Slice("readrandom_warmup")) {
         std::cout << "====== This is to warm up for random reads\n";
@@ -929,6 +932,8 @@ class Benchmark {
     //options.persist_block_cache = NewPersistLRUCache(((size_t)4)*1024*1024*1024);
     
     //options.persist_vlog_cache = NewPersistLRUCache(((size_t)2)*1024*1024*1024);  // need to setup the db_impl code to separate lsm and vlog cache
+    
+    db_cache_ptr = (leveldb::Cache *) options.persist_block_cache;
 
     Status s = DB::Open(options, FLAGS_db, &db_);
     if (!s.ok()) {
@@ -1525,15 +1530,16 @@ class Benchmark {
     //double scan_ratio = 0.95;
     double scan_ratio = 0;
     double read_ratio = 1.0 - scan_ratio - g_ycsb_write;
-    //double read_ratio = 0;
     double write_ratio = g_ycsb_write;
-    bool rmw = false;    // whether the write is read modify write
-    bool insert_new = true;
-    bool temporal_distributed = true;
 
+
+    //TODO NOTE take care of these configurations
+    bool rmw = false;    // whether the write is read modify write
+    bool insert_new = false;
+    bool temporal_distributed = false;
+    bool change_workset = true;
 
     // warmup phase
-    //flag_monitor = false;
     flag_monitor = false;
     for (int i = 0; i < reads_; i++) {
     //for (int i = 0; i < 0; i++) {
@@ -1546,7 +1552,6 @@ class Benchmark {
         k = FLAGS_db_num - k;
       } 
       
-      //const int k = zipfian_rng.next() % (FLAGS_db_num/3);
       //std::cout << "key: " << k << "\n";
       snprintf(key, sizeof(key), "%016d", k);
       
@@ -1564,6 +1569,7 @@ class Benchmark {
     }
     running_threads = num_threads_measure;
     thread->stats.ClearStats();
+    
 
     // TO test classic cache or tuned cache
     flag_monitor = FLAGS_monitor;
@@ -1572,7 +1578,7 @@ class Benchmark {
     std::cout << "YCSB is gonna test with " << read_ratio << " reads " << write_ratio << " writes\n";
     // measurement phase
     // handle write speically
-    if (false && write_ratio == 0.5 && thread->tid == 0) {
+    /*if (false && write_ratio == 0.5 && thread->tid == 0) {
       while (true) {
         {
           MutexLock l(&thread->shared->mu);
@@ -1606,14 +1612,14 @@ class Benchmark {
       }
     
       return;
-    }
+    }*/
     
     
     std::cout << reads_ << " : " << num_threads_measure << " " << (reads_*32/num_threads_measure/8) << std::endl;
     //for (int i = 0; i < (reads_*32/num_threads_measure/4); i++) {
-    //for (int i = 0; i < (reads_*32/num_threads_measure/2); i++) {
-    for (int i = 0; i < (reads_*32/num_threads_measure); i++) {
-    //for (int i = 0; i < (reads_*32/num_threads_measure*2); i++) {
+    for (int i = 0; i < (reads_*32/num_threads_measure/2); i++) {
+    //for (int i = 0; i < (reads_*32/num_threads_measure); i++) {
+    //for (int i = 0; i < (reads_*32/num_threads_measure * 2); i++) {
       char key[100];
 
       //Kan: decide key to access, zipfian distributions
@@ -1622,6 +1628,28 @@ class Benchmark {
       if (temporal_distributed) {
         k = inserted_largest_key - k;
       }
+
+      if (change_workset) {
+	k = k % (FLAGS_db_num/3);
+        uint64_t now = Env::Default()->NowMicros();
+	double usecs_since_start = static_cast<double>(now - thread->stats.GetStart());
+        if (usecs_since_start > 10*1000000) {
+	  std::cout << "Ran for more than 10 sec\n"; 
+          break;
+	}
+      }
+    /*  uint64_t now = Env::Default()->NowMicros();
+	double usecs_since_start = static_cast<double>(now - thread->stats.GetStart());
+        if (usecs_since_start == 10*1000000) {
+	  std::cout << "To change workset!!!!!!!!!!!!!!!\n";
+	}
+	if (usecs_since_start > 10*1000000) {
+          k = 2*FLAGS_db_num/3 + k;
+	}
+	//std::cout << k << "\n";
+      }*/
+
+      
 
       snprintf(key, sizeof(key), "%016d", k);
 
@@ -1640,7 +1668,7 @@ class Benchmark {
         }
         thread->stats.FinishedSingleOp(0);
       } else if (query_ratio < read_ratio + scan_ratio) {
-        // TODO scan
+        // scan
         Iterator* iter = db_->NewIterator(options);
 	//continue;      
       
@@ -1661,11 +1689,6 @@ class Benchmark {
         delete iter;
       } else {
 	// put
-	//std::cout << "This is to do Put, thread " << thread->tid << "\n";
-	//const int k = thread->rand.Next()  + FLAGS_db_num;
-	//const int k = 666;
-        //const int k = zipfian_rng.next() % (FLAGS_db_num);
-        //snprintf(key, sizeof(key), "%016d", k);
 	
 	if (rmw) {
 	  db_->Get(options, key, &value);
@@ -1692,6 +1715,42 @@ class Benchmark {
     }
     
     char msg[100];
+    snprintf(msg, sizeof(msg), "(%d of %d found)", found, num_);
+    thread->stats.AddMessage(msg);
+   
+    if (!change_workset)
+      return; 
+
+
+    std::cout << "To test another working set\n";
+    thread->stats.ClearStats();
+    for (int i = 0; i < (reads_*32/num_threads_measure); i++) {
+      char key[100];
+
+      int k = zipfian_rng.next() % (FLAGS_db_num / 3) + FLAGS_db_num/3;
+      /*if (change_workset) {
+	k = k % (FLAGS_db_num/3);
+        uint64_t now = Env::Default()->NowMicros();
+	double usecs_since_start = static_cast<double>(now - thread->stats.GetStart());
+        if (usecs_since_start == 10*1000000) {
+	  std::cout << "To change workset!!!!!!!!!!!!!!!\n";
+	}
+	if (usecs_since_start > 10*1000000) {
+          k = 2*FLAGS_db_num/3 + k;
+	}
+	//std::cout << k << "\n";
+      }*/
+
+      
+
+      snprintf(key, sizeof(key), "%016d", k);
+      if (db_->Get(options, key, &value).ok()) {
+        found++;
+        thread->stats.AddBytes(value.length());
+      }
+      thread->stats.FinishedSingleOp(0);
+    }
+    
     snprintf(msg, sizeof(msg), "(%d of %d found)", found, num_);
     thread->stats.AddMessage(msg);
   }
